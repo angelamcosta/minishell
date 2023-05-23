@@ -11,7 +11,7 @@
   <img alt="GitHub Language Count" src="https://img.shields.io/github/languages/count/angelamcosta/minishell" /> <img alt="GitHub Top Language" src="https://img.shields.io/github/languages/top/angelamcosta/minishell" /> <img alt="GitHub Contributors" src="https://img.shields.io/github/contributors/angelamcosta/minishell" /> <img alt="GitHub Last Commit" src="https://img.shields.io/github/last-commit/angelamcosta/minishell" /> <img alt="Github License" src="https://img.shields.io/github/license/angelamcosta/minishell" />
 </div>
 
-Minishell is a shell program written in C that provides a simplified command-line interface for executing commands and managing processes. It aims to replicate basic functionalities of a Unix shell, such as command execution, I/O redirection, piping, and handling of environment variables.
+Minishell is a shell program written in C that provides a simplified command-line interface for executing commands and managing processes. It aims to replicate basic functionalities of a Unix shell, such as command execution, I/O redirection, piping, and handling of environment variables. The subject of the project can be found in this [link](https://raw.githubusercontent.com/angelamcosta/minishell/main/en.subject.pdf).
 
 ## 📜 Instructions
 
