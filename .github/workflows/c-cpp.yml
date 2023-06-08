@@ -1,0 +1,28 @@
+name: C/C++ CI
+
+on:
+  push:
+    branches: [ "main" ]
+  pull_request:
+    branches: [ "main" ]
+
+jobs:
+  build:
+    name: Compilation Check
+
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v3
+
+    - name: Build and Verify Compilation
+      run: |
+        cd files
+        make_result=$(make 2>&1)
+        if [ $? -eq 0 ]; then
+          echo "Compilation successful"
+        else
+          echo "Compilation failed"
+          echo "$make_result"
+          exit 1
+        fi
