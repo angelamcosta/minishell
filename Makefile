@@ -1,34 +1,38 @@
 NAME	=	minishell
 
 CC		=	cc
-FLAGS	=	-Wall -Werror -Wextra -L ./$(LIBFT) -lft
-LIBS	=	-lreadline
+FLAGS	=	-Wall -Werror -Wextra
+LIBS	=	-L ./$(LIBFT) -lft -lreadline
 RM		=	rm -rf
 
 LIBFT	=	libft
 SRC_DIR	=	src
 INC_DIR	=	include
 
-SRCS	=	minishell.c \
+SRC		=	minishell.c \
 			$(SRC_DIR)/general.c \
 			$(SRC_DIR)/io_control.c \
 			$(SRC_DIR)/navigation.c \
 			$(SRC_DIR)/parsing.c \
 			$(SRC_DIR)/variable_env.c \
 
-.PHONY:		all clean fclean re
+OBJ		=	$(SRC:.c=.o)
 
 all:		$(NAME)
 
-$(NAME):	$(SRCS)
-			make -C $(LIBFT)
-			$(CC) $(SRCS) $(FLAGS) -I $(INC_DIR) $(LIBS) -o $@
+$(NAME):	$(OBJ)
+			@norminette .
+			@make -C $(LIBFT)
+			@$(CC) $(CFLAGS) $(SRC) -o $@ $(LIBS)
 
 clean:
 			make clean -C $(LIBFT)
-			$(RM) $(NAME)
+			@$(RM) $(OBJ)
 
 fclean:		clean
-			make fclean -C $(LIBFT)
+			@make fclean -C $(LIBFT)
+			@$(RM) $(NAME)
 
 re:			fclean all
+
+.PHONY:		all clean fclean re
