@@ -6,7 +6,7 @@
 /*   By: anlima <anlima@student.42lisboa.com>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/27 23:13:34 by anlima            #+#    #+#             */
-/*   Updated: 2023/06/27 23:35:43 by anlima           ###   ########.fr       */
+/*   Updated: 2023/07/24 15:52:34 by anlima           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,12 +17,14 @@ void	execute_pwd(void);
 
 void	execute_pwd(void)
 {
-	char	cwd[1024];
+	char			*path;
 
-	if (getcwd(cwd, sizeof(cwd)))
-		printf("%s\n", cwd);
+	path = getcwd(NULL, 0);
+	if (path)
+		printf("%s\n", path);
 	else
 		perror("pwd");
+	free(path);
 }
 
 void	execute_cd(void)

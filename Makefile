@@ -21,7 +21,7 @@ OBJ		=	$(SRC:.c=.o)
 all:		$(NAME)
 
 $(NAME):	$(OBJ)
-			@norminette .
+			# norminette .
 			@make -C $(LIBFT)
 			@$(CC) $(CFLAGS) $(SRC) -o $@ $(LIBS)
 

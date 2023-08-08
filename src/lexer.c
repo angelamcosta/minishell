@@ -1,32 +1,19 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   minishell.c                                        :+:      :+:    :+:   */
+/*   lexer.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: anlima <anlima@student.42lisboa.com>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/06/07 20:47:34 by anlima            #+#    #+#             */
-/*   Updated: 2023/08/08 15:20:53 by anlima           ###   ########.fr       */
+/*   Created: 2023/07/24 17:18:05 by anlima            #+#    #+#             */
+/*   Updated: 2023/08/08 15:45:35 by anlima           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "./include/minishell.h"
+#include "../include/minishell.h"
 
-int	main(int argc, char **argv, char **env)
+int	is_delimiter(char c)
 {
-	term()->user = getenv("USER");
-	term()->home = getenv("HOME");
-	term()->env = env;
-	while (1)
-	{
-		printf("Minishell ");
-		term()->command = readline(">> ");
-		tokenize_input();
-		if (term()->arguments[0] != NULL)
-			parse_input();
-		add_history(term()->command);
-		free(term()->command);
-		free(term()->arguments);
-	}
-	return (0);
+	return (c == ' ' || c == '\t' || c == '\n' || c == ';' || c == '|'
+		|| c == '&' || c == '(' || c == ')');
 }
