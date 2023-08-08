@@ -6,6 +6,7 @@ LIBS	=	-L ./$(LIBFT) -lft -lreadline
 RM		=	rm -rf
 
 LIBFT	=	libft
+GNL		=	get_next_line
 SRC_DIR	=	src
 INC_DIR	=	include
 
@@ -15,6 +16,7 @@ SRC		=	minishell.c \
 			$(SRC_DIR)/navigation.c \
 			$(SRC_DIR)/parsing.c \
 			$(SRC_DIR)/variable_env.c \
+			get_next_line/get_next_line.c \
 
 OBJ		=	$(SRC:.c=.o)
 
