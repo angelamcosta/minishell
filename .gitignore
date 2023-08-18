@@ -1,3 +1,6 @@
 files/minishell
 .vscode
 a.out
+*.o
+minishell
+libft.a
