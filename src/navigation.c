@@ -6,7 +6,7 @@
 /*   By: anlima <anlima@student.42lisboa.com>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/27 23:13:34 by anlima            #+#    #+#             */
-/*   Updated: 2023/07/24 15:52:34 by anlima           ###   ########.fr       */
+/*   Updated: 2023/08/18 16:47:24 by anlima           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,7 @@ void	execute_pwd(void)
 
 	path = getcwd(NULL, 0);
 	if (path)
-		printf("%s\n", path);
+		printf("%s%s%s\n", BLUE, path, CLEAR);
 	else
 		perror("pwd");
 	free(path);

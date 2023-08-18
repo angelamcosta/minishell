@@ -6,7 +6,7 @@
 /*   By: anlima <anlima@student.42lisboa.com>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/27 23:16:11 by anlima            #+#    #+#             */
-/*   Updated: 2023/08/08 15:49:01 by anlima           ###   ########.fr       */
+/*   Updated: 2023/08/18 17:19:07 by anlima           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,7 +31,7 @@ void	execute_ls(void)
 		while (ent)
 		{
 			if (ent->d_name[0] != '.')
-				printf("%s ", ent->d_name);
+				printf("%s%s%s  ", BLUE, ent->d_name, CLEAR);
 			ent = readdir(dir);
 		}
 		printf("\n");
@@ -57,7 +57,7 @@ void	execute_echo(void)
 	}
 	i = 0;
 	while (term()->arguments[++i])
-		printf("%s ", term()->arguments[i]);
+		printf("%s%s%s ", BLUE, term()->arguments[i], CLEAR);
 	printf("\n");
 }
 

@@ -6,7 +6,7 @@
 /*   By: anlima <anlima@student.42lisboa.com>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/27 21:49:20 by anlima            #+#    #+#             */
-/*   Updated: 2023/08/08 15:46:03 by anlima           ###   ########.fr       */
+/*   Updated: 2023/08/18 17:13:49 by anlima           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,5 +45,5 @@ void	parse_input(void)
 			ft_strlen("clear")) == 0)
 		execute_clear();
 	else
-		printf("command not found: %s\n", term()->arguments[0]);
+		printf("%scommand not found: %s%s\n", BLUE, term()->arguments[0], CLEAR);
 }

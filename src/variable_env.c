@@ -6,7 +6,7 @@
 /*   By: anlima <anlima@student.42lisboa.com>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/27 23:15:42 by anlima            #+#    #+#             */
-/*   Updated: 2023/07/24 16:16:02 by anlima           ###   ########.fr       */
+/*   Updated: 2023/08/18 16:48:52 by anlima           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,7 @@ void	execute_env(void)
 
 	i = -1;
 	while (term()->env && term()->env[++i])
-		printf("%s\n", term()->env[i]);
+		printf("%s%s%s\n", BLUE, term()->env[i], CLEAR);
 }
 
 void	execute_export(void)

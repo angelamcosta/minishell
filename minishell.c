@@ -6,7 +6,7 @@
 /*   By: anlima <anlima@student.42lisboa.com>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/07 20:47:34 by anlima            #+#    #+#             */
-/*   Updated: 2023/08/08 15:20:53 by anlima           ###   ########.fr       */
+/*   Updated: 2023/08/18 16:34:59 by anlima           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,8 +19,8 @@ int	main(int argc, char **argv, char **env)
 	term()->env = env;
 	while (1)
 	{
-		printf("Minishell ");
-		term()->command = readline(">> ");
+		printf("\x1B[35;4mMinishell\x1B[0m ");
+		term()->command = readline("➜  ");
 		tokenize_input();
 		if (term()->arguments[0] != NULL)
 			parse_input();

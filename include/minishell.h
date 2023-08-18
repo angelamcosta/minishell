@@ -6,12 +6,18 @@
 /*   By: anlima <anlima@student.42lisboa.com>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/07 20:48:28 by anlima            #+#    #+#             */
-/*   Updated: 2023/08/08 16:00:07 by anlima           ###   ########.fr       */
+/*   Updated: 2023/08/18 16:44:05 by anlima           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef MINISHELL_H
 # define MINISHELL_H
+# define RED "\033[91;1m"
+# define GREEN "\033[92;1m"
+# define YELLOW "\033[93;1m"
+# define BLUE "\033[94;1m"
+# define PINK "\033[95;1m"
+# define CLEAR "\033[0m"
 # include <stdio.h>
 # include <dirent.h>
 # include <limits.h>
