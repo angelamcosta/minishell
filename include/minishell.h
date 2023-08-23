@@ -6,7 +6,7 @@
 /*   By: anlima <anlima@student.42lisboa.com>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/07 20:48:28 by anlima            #+#    #+#             */
-/*   Updated: 2023/08/21 18:29:22 by anlima           ###   ########.fr       */
+/*   Updated: 2023/08/23 13:15:40 by anlima           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,6 +20,7 @@
 # define CLEAR "\033[0m"
 # include "../get_next_line/get_next_line.h"
 # include "../libft/libft.h"
+# include <signal.h>
 # include <dirent.h>
 # include <limits.h>
 # include <readline/history.h>
@@ -45,17 +46,18 @@ typedef struct s_term
 	char	**tokens;
 }			t_term;
 
-t_term		*term(void);
-void		parse_input(void);
-void		execute_ls(void);
+t_term	*term(void);
+void	parse_input(void);
+void	execute_ls(void);
 // void	execute_exit(void);
-void		tokenize_input(void);
-void		execute_echo(void);
-void		execute_clear(void);
-void		execute_cd(void);
-void		execute_pwd(void);
-void		execute_env(void);
+void	tokenize_input(void);
+void	handle_sigint(int signum);
+void	execute_echo(void);
+void	execute_clear(void);
+void	execute_cd(void);
+void	execute_pwd(void);
+void	execute_env(void);
 // void	execute_unset(void);
-void		execute_export(void);
+void	execute_export(void);
 
 #endif

@@ -6,7 +6,7 @@
 /*   By: anlima <anlima@student.42lisboa.com>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/07 20:47:34 by anlima            #+#    #+#             */
-/*   Updated: 2023/08/21 18:41:59 by anlima           ###   ########.fr       */
+/*   Updated: 2023/08/23 13:24:33 by anlima           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,13 +14,21 @@
 
 int	main(int argc, char **argv, char **env)
 {
+	signal(SIGINT, handle_sigint);
+	term()->env = env;
 	term()->user = getenv("USER");
 	term()->home = getenv("HOME");
-	term()->env = env;
 	while (1)
 	{
 		printf("\x1B[35;4mMinishell\x1B[0m ");
 		term()->command = readline("➜ ");
+		if (term()->command == NULL)
+			break ;
+		if (*term()->command == '\0')
+		{
+			free(term()->command);
+			continue ;
+		}
 		tokenize_input();
 		if (term()->arguments[0] != NULL)
 			parse_input();

@@ -15,6 +15,7 @@ SRC		=	minishell.c \
 			$(SRC_DIR)/io_control.c \
 			$(SRC_DIR)/navigation.c \
 			$(SRC_DIR)/parsing.c \
+			$(SRC_DIR)/signals.c \
 			$(SRC_DIR)/variable_env.c \
 			get_next_line/get_next_line.c \
 
