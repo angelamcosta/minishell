@@ -9,14 +9,18 @@ LIBFT	=	libft
 GNL		=	get_next_line
 SRC_DIR	=	src
 INC_DIR	=	include
+B_INS	=	builtins
+TOKENS	=	tokens
 
 SRC		=	minishell.c \
+			$(SRC_DIR)/$(B_INS)/io_control.c \
+			$(SRC_DIR)/$(B_INS)/navigation.c \
+			$(SRC_DIR)/$(B_INS)/variable_env.c \
+			$(SRC_DIR)/$(TOKENS)/tokenization.c \
+			$(SRC_DIR)/$(TOKENS)/tokens_utils.c \
 			$(SRC_DIR)/general.c \
-			$(SRC_DIR)/io_control.c \
-			$(SRC_DIR)/navigation.c \
 			$(SRC_DIR)/parsing.c \
 			$(SRC_DIR)/signals.c \
-			$(SRC_DIR)/variable_env.c \
 			get_next_line/get_next_line.c \
 
 OBJ		=	$(SRC:.c=.o)

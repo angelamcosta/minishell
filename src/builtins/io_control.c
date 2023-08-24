@@ -6,11 +6,11 @@
 /*   By: anlima <anlima@student.42lisboa.com>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/27 23:16:11 by anlima            #+#    #+#             */
-/*   Updated: 2023/08/18 17:19:07 by anlima           ###   ########.fr       */
+/*   Updated: 2023/08/23 14:44:14 by anlima           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../include/minishell.h"
+#include "../../include/minishell.h"
 
 void	execute_ls(void);
 void	execute_exit(void);
@@ -31,7 +31,7 @@ void	execute_ls(void)
 		while (ent)
 		{
 			if (ent->d_name[0] != '.')
-				printf("%s%s%s  ", BLUE, ent->d_name, CLEAR);
+				printf("%s%s%s ", BLUE, ent->d_name, CLEAR);
 			ent = readdir(dir);
 		}
 		printf("\n");

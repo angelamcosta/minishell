@@ -6,11 +6,11 @@
 /*   By: anlima <anlima@student.42lisboa.com>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/27 23:15:42 by anlima            #+#    #+#             */
-/*   Updated: 2023/08/18 16:48:52 by anlima           ###   ########.fr       */
+/*   Updated: 2023/08/23 14:44:21 by anlima           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../include/minishell.h"
+#include "../../include/minishell.h"
 
 void	execute_env(void);
 void	execute_unset(void);

@@ -6,11 +6,11 @@
 /*   By: anlima <anlima@student.42lisboa.com>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/27 23:13:34 by anlima            #+#    #+#             */
-/*   Updated: 2023/08/18 16:47:24 by anlima           ###   ########.fr       */
+/*   Updated: 2023/08/23 14:44:19 by anlima           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../include/minishell.h"
+#include "../../include/minishell.h"
 
 void	execute_cd(void);
 void	execute_pwd(void);

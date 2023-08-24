@@ -6,7 +6,7 @@
 /*   By: anlima <anlima@student.42lisboa.com>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/07 20:48:28 by anlima            #+#    #+#             */
-/*   Updated: 2023/08/23 13:15:40 by anlima           ###   ########.fr       */
+/*   Updated: 2023/08/23 16:28:33 by anlima           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,18 +46,18 @@ typedef struct s_term
 	char	**tokens;
 }			t_term;
 
-t_term	*term(void);
-void	parse_input(void);
+// buitins
 void	execute_ls(void);
-// void	execute_exit(void);
-void	tokenize_input(void);
-void	handle_sigint(int signum);
+void	execute_exit(void);
 void	execute_echo(void);
 void	execute_clear(void);
 void	execute_cd(void);
 void	execute_pwd(void);
 void	execute_env(void);
-// void	execute_unset(void);
+void	execute_unset(void);
 void	execute_export(void);
+// tokens
+
+
 
 #endif
