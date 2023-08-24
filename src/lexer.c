@@ -6,11 +6,13 @@
 /*   By: anlima <anlima@student.42lisboa.com>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/24 17:18:05 by anlima            #+#    #+#             */
-/*   Updated: 2023/08/08 15:45:35 by anlima           ###   ########.fr       */
+/*   Updated: 2023/08/24 14:36:29 by anlima           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../include/minishell.h"
+
+int	is_delimiter(char c);
 
 int	is_delimiter(char c)
 {

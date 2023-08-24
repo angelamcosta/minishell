@@ -6,13 +6,14 @@
 /*   By: anlima <anlima@student.42lisboa.com>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/27 21:49:20 by anlima            #+#    #+#             */
-/*   Updated: 2023/08/18 17:13:49 by anlima           ###   ########.fr       */
+/*   Updated: 2023/08/24 14:31:35 by anlima           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../include/minishell.h"
 
 t_term	*term(void);
+void	parse_input(void);
 
 t_term	*term(void)
 {

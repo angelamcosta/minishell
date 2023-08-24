@@ -6,7 +6,7 @@
 /*   By: anlima <anlima@student.42lisboa.com>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/07 20:48:28 by anlima            #+#    #+#             */
-/*   Updated: 2023/08/23 16:28:33 by anlima           ###   ########.fr       */
+/*   Updated: 2023/08/24 14:42:42 by anlima           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,7 +57,19 @@ void	execute_env(void);
 void	execute_unset(void);
 void	execute_export(void);
 // tokens
-
-
+int		is_token(char *input, int i);
+int		trim_whitespaces(char *input, int i);
+void 	add_token(char *input, char **args, int i, int j);
+void	toggle_state(char *input, int i, int *single_quotes,
+			int *double_quotes);
+// general
+t_term	*term(void);
+void	parse_input(void);
+// lexer
+int		is_delimiter(char c);
+// parsing
+void	tokenize_input(void);
+// signals
+void	handle_sigint(int signum);
 
 #endif
