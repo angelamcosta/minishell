@@ -6,7 +6,7 @@
 /*   By: anlima <anlima@student.42lisboa.com>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/23 14:45:31 by anlima            #+#    #+#             */
-/*   Updated: 2023/08/23 16:18:43 by anlima           ###   ########.fr       */
+/*   Updated: 2023/08/24 14:41:15 by anlima           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,8 +34,8 @@ void	tokenization(void)
 		if (!input[i])
 			break ;
 		if (is_token(input, i))
-			add_token(input, i);
-		if (input[i] == '"' || input[i] == "'")
+			add_token(input, term()->arguments, i, j);
+		if (input[i] == '"' || input[i] == '\'')
 			toggle_state(input, i, &single_quotes, &double_quotes);
 	}
 }
