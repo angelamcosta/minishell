@@ -18,8 +18,8 @@ SRC		=	minishell.c \
 			$(SRC_DIR)/$(B_INS)/variable_env.c \
 			$(SRC_DIR)/$(TOKENS)/tokenization.c \
 			$(SRC_DIR)/$(TOKENS)/tokens_utils.c \
+			$(SRC_DIR)/free_memory.c \
 			$(SRC_DIR)/general.c \
-			$(SRC_DIR)/parsing.c \
 			$(SRC_DIR)/signals.c \
 			get_next_line/get_next_line.c \
 

@@ -6,20 +6,33 @@
 /*   By: anlima <anlima@student.42lisboa.com>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/07 20:47:34 by anlima            #+#    #+#             */
-/*   Updated: 2023/08/23 13:24:33 by anlima           ###   ########.fr       */
+/*   Updated: 2023/08/28 15:56:20 by anlima           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "./include/minishell.h"
 
+void	print_tokens(void)
+{
+	int	i;
+
+	i = -1;
+	while (term()->arguments[++i])
+		printf("[%s] ", term()->arguments[i]);
+	printf("\n");
+}
+
 int	main(int argc, char **argv, char **env)
 {
+	int	i;
+
 	signal(SIGINT, handle_sigint);
 	term()->env = env;
 	term()->user = getenv("USER");
 	term()->home = getenv("HOME");
 	while (1)
 	{
+		i = 0;
 		printf("\x1B[35;4mMinishell\x1B[0m ");
 		term()->command = readline("➜ ");
 		if (term()->command == NULL)
@@ -29,12 +42,10 @@ int	main(int argc, char **argv, char **env)
 			free(term()->command);
 			continue ;
 		}
-		tokenize_input();
-		if (term()->arguments[0] != NULL)
-			parse_input();
+		tokenization();
+		print_tokens();
 		add_history(term()->command);
-		free(term()->command);
-		free(term()->arguments);
+		clean_mallocs();
 	}
 	return (0);
 }
