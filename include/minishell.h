@@ -6,7 +6,7 @@
 /*   By: anlima <anlima@student.42lisboa.com>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/07 20:48:28 by anlima            #+#    #+#             */
-/*   Updated: 2023/08/24 14:42:42 by anlima           ###   ########.fr       */
+/*   Updated: 2023/08/28 15:56:45 by anlima           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,11 +20,11 @@
 # define CLEAR "\033[0m"
 # include "../get_next_line/get_next_line.h"
 # include "../libft/libft.h"
-# include <signal.h>
 # include <dirent.h>
 # include <limits.h>
 # include <readline/history.h>
 # include <readline/readline.h>
+# include <signal.h>
 # include <stdio.h>
 # include <stdlib.h>
 # include <string.h>
@@ -47,29 +47,32 @@ typedef struct s_term
 }			t_term;
 
 // buitins
-void	execute_ls(void);
-void	execute_exit(void);
-void	execute_echo(void);
-void	execute_clear(void);
-void	execute_cd(void);
-void	execute_pwd(void);
-void	execute_env(void);
-void	execute_unset(void);
-void	execute_export(void);
+void		execute_ls(void);
+void		execute_exit(void);
+void		execute_echo(void);
+void		execute_clear(void);
+void		execute_cd(void);
+void		execute_pwd(void);
+void		execute_env(void);
+void		execute_unset(void);
+void		execute_export(void);
 // tokens
-int		is_token(char *input, int i);
-int		trim_whitespaces(char *input, int i);
-void 	add_token(char *input, char **args, int i, int j);
-void	toggle_state(char *input, int i, int *single_quotes,
-			int *double_quotes);
+void		tokenization(void);
+void		trim_argument(char **arg);
+int			is_token(char *input, int i);
+void		add_token(char *input, char **args, int i, int j);
+void		toggle_state(char *input, int i, int *single_quotes,
+				int *double_quotes);
+// free memory
+void		clean_mallocs(void);
 // general
-t_term	*term(void);
-void	parse_input(void);
+t_term		*term(void);
+void		parse_input(void);
 // lexer
-int		is_delimiter(char c);
+int			is_delimiter(char c);
 // parsing
-void	tokenize_input(void);
+void		tokenize_input(void);
 // signals
-void	handle_sigint(int signum);
+void		handle_sigint(int signum);
 
 #endif

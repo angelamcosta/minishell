@@ -6,28 +6,43 @@
 /*   By: anlima <anlima@student.42lisboa.com>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/23 16:18:08 by anlima            #+#    #+#             */
-/*   Updated: 2023/08/24 14:45:47 by anlima           ###   ########.fr       */
+/*   Updated: 2023/08/28 15:43:26 by anlima           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../include/minishell.h"
 
+void	trim_argument(char **arg);
 int		is_token(char *input, int i);
-int		trim_whitespaces(char *input, int i);
 void	add_token(char *input, char **args, int i, int j);
 void	toggle_state(char *input, int i, int *single_quotes,
 			int *double_quotes);
 
-void add_token(char *input, char **args, int i, int j)
+void	trim_argument(char **arg)
 {
-	
+	int		len;
+	int		start;
+	int		end;
+	char	*trimmed;
+
+	len = ft_strlen(*arg);
+	start = 0;
+	end = len - 1;
+	while ((*arg)[start] == ' ')
+		start++;
+	while (end >= 0 && (*arg)[end] == ' ')
+		end--;
+	if (end >= start)
+	{
+		trimmed = ft_substr(*arg, start, end - start + 1);
+		free(*arg);
+		*arg = trimmed;
+	}
 }
 
-int	trim_whitespaces(char *input, int i)
+void	add_token(char *input, char **args, int i, int j)
 {
-	while (input[i] == ' ')
-		i++;
-	return (i);
+	args[++j] = ft_substr(input, i, 1);
 }
 
 int	is_token(char *input, int i)
