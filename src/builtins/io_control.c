@@ -6,40 +6,35 @@
 /*   By: anlima <anlima@student.42lisboa.com>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/27 23:16:11 by anlima            #+#    #+#             */
-/*   Updated: 2023/08/23 14:44:14 by anlima           ###   ########.fr       */
+/*   Updated: 2023/08/29 16:19:48 by anlima           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../include/minishell.h"
 
-void	execute_ls(void);
 void	execute_exit(void);
 void	execute_echo(void);
 void	execute_clear(void);
+void	execute_ls(char *str);
 
-void	execute_ls(void)
+void	execute_ls(char *str)
 {
-	DIR				*dir;
-	char			*path;
-	struct dirent	*ent;
+	pid_t	id;
+	char	**args;
 
-	path = getcwd(NULL, 0);
-	dir = opendir(path);
-	if (dir)
+	if (ft_strncmp(str, "ls", 2) == 0)
 	{
-		ent = readdir(dir);
-		while (ent)
+		if (str[3] && str[2] == ' ' && str[3] == '-')
 		{
-			if (ent->d_name[0] != '.')
-				printf("%s%s%s ", BLUE, ent->d_name, CLEAR);
-			ent = readdir(dir);
+			id = fork();
+			if (id == 0)
+			{
+				args = ft_split(ft_strjoin("/bin/ls ",
+							&str[3]), ' ');
+				execve(args[0], args, NULL);
+			}
 		}
-		printf("\n");
-		closedir(dir);
 	}
-	else
-		perror("ls");
-	free(path);
 }
 
 void	execute_echo(void)

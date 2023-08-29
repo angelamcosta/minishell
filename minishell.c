@@ -6,7 +6,7 @@
 /*   By: anlima <anlima@student.42lisboa.com>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/07 20:47:34 by anlima            #+#    #+#             */
-/*   Updated: 2023/08/28 15:56:20 by anlima           ###   ########.fr       */
+/*   Updated: 2023/08/29 16:23:39 by anlima           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,8 +18,12 @@ void	print_tokens(void)
 
 	i = -1;
 	while (term()->arguments[++i])
-		printf("[%s] ", term()->arguments[i]);
-	printf("\n");
+	{
+		if (ft_strncmp(term()->arguments[i], "ls", 2) == 0)
+			execute_ls(term()->arguments[i]);
+		else
+			printf("[%s] ", term()->arguments[i]);
+	}
 }
 
 int	main(int argc, char **argv, char **env)
@@ -46,6 +50,7 @@ int	main(int argc, char **argv, char **env)
 		print_tokens();
 		add_history(term()->command);
 		clean_mallocs();
+		wait(0);
 	}
 	return (0);
 }

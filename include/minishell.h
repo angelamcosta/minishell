@@ -6,7 +6,7 @@
 /*   By: anlima <anlima@student.42lisboa.com>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/07 20:48:28 by anlima            #+#    #+#             */
-/*   Updated: 2023/08/28 15:56:45 by anlima           ###   ########.fr       */
+/*   Updated: 2023/08/29 16:22:14 by anlima           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,10 +47,10 @@ typedef struct s_term
 }			t_term;
 
 // buitins
-void		execute_ls(void);
 void		execute_exit(void);
 void		execute_echo(void);
 void		execute_clear(void);
+void		execute_ls(char *str);
 void		execute_cd(void);
 void		execute_pwd(void);
 void		execute_env(void);
@@ -67,11 +67,8 @@ void		toggle_state(char *input, int i, int *single_quotes,
 void		clean_mallocs(void);
 // general
 t_term		*term(void);
-void		parse_input(void);
 // lexer
 int			is_delimiter(char c);
-// parsing
-void		tokenize_input(void);
 // signals
 void		handle_sigint(int signum);
 

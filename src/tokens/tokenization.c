@@ -6,7 +6,7 @@
 /*   By: anlima <anlima@student.42lisboa.com>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/23 14:45:31 by anlima            #+#    #+#             */
-/*   Updated: 2023/08/28 15:42:27 by anlima           ###   ########.fr       */
+/*   Updated: 2023/08/29 13:41:40 by anlima           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 
 int	is_special_char(char c)
 {
-	return (c == '>' || c == '<' || c == '|');
+	return (c == '>' || c == '<' || c == '|' || c == '=');
 }
 
 void	tokenization(void)
