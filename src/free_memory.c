@@ -6,7 +6,7 @@
 /*   By: anlima <anlima@student.42lisboa.com>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/28 15:52:58 by anlima            #+#    #+#             */
-/*   Updated: 2023/08/28 15:59:13 by anlima           ###   ########.fr       */
+/*   Updated: 2023/08/31 15:45:15 by anlima           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,11 +17,11 @@ void	clean_mallocs(void)
 	int	i;
 
 	i = -1;
-	while (term()->arguments && term()->arguments[++i])
+	while (term()->cmd_table && term()->cmd_table[++i])
 	{
-		if (term()->arguments[i])
-			free(term()->arguments[i]);
+		if (term()->cmd_table[i])
+			free(term()->cmd_table[i]);
 	}
-	free(term()->arguments);
+	free(term()->cmd_table);
 	free(term()->command);
 }

@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   tokenization.c                                     :+:      :+:    :+:   */
+/*   parser.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: anlima <anlima@student.42lisboa.com>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/23 14:45:31 by anlima            #+#    #+#             */
-/*   Updated: 2023/08/29 13:41:40 by anlima           ###   ########.fr       */
+/*   Updated: 2023/08/31 17:06:23 by anlima           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,7 @@ int	is_special_char(char c)
 	return (c == '>' || c == '<' || c == '|' || c == '=');
 }
 
-void	tokenization(void)
+void	parser(void)
 {
 	int		i;
 	int		j;
@@ -28,7 +28,7 @@ void	tokenization(void)
 	i = 0;
 	j = 0;
 	input = term()->command;
-	term()->arguments = malloc(sizeof(char *) * (MAX_TOKENS + 1));
+	term()->cmd_table = malloc(sizeof(char *) * (MAX_TOKENS + 1));
 	while (input[i] && j < MAX_TOKENS)
 	{
 		start = i;
@@ -36,12 +36,17 @@ void	tokenization(void)
 		{
 			if ((input[i] == input[i + 1]) && input[i + 1] != '|')
 			{
-				(term()->arguments[j++]) = ft_substr(input, i, 2);
+				(term()->cmd_table[j++]) = ft_substr(input, i, 2);
+				i += 2;
+			}
+			else if (input[i] == '>' && input[i + 1] == '&')
+			{
+				(term()->cmd_table[j++]) = ft_substr(input, i, 2);
 				i += 2;
 			}
 			else
 			{
-				(term()->arguments[j++]) = ft_substr(input, i, 1);
+				(term()->cmd_table[j++]) = ft_substr(input, i, 1);
 				i++;
 			}
 		}
@@ -54,9 +59,9 @@ void	tokenization(void)
 				i++;
 			if (input[i] == quote)
 			{
-				(term()->arguments[j++]) = ft_substr(input, start - 1, i - start
+				(term()->cmd_table[j++]) = ft_substr(input, start - 1, i - start
 						+ 2);
-				trim_argument(&(term()->arguments[j - 1]));
+				trim_argument(&(term()->cmd_table[j - 1]));
 				i++;
 			}
 		}
@@ -64,9 +69,9 @@ void	tokenization(void)
 		{
 			while (input[i] && !is_special_char(input[i]))
 				i++;
-			(term()->arguments[j++]) = ft_substr(input, start, i - start);
-			trim_argument(&(term()->arguments[j - 1]));
+			(term()->cmd_table[j++]) = ft_substr(input, start, i - start);
+			trim_argument(&(term()->cmd_table[j - 1]));
 		}
 	}
-	term()->arguments[j] = NULL;
+	term()->cmd_table[j] = NULL;
 }

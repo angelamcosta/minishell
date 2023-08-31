@@ -6,7 +6,7 @@
 /*   By: anlima <anlima@student.42lisboa.com>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/27 23:16:11 by anlima            #+#    #+#             */
-/*   Updated: 2023/08/29 16:19:48 by anlima           ###   ########.fr       */
+/*   Updated: 2023/08/31 16:37:49 by anlima           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,18 +22,17 @@ void	execute_ls(char *str)
 	pid_t	id;
 	char	**args;
 
-	if (ft_strncmp(str, "ls", 2) == 0)
+	// throw 127 error when command is not found
+	id = fork();
+	if (id == 0)
 	{
 		if (str[3] && str[2] == ' ' && str[3] == '-')
-		{
-			id = fork();
-			if (id == 0)
-			{
-				args = ft_split(ft_strjoin("/bin/ls ",
-							&str[3]), ' ');
-				execve(args[0], args, NULL);
-			}
-		}
+			args = ft_split(ft_strjoin("/bin/ls ",
+						&str[3]), ' ');
+		else if (str[2] == '\0')
+			args = ft_split(ft_strjoin("/bin/ls ",
+						&str[2]), ' ');
+		execve(args[0], args, NULL);
 	}
 }
 
@@ -45,14 +44,14 @@ void	execute_echo(void)
 
 	i = 0;
 	j = 0;
-	while (term()->arguments[++i])
+	while (term()->cmd_table[++i])
 	{
-		if (term()->arguments[i][0] == '"')
+		if (term()->cmd_table[i][0] == '"')
 			j++;
 	}
 	i = 0;
-	while (term()->arguments[++i])
-		printf("%s%s%s ", BLUE, term()->arguments[i], CLEAR);
+	while (term()->cmd_table[++i])
+		printf("%s%s%s ", BLUE, term()->cmd_table[i], CLEAR);
 	printf("\n");
 }
 

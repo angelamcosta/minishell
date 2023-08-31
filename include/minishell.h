@@ -6,7 +6,7 @@
 /*   By: anlima <anlima@student.42lisboa.com>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/07 20:48:28 by anlima            #+#    #+#             */
-/*   Updated: 2023/08/29 16:22:14 by anlima           ###   ########.fr       */
+/*   Updated: 2023/08/31 17:06:02 by anlima           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,7 +41,7 @@ typedef struct s_term
 	char	*user;
 	char	*home;
 	char	*command;
-	char	**arguments;
+	char	**cmd_table;
 	char	**env;
 	char	**tokens;
 }			t_term;
@@ -56,8 +56,8 @@ void		execute_pwd(void);
 void		execute_env(void);
 void		execute_unset(void);
 void		execute_export(void);
-// tokens
-void		tokenization(void);
+// parser
+void		parser(void);
 void		trim_argument(char **arg);
 int			is_token(char *input, int i);
 void		add_token(char *input, char **args, int i, int j);

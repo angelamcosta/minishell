@@ -6,7 +6,7 @@
 /*   By: anlima <anlima@student.42lisboa.com>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/27 23:13:34 by anlima            #+#    #+#             */
-/*   Updated: 2023/08/23 14:44:19 by anlima           ###   ########.fr       */
+/*   Updated: 2023/08/31 15:43:47 by anlima           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,7 +29,7 @@ void	execute_pwd(void)
 
 void	execute_cd(void)
 {
-	if (term()->arguments[1] == NULL)
+	if (term()->cmd_table[1] == NULL)
 	{
 		if (term()->home == NULL)
 			return (perror("cd"));
@@ -38,7 +38,7 @@ void	execute_cd(void)
 	}
 	else
 	{
-		if (chdir(term()->arguments[1]) != 0)
+		if (chdir(term()->cmd_table[1]) != 0)
 			return (perror("cd"));
 	}
 }

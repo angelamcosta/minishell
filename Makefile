@@ -10,14 +10,15 @@ GNL		=	get_next_line
 SRC_DIR	=	src
 INC_DIR	=	include
 B_INS	=	builtins
-TOKENS	=	tokens
+PARSER	=	parser
+SUBS	=	shell_subsystems
 
 SRC		=	minishell.c \
 			$(SRC_DIR)/$(B_INS)/io_control.c \
 			$(SRC_DIR)/$(B_INS)/navigation.c \
 			$(SRC_DIR)/$(B_INS)/variable_env.c \
-			$(SRC_DIR)/$(TOKENS)/tokenization.c \
-			$(SRC_DIR)/$(TOKENS)/tokens_utils.c \
+			$(SRC_DIR)/$(PARSER)/parser.c \
+			$(SRC_DIR)/$(PARSER)/parser_utils.c \
 			$(SRC_DIR)/free_memory.c \
 			$(SRC_DIR)/general.c \
 			$(SRC_DIR)/signals.c \
@@ -28,7 +29,6 @@ OBJ		=	$(SRC:.c=.o)
 all:		$(NAME)
 
 $(NAME):	$(OBJ)
-			# norminette .
 			@make -C $(LIBFT)
 			@$(CC) $(CFLAGS) $(SRC) -o $@ $(LIBS)
 
