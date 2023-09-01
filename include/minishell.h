@@ -6,7 +6,7 @@
 /*   By: anlima <anlima@student.42lisboa.com>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/07 20:48:28 by anlima            #+#    #+#             */
-/*   Updated: 2023/08/31 17:06:02 by anlima           ###   ########.fr       */
+/*   Updated: 2023/09/01 15:01:44 by anlima           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,8 +59,9 @@ void		execute_export(void);
 // parser
 void		parser(void);
 void		trim_argument(char **arg);
+void		handle_token(int *i, int *j);
 int			is_token(char *input, int i);
-void		add_token(char *input, char **args, int i, int j);
+void		handle_quotes(int *i, int *j);
 void		toggle_state(char *input, int i, int *single_quotes,
 				int *double_quotes);
 // free memory

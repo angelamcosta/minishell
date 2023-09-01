@@ -6,15 +6,16 @@
 /*   By: anlima <anlima@student.42lisboa.com>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/23 16:18:08 by anlima            #+#    #+#             */
-/*   Updated: 2023/08/31 16:17:58 by anlima           ###   ########.fr       */
+/*   Updated: 2023/09/01 15:01:31 by anlima           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../include/minishell.h"
 
 void	trim_argument(char **arg);
+void	handle_token(int *i, int *j);
 int		is_token(char *input, int i);
-void	add_token(char *input, char **args, int i, int j);
+void	handle_quotes(int *i, int *j);
 void	toggle_state(char *input, int i, int *single_quotes,
 			int *double_quotes);
 
@@ -40,9 +41,26 @@ void	trim_argument(char **arg)
 	}
 }
 
-void	add_token(char *input, char **args, int i, int j)
+void	handle_token(int *i, int *j)
 {
-	args[++j] = ft_substr(input, i, 1);
+	char	*input;
+
+	input = term()->command;
+	if ((input[*i] == input[*i + 1]) && input[*i + 1] != '|')
+	{
+		(term()->cmd_table[(*j)++]) = ft_substr(input, *i, 2);
+		(*i) += 2;
+	}
+	else if (input[*i] == '>' && input[*i + 1] == '&')
+	{
+		(term()->cmd_table[(*j)++]) = ft_substr(input, *i, 2);
+		(*i) += 2;
+	}
+	else
+	{
+		(term()->cmd_table[(*j)++]) = ft_substr(input, *i, 1);
+		(*i)++;
+	}
 }
 
 int	is_token(char *input, int i)
@@ -62,6 +80,26 @@ int	is_token(char *input, int i)
 			return (input[i]);
 	}
 	return (0);
+}
+
+void	handle_quotes(int *i, int *j)
+{
+	int		start;
+	char	quote;
+	char	*input;
+
+	input = term()->command;
+	quote = input[*i];
+	start = (*i)++;
+	while (input[*i] && input[*i] != quote)
+		(*i)++;
+	if (input[*i] == quote)
+	{
+		(term()->cmd_table[(*j)++]) = ft_substr(input, start - 1, *i - start
+				+ 2);
+		trim_argument(&(term()->cmd_table[(*j) - 1]));
+		(*i)++;
+	}
 }
 
 void	toggle_state(char *input, int i, int *single_quotes, int *double_quotes)
