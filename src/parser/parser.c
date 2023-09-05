@@ -5,43 +5,33 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: anlima <anlima@student.42lisboa.com>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/08/23 14:45:31 by anlima            #+#    #+#             */
-/*   Updated: 2023/09/01 15:00:32 by anlima           ###   ########.fr       */
+/*   Created: 2023/09/01 13:48:47 by anlima            #+#    #+#             */
+/*   Updated: 2023/09/02 11:54:33 by anlima           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../include/minishell.h"
 
-int	is_special_char(char c)
-{
-	return (c == '>' || c == '<' || c == '|' || c == '=');
-}
+void	parser(void);
 
 void	parser(void)
 {
 	int		i;
-	int		j;
-	char	*input;
-	int		start;
+	char	**cmd_table;
 
+	cmd_table = term()->cmd_table;
 	i = 0;
-	j = 0;
-	input = term()->command;
-	term()->cmd_table = malloc(sizeof(char *) * (MAX_TOKENS + 1));
-	while (input[i] && j < MAX_TOKENS)
+	while (1)
 	{
-		start = i;
-		if (is_special_char(input[i]))
-			handle_token(&i, &j);
-		else if (input[i] == '"' || input[i] == '\'')
-			handle_quotes(&i, &j);
-		else
+		if (cmd_table[i] == 0)
 		{
-			while (input[i] && !is_special_char(input[i]))
-				i++;
-			(term()->cmd_table[j++]) = ft_substr(input, start, i - start);
-			trim_argument(&(term()->cmd_table[j - 1]));
+			printf("[%s] ", cmd_table[i - 1]);
+			break ;
 		}
+		if (is_special_char(cmd_table[i][0])
+			|| cmd_table[i] == 0)
+			printf("[%s] ", cmd_table[i - 1]);
+		i++;
 	}
-	term()->cmd_table[j] = NULL;
+	printf("\n");
 }

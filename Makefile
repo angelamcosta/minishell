@@ -17,8 +17,10 @@ SRC		=	minishell.c \
 			$(SRC_DIR)/$(B_INS)/io_control.c \
 			$(SRC_DIR)/$(B_INS)/navigation.c \
 			$(SRC_DIR)/$(B_INS)/variable_env.c \
-			$(SRC_DIR)/$(PARSER)/parser.c \
+			$(SRC_DIR)/$(PARSER)/lexer_utils.c \
+			$(SRC_DIR)/$(PARSER)/lexer.c \
 			$(SRC_DIR)/$(PARSER)/parser_utils.c \
+			$(SRC_DIR)/$(PARSER)/parser.c \
 			$(SRC_DIR)/free_memory.c \
 			$(SRC_DIR)/general.c \
 			$(SRC_DIR)/signals.c \
