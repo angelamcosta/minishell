@@ -1,10 +1,9 @@
 # Minishell 🐚
 
 <div align=center>
-
+  
   ![badge](https://raw.githubusercontent.com/angelamcosta/angelamcosta/main/42_badges/minishelln.png)
-
-  [![forthebadge](https://forthebadge.com/images/badges/made-with-c.svg)](https://forthebadge.com)  [![forthebadge](https://forthebadge.com/images/badges/built-by-codebabes.svg)](https://forthebadge.com)
+  
 </div>
 
 <div align=center>
