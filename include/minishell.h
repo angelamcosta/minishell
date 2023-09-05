@@ -6,7 +6,7 @@
 /*   By: anlima <anlima@student.42lisboa.com>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/07 20:48:28 by anlima            #+#    #+#             */
-/*   Updated: 2023/09/02 11:54:57 by anlima           ###   ########.fr       */
+/*   Updated: 2023/09/05 15:05:02 by anlima           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,7 +65,8 @@ void		handle_quotes(int *i, int *j);
 void		toggle_state(char *input, int i, int *single_quotes,
 				int *double_quotes);
 void		lexer(void);
-int			is_valid_command(char *token);
+int			is_valid_argument(char *arg);
+int			is_valid_command(const char *token);
 void		parser(void);
 // free memory
 void		clean_mallocs(void);

@@ -6,16 +6,51 @@
 /*   By: anlima <anlima@student.42lisboa.com>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/02 11:36:42 by anlima            #+#    #+#             */
-/*   Updated: 2023/09/02 11:53:28 by anlima           ###   ########.fr       */
+/*   Updated: 2023/09/05 15:10:49 by anlima           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../include/minishell.h"
 
-int	is_valid_command(char *token)
+int	is_valid_argument(char *arg);
+int	is_valid_command(const char *token);
+
+int	is_valid_argument(char *arg)
 {
-	if (ft_strncmp("ls", token, 2) == 0 || ft_strncmp("echo", token, 4) == 0
-		|| ft_strncmp("pwd", token, 3) == 0)
-		return (1);
+	int	i;
+	int	single_quotes;
+	int	double_quotes;
+
+	i = -1;
+	single_quotes = 0;
+	double_quotes = 0;
+	while (arg[++i])
+	{
+		if (arg[i] == '"')
+			double_quotes = !double_quotes;
+		else if (arg[i] == '\'')
+			single_quotes = !single_quotes;
+	}
+	if (double_quotes || single_quotes)
+	{
+		printf("Error: Mismatched quotes in argument: %s\n", arg);
+		return (0);
+	}
+	return (1);
+}
+
+int	is_valid_command(const char *token)
+{
+	int			i;
+	static char	*valid_commands[] = {"ls", "echo",
+		"grep", "cat", "cd", "pwd", NULL};
+
+	i = -1;
+	while (valid_commands[++i])
+	{
+		if (ft_strncmp(token, valid_commands[i],
+				ft_strlen(valid_commands[i])) == 0)
+			return (1);
+	}
 	return (0);
 }
