@@ -6,7 +6,7 @@
 /*   By: anlima <anlima@student.42lisboa.com>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/27 23:13:34 by anlima            #+#    #+#             */
-/*   Updated: 2023/08/31 15:43:47 by anlima           ###   ########.fr       */
+/*   Updated: 2023/09/07 17:12:10 by anlima           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,18 +14,6 @@
 
 void	execute_cd(void);
 void	execute_pwd(void);
-
-void	execute_pwd(void)
-{
-	char			*path;
-
-	path = getcwd(NULL, 0);
-	if (path)
-		printf("%s%s%s\n", BLUE, path, CLEAR);
-	else
-		perror("pwd");
-	free(path);
-}
 
 void	execute_cd(void)
 {
@@ -41,4 +29,16 @@ void	execute_cd(void)
 		if (chdir(term()->cmd_table[1]) != 0)
 			return (perror("cd"));
 	}
+}
+
+void	execute_pwd(void)
+{
+	char			*path;
+
+	path = getcwd(NULL, 0);
+	if (path)
+		printf("%s%s%s\n", BLUE, path, CLEAR);
+	else
+		perror("pwd");
+	free(path);
 }

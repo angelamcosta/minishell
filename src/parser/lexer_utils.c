@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   parser_utils.c                                     :+:      :+:    :+:   */
+/*   lexer_utils.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: anlima <anlima@student.42lisboa.com>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/23 16:18:08 by anlima            #+#    #+#             */
-/*   Updated: 2023/09/01 15:01:31 by anlima           ###   ########.fr       */
+/*   Updated: 2023/09/06 14:05:54 by anlima           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,16 +65,7 @@ void	handle_token(int *i, int *j)
 
 int	is_token(char *input, int i)
 {
-	if (input[i + 1] && input[i + 1] != ' ')
-	{
-		if (input[i] == '<' && input[i + 1] == '<')
-			return (1);
-		if (input[i] == '>' && input[i + 1] == '>')
-			return (1);
-		if (input[i] == '>' && input[i + 1] == '&')
-			return (1);
-	}
-	else if ((input[i + 1] && input[i + 1] == ' '))
+	if ((input[i + 1] && input[i + 1] == ' '))
 	{
 		if (input[i] == '<' || input[i] == '>' || input[i] == '|')
 			return (input[i]);

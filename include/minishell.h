@@ -6,7 +6,7 @@
 /*   By: anlima <anlima@student.42lisboa.com>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/07 20:48:28 by anlima            #+#    #+#             */
-/*   Updated: 2023/09/05 15:05:02 by anlima           ###   ########.fr       */
+/*   Updated: 2023/09/07 17:15:40 by anlima           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,15 +40,15 @@ typedef struct s_term
 {
 	char	*user;
 	char	*home;
-	char	*command;
-	char	**cmd_table;
 	char	**env;
+	char	*command;
 	char	**tokens;
+	char	**cmd_table;
 }			t_term;
 
 // buitins
 void		execute_exit(void);
-void		execute_echo(void);
+void		execute_echo(char *token);
 void		execute_clear(void);
 void		execute_ls(char *str);
 void		execute_cd(void);
@@ -56,6 +56,8 @@ void		execute_pwd(void);
 void		execute_env(void);
 void		execute_unset(void);
 void		execute_export(void);
+// executor
+void		executor(void);
 // parser
 int			is_special_char(char c);
 void		trim_argument(char **arg);

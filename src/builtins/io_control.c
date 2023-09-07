@@ -6,56 +6,66 @@
 /*   By: anlima <anlima@student.42lisboa.com>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/27 23:16:11 by anlima            #+#    #+#             */
-/*   Updated: 2023/08/31 16:37:49 by anlima           ###   ########.fr       */
+/*   Updated: 2023/09/07 17:46:57 by anlima           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../include/minishell.h"
 
 void	execute_exit(void);
-void	execute_echo(void);
 void	execute_clear(void);
 void	execute_ls(char *str);
+void	execute_echo(char *token);
+
+void	execute_exit(void)
+{
+	add_history(term()->command);
+	clean_mallocs();
+	exit(1);
+}
+
+void	execute_clear(void)
+{
+	printf("\033c");
+}
 
 void	execute_ls(char *str)
 {
 	pid_t	id;
 	char	**args;
 
-	// throw 127 error when command is not found
 	id = fork();
 	if (id == 0)
 	{
 		if (str[3] && str[2] == ' ' && str[3] == '-')
-			args = ft_split(ft_strjoin("/bin/ls ",
-						&str[3]), ' ');
+			args = ft_split(ft_strjoin("/bin/ls ", &str[3]), ' ');
 		else if (str[2] == '\0')
-			args = ft_split(ft_strjoin("/bin/ls ",
-						&str[2]), ' ');
+			args = ft_split(ft_strjoin("/bin/ls ", &str[2]), ' ');
 		execve(args[0], args, NULL);
+		perror("execve");
+		exit(1);
 	}
+	else if (id < 0)
+		perror("fork");
+	wait(&id);
 }
 
-void	execute_echo(void)
+void	execute_echo(char *str)
 {
 	int		i;
-	int		j;
-	char	*str;
+	char	quote;
 
-	i = 0;
-	j = 0;
-	while (term()->cmd_table[++i])
+	i = 4;
+	while (str[i])
 	{
-		if (term()->cmd_table[i][0] == '"')
-			j++;
+		while (str[++i] && str[i] != '"' && str[i] != '\'')
+			write(1, &str[i], 1);
+		if (str[i])
+			quote = str[i];
+		else
+			break ;
+		while (str[++i] && str[i] != quote)
+			write(1, &str[i], 1);
 	}
-	i = 0;
-	while (term()->cmd_table[++i])
-		printf("%s%s%s ", BLUE, term()->cmd_table[i], CLEAR);
 	printf("\n");
-}
-
-void	execute_clear(void)
-{
-	printf("\033c");
 }

@@ -6,7 +6,7 @@
 /*   By: anlima <anlima@student.42lisboa.com>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/23 14:45:31 by anlima            #+#    #+#             */
-/*   Updated: 2023/09/02 11:29:05 by anlima           ###   ########.fr       */
+/*   Updated: 2023/09/06 14:05:30 by anlima           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,5 +46,5 @@ void	lexer(void)
 
 int	is_special_char(char c)
 {
-	return (c == '>' || c == '<' || c == '|' || c == '=');
+	return (c == '|');
 }

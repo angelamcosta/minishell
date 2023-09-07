@@ -6,7 +6,7 @@
 /*   By: anlima <anlima@student.42lisboa.com>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/02 11:36:42 by anlima            #+#    #+#             */
-/*   Updated: 2023/09/05 15:10:49 by anlima           ###   ########.fr       */
+/*   Updated: 2023/09/07 17:10:04 by anlima           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,7 +43,7 @@ int	is_valid_command(const char *token)
 {
 	int			i;
 	static char	*valid_commands[] = {"ls", "echo",
-		"grep", "cat", "cd", "pwd", NULL};
+		"grep", "cat", "cd", "pwd", "|", "clear", "exit", NULL};
 
 	i = -1;
 	while (valid_commands[++i])
@@ -52,5 +52,6 @@ int	is_valid_command(const char *token)
 				ft_strlen(valid_commands[i])) == 0)
 			return (1);
 	}
+	printf("Error: Invalid command: %s\n", token);
 	return (0);
 }
