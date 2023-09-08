@@ -6,7 +6,7 @@
 /*   By: anlima <anlima@student.42lisboa.com>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/23 16:18:08 by anlima            #+#    #+#             */
-/*   Updated: 2023/09/08 14:08:05 by anlima           ###   ########.fr       */
+/*   Updated: 2023/09/08 14:18:47 by anlima           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,7 +44,6 @@ void	handle_token(int *i, int *j)
 {
 	char	*input;
 
-	printf("handle tokens\n");
 	input = term()->command;
 	if ((input[*i] == input[*i + 1])
 		&& (input[*i + 1] == '|' || input[*i + 1] == '&'))
