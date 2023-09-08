@@ -6,7 +6,7 @@
 /*   By: anlima <anlima@student.42lisboa.com>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/07 20:48:28 by anlima            #+#    #+#             */
-/*   Updated: 2023/09/07 17:15:40 by anlima           ###   ########.fr       */
+/*   Updated: 2023/09/08 14:00:46 by anlima           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,16 +59,15 @@ void		execute_export(void);
 // executor
 void		executor(void);
 // parser
-int			is_special_char(char c);
 void		trim_argument(char **arg);
 void		handle_token(int *i, int *j);
-int			is_token(char *input, int i);
 void		handle_quotes(int *i, int *j);
 void		toggle_state(char *input, int i, int *single_quotes,
 				int *double_quotes);
 void		lexer(void);
 int			is_valid_argument(char *arg);
-int			is_valid_command(const char *token);
+int			is_valid_command(char *token);
+int			is_valid_red(char **tokens, int i);
 void		parser(void);
 // free memory
 void		clean_mallocs(void);

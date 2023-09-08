@@ -6,7 +6,7 @@
 /*   By: anlima <anlima@student.42lisboa.com>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/23 16:18:08 by anlima            #+#    #+#             */
-/*   Updated: 2023/09/06 14:05:54 by anlima           ###   ########.fr       */
+/*   Updated: 2023/09/08 14:08:05 by anlima           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,6 @@
 
 void	trim_argument(char **arg);
 void	handle_token(int *i, int *j);
-int		is_token(char *input, int i);
 void	handle_quotes(int *i, int *j);
 void	toggle_state(char *input, int i, int *single_quotes,
 			int *double_quotes);
@@ -45,13 +44,10 @@ void	handle_token(int *i, int *j)
 {
 	char	*input;
 
+	printf("handle tokens\n");
 	input = term()->command;
-	if ((input[*i] == input[*i + 1]) && input[*i + 1] != '|')
-	{
-		(term()->cmd_table[(*j)++]) = ft_substr(input, *i, 2);
-		(*i) += 2;
-	}
-	else if (input[*i] == '>' && input[*i + 1] == '&')
+	if ((input[*i] == input[*i + 1])
+		&& (input[*i + 1] == '|' || input[*i + 1] == '&'))
 	{
 		(term()->cmd_table[(*j)++]) = ft_substr(input, *i, 2);
 		(*i) += 2;
@@ -61,16 +57,6 @@ void	handle_token(int *i, int *j)
 		(term()->cmd_table[(*j)++]) = ft_substr(input, *i, 1);
 		(*i)++;
 	}
-}
-
-int	is_token(char *input, int i)
-{
-	if ((input[i + 1] && input[i + 1] == ' '))
-	{
-		if (input[i] == '<' || input[i] == '>' || input[i] == '|')
-			return (input[i]);
-	}
-	return (0);
 }
 
 void	handle_quotes(int *i, int *j)

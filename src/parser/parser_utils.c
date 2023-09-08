@@ -6,14 +6,15 @@
 /*   By: anlima <anlima@student.42lisboa.com>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/02 11:36:42 by anlima            #+#    #+#             */
-/*   Updated: 2023/09/07 17:10:04 by anlima           ###   ########.fr       */
+/*   Updated: 2023/09/08 14:14:02 by anlima           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../include/minishell.h"
 
 int	is_valid_argument(char *arg);
-int	is_valid_command(const char *token);
+int	is_valid_command(char *token);
+int	is_valid_red(char **tokens, int i);
 
 int	is_valid_argument(char *arg)
 {
@@ -39,11 +40,11 @@ int	is_valid_argument(char *arg)
 	return (1);
 }
 
-int	is_valid_command(const char *token)
+int	is_valid_command(char *token)
 {
 	int			i;
-	static char	*valid_commands[] = {"ls", "echo",
-		"grep", "cat", "cd", "pwd", "|", "clear", "exit", NULL};
+	static char	*valid_commands[] = {"ls", "echo", "grep", "cat",
+		"cd", "pwd", "|", "clear", "exit", "&&", "||", "&", NULL};
 
 	i = -1;
 	while (valid_commands[++i])
@@ -54,4 +55,29 @@ int	is_valid_command(const char *token)
 	}
 	printf("Error: Invalid command: %s\n", token);
 	return (0);
+}
+
+int	is_valid_red(char **tokens, int i)
+{
+	int			j;
+	static char	*valid_red[] = {"|", "||", "&&", "&", NULL};
+
+	j = -1;
+	while (valid_red[++j])
+	{
+		if (ft_strncmp(tokens[i], valid_red[j],
+				ft_strlen(valid_red[j])) == 0
+			|| ft_strncmp(tokens[i], valid_red[j],
+				ft_strlen(valid_red[j])) == 0
+			|| ft_strncmp(tokens[i], valid_red[j],
+				ft_strlen(valid_red[j])) == 0)
+		{
+			if (tokens[i + 1] == NULL)
+			{
+				printf("Error: Invalid redirection\n");
+				return (0);
+			}
+		}
+	}
+	return (1);
 }
