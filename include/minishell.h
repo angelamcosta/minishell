@@ -6,7 +6,7 @@
 /*   By: anlima <anlima@student.42lisboa.com>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/07 20:48:28 by anlima            #+#    #+#             */
-/*   Updated: 2023/09/11 16:23:52 by anlima           ###   ########.fr       */
+/*   Updated: 2023/09/12 16:42:49 by anlima           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,8 +34,6 @@
 # define MAX_TOKENS 100
 # define MAX_TOKEN_LENGTH 100
 
-extern char				**environ;
-
 typedef struct s_command
 {
 	char				*command;
@@ -49,7 +47,6 @@ typedef struct s_term
 	char				*home;
 	char				**env;
 	char				*command;
-	char				**tokens;
 	char				**cmd_table;
 	t_command			*command_tree;
 }						t_term;

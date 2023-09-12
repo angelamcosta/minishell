@@ -6,13 +6,8 @@
 /*   By: anlima <anlima@student.42lisboa.com>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/31 15:46:17 by anlima            #+#    #+#             */
-/*   Updated: 2023/09/11 16:44:59 by anlima           ###   ########.fr       */
+/*   Updated: 2023/09/12 16:12:53 by anlima           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../include/minishell.h"
-
-void	executor(void)
-{
-	print_commands(term()->command_tree);
-}
