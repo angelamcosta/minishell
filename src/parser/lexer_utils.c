@@ -6,7 +6,7 @@
 /*   By: anlima <anlima@student.42lisboa.com>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/23 16:18:08 by anlima            #+#    #+#             */
-/*   Updated: 2023/09/08 14:18:47 by anlima           ###   ########.fr       */
+/*   Updated: 2023/09/12 21:44:23 by anlima           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,9 +14,7 @@
 
 void	trim_argument(char **arg);
 void	handle_token(int *i, int *j);
-void	handle_quotes(int *i, int *j);
-void	toggle_state(char *input, int i, int *single_quotes,
-			int *double_quotes);
+int		is_inside_quotes(char *input, int i);
 
 void	trim_argument(char **arg)
 {
@@ -45,8 +43,8 @@ void	handle_token(int *i, int *j)
 	char	*input;
 
 	input = term()->command;
-	if ((input[*i] == input[*i + 1])
-		&& (input[*i + 1] == '|' || input[*i + 1] == '&'))
+	if ((input[*i] == input[*i + 1]) && (input[*i + 1] == '|' || input[*i
+				+ 1] == '&'))
 	{
 		(term()->cmd_table[(*j)++]) = ft_substr(input, *i, 2);
 		(*i) += 2;
@@ -58,34 +56,24 @@ void	handle_token(int *i, int *j)
 	}
 }
 
-void	handle_quotes(int *i, int *j)
+int	is_inside_quotes(char *input, int j)
 {
-	int		start;
+	int		i;
 	char	quote;
-	char	*input;
+	int		opened;
 
-	input = term()->command;
-	quote = input[*i];
-	start = (*i)++;
-	while (input[*i] && input[*i] != quote)
-		(*i)++;
-	if (input[*i] == quote)
+	i = 0;
+	opened = 0;
+	while (input[i] && i < j)
 	{
-		(term()->cmd_table[(*j)++]) = ft_substr(input, start - 1, *i - start
-				+ 2);
-		trim_argument(&(term()->cmd_table[(*j) - 1]));
-		(*i)++;
+		if (input[i] == '"' || input[i] == '\'')
+		{
+			if (opened == 0)
+				opened = input[i];
+			else if (opened == input[i])
+				opened = 0;
+		}
+		i++;
 	}
-}
-
-void	toggle_state(char *input, int i, int *single_quotes, int *double_quotes)
-{
-	if (input[i] == '\'' && !single_quotes)
-		*single_quotes = 1;
-	else if (input[i] == '\'' && single_quotes)
-		*single_quotes = 0;
-	if (input[i] == '"' && !double_quotes)
-		*double_quotes = 1;
-	else if (input[i] == '"' && double_quotes)
-		*double_quotes = 0;
+	return (opened);
 }

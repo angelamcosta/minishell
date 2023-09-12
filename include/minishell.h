@@ -6,7 +6,7 @@
 /*   By: anlima <anlima@student.42lisboa.com>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/07 20:48:28 by anlima            #+#    #+#             */
-/*   Updated: 2023/09/12 16:42:49 by anlima           ###   ########.fr       */
+/*   Updated: 2023/09/12 22:43:36 by anlima           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,12 +66,11 @@ void					executor(void);
 // parser
 void					trim_argument(char **arg);
 void					handle_token(int *i, int *j);
-void					handle_quotes(int *i, int *j);
-void					toggle_state(char *input, int i, int *single_quotes,
-							int *double_quotes);
+int						is_inside_quotes(char *input, int i);
 void					lexer(void);
+char					opened_quote(char *str);
+void					handle_quotes(char **arg);
 int						is_valid_argument(char *arg);
-int						is_valid_command(char *token);
 int						is_valid_red(char **tokens, int i);
 void					parser(void);
 // utils
@@ -83,8 +82,6 @@ void					insert_node(t_command **root, char *command);
 void					clean_mallocs(void);
 // general
 t_term					*term(void);
-// lexer
-int						is_delimiter(char c);
 // signals
 void					handle_sigint(int signum);
 

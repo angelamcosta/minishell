@@ -6,7 +6,7 @@
 /*   By: anlima <anlima@student.42lisboa.com>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/23 14:45:31 by anlima            #+#    #+#             */
-/*   Updated: 2023/09/11 17:04:29 by anlima           ###   ########.fr       */
+/*   Updated: 2023/09/12 21:39:48 by anlima           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,11 +30,10 @@ void	lexer(void)
 		start = i;
 		if (input[i] == '|' || input[i] == '&')
 			handle_token(&i, &j);
-		else if (input[i] == '"' || input[i] == '\'')
-			handle_quotes(&i, &j);
 		else
 		{
-			while (input[i] && input[i] != '|' && input[i] != '&')
+			while (input[i] && !((input[i] == '|' || input[i] == '&')
+					&& !(is_inside_quotes(input, i))))
 				i++;
 			(term()->cmd_table[j++]) = ft_substr(input, start, i - start);
 			trim_argument(&(term()->cmd_table[j - 1]));

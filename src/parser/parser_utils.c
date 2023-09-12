@@ -6,15 +6,56 @@
 /*   By: anlima <anlima@student.42lisboa.com>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/02 11:36:42 by anlima            #+#    #+#             */
-/*   Updated: 2023/09/08 14:14:02 by anlima           ###   ########.fr       */
+/*   Updated: 2023/09/12 22:42:33 by anlima           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../include/minishell.h"
 
-int	is_valid_argument(char *arg);
-int	is_valid_command(char *token);
-int	is_valid_red(char **tokens, int i);
+char	opened_quote(char *str);
+void	handle_quotes(char **arg);
+int		is_valid_argument(char *arg);
+int		is_valid_red(char **tokens, int i);
+
+char	opened_quote(char *str)
+{
+	int		i;
+	char	opened_quote;
+
+	i = -1;
+	opened_quote = 0;
+	while (str[++i])
+	{
+		if (str[i] == '\'' || str[i] == '"')
+		{
+			if (opened_quote == 0)
+				opened_quote = str[i];
+			else if (opened_quote == str[i])
+				opened_quote = 0;
+		}
+	}
+	return (opened_quote);
+}
+
+void	handle_quotes(char **arg)
+{
+	char	*input;
+	char	*temp;
+	char	quote;
+
+	while (!is_valid_argument(*arg))
+	{
+		quote = opened_quote(*arg);
+		if (quote == '\'')
+			input = readline("quote> ");
+		else
+			input = readline("dquote> ");
+		temp = ft_strdup(*arg);
+		free(*arg);
+		*arg = ft_strjoin(temp, ft_strjoin("\n", input));
+		free(temp);
+	}
+}
 
 int	is_valid_argument(char *arg)
 {
@@ -27,34 +68,14 @@ int	is_valid_argument(char *arg)
 	double_quotes = 0;
 	while (arg[++i])
 	{
-		if (arg[i] == '"')
+		if (arg[i] == '"' && !single_quotes)
 			double_quotes = !double_quotes;
-		else if (arg[i] == '\'')
+		else if (arg[i] == '\'' && !double_quotes)
 			single_quotes = !single_quotes;
 	}
 	if (double_quotes || single_quotes)
-	{
-		printf("Error: Mismatched quotes in argument: %s\n", arg);
 		return (0);
-	}
 	return (1);
-}
-
-int	is_valid_command(char *token)
-{
-	int			i;
-	static char	*valid_commands[] = {"ls", "echo", "grep", "cat",
-		"cd", "pwd", "|", "clear", "exit", "&&", "||", "&", NULL};
-
-	i = -1;
-	while (valid_commands[++i])
-	{
-		if (ft_strncmp(token, valid_commands[i],
-				ft_strlen(valid_commands[i])) == 0)
-			return (1);
-	}
-	printf("Error: Invalid command: %s\n", token);
-	return (0);
 }
 
 int	is_valid_red(char **tokens, int i)
@@ -65,10 +86,8 @@ int	is_valid_red(char **tokens, int i)
 	j = -1;
 	while (valid_red[++j])
 	{
-		if (ft_strncmp(tokens[i], valid_red[j],
-				ft_strlen(valid_red[j])) == 0
-			|| ft_strncmp(tokens[i], valid_red[j],
-				ft_strlen(valid_red[j])) == 0
+		if (ft_strncmp(tokens[i], valid_red[j], ft_strlen(valid_red[j])) == 0
+			|| ft_strncmp(tokens[i], valid_red[j], ft_strlen(valid_red[j])) == 0
 			|| ft_strncmp(tokens[i], valid_red[j],
 				ft_strlen(valid_red[j])) == 0)
 		{
