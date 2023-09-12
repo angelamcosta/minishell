@@ -3,6 +3,13 @@
 <div align=center>
   
   ![badge](https://raw.githubusercontent.com/angelamcosta/angelamcosta/main/42_badges/minishelln.png)
+
+  <table>
+  <tr>
+    <td align="center"><a href="http://github.com/mgdiogo"><img src="https://avatars.githubusercontent.com/u/109535612?v=4?s=100" width="100px;" alt=""/><br /><sub><b>Miguel Diogo</b></sub></a><br /><a href="https://github.com/mgdiogo/" title="Miguel Diogo"></a></td>
+    <td align="center"><a href="https://github.com/angelamcosta"><img src="https://avatars.githubusercontent.com/u/14792447?v=4?s=100" width="100px;" alt=""/><br /><sub><b>Angela Lima</b></sub></a><br /><a href="https://github.com/angelamcosta" title="Angela Lima"></a></td>
+  </tr>
+</table>
   
 </div>
 
