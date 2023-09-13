@@ -6,7 +6,7 @@
 /*   By: anlima <anlima@student.42lisboa.com>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/07 20:48:28 by anlima            #+#    #+#             */
-/*   Updated: 2023/09/12 22:43:36 by anlima           ###   ########.fr       */
+/*   Updated: 2023/09/13 16:18:21 by anlima           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,8 +68,9 @@ void					trim_argument(char **arg);
 void					handle_token(int *i, int *j);
 int						is_inside_quotes(char *input, int i);
 void					lexer(void);
+void					handle_red(void);
+void					handle_quotes(void);
 char					opened_quote(char *str);
-void					handle_quotes(char **arg);
 int						is_valid_argument(char *arg);
 int						is_valid_red(char **tokens, int i);
 void					parser(void);

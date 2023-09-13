@@ -6,7 +6,7 @@
 /*   By: anlima <anlima@student.42lisboa.com>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/23 14:45:31 by anlima            #+#    #+#             */
-/*   Updated: 2023/09/12 21:39:48 by anlima           ###   ########.fr       */
+/*   Updated: 2023/09/13 14:09:06 by anlima           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,4 +40,5 @@ void	lexer(void)
 		}
 	}
 	term()->cmd_table[j] = NULL;
+	parser();
 }

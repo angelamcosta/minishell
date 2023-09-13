@@ -6,16 +6,41 @@
 /*   By: anlima <anlima@student.42lisboa.com>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/02 11:36:42 by anlima            #+#    #+#             */
-/*   Updated: 2023/09/13 13:40:57 by anlima           ###   ########.fr       */
+/*   Updated: 2023/09/13 16:18:07 by anlima           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../include/minishell.h"
 
+void	handle_red(void);
+void	handle_quotes(void);
 char	opened_quote(char *str);
-void	handle_quotes(char **arg);
 int		is_valid_argument(char *arg);
 int		is_valid_red(char **tokens, int i);
+
+void	handle_red(void)
+{
+	char		*temp;
+	char		*input;
+
+	temp = ft_strdup(term()->command);
+	input = readline("> ");
+	clean_mallocs();
+	(term()->command) = ft_strjoin(temp, ft_strjoin(" ", input));
+	free(input);
+}
+
+void	handle_quotes(void)
+{
+	char		*temp;
+	char		*input;
+
+	temp = ft_strdup(term()->command);
+	input = readline("> ");
+	clean_mallocs();
+	(term()->command) = ft_strjoin(temp, ft_strjoin("\n", input));
+	free(input);
+}
 
 char	opened_quote(char *str)
 {
@@ -35,31 +60,6 @@ char	opened_quote(char *str)
 		}
 	}
 	return (opened_quote);
-}
-
-void	handle_quotes(char **arg)
-{
-	char	*input;
-	char	*temp;
-	char	quote;
-
-	while (!is_valid_argument(*arg))
-	{
-		quote = opened_quote(*arg);
-		if (quote == '\'')
-			input = readline("quote> ");
-		else
-			input = readline("dquote> ");
-		temp = ft_strdup(*arg);
-		free(*arg);
-		*arg = ft_strjoin(temp, ft_strjoin("\n", input));
-		free(temp);
-		temp = ft_strdup(term()->command);
-		free(term()->command);
-		(term()->command) = ft_strjoin(temp, (ft_strjoin("\n", input)));
-		free(temp);
-		free(input);
-	}
 }
 
 int	is_valid_argument(char *arg)
@@ -96,11 +96,8 @@ int	is_valid_red(char **tokens, int i)
 			|| ft_strncmp(tokens[i], valid_red[j],
 				ft_strlen(valid_red[j])) == 0)
 		{
-			if (tokens[i + 1] == NULL)
-			{
-				printf("Error: Invalid redirection\n");
+			if (tokens[i + 1] == NULL && i != 0)
 				return (0);
-			}
 		}
 	}
 	return (1);
