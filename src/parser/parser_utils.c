@@ -6,7 +6,7 @@
 /*   By: anlima <anlima@student.42lisboa.com>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/02 11:36:42 by anlima            #+#    #+#             */
-/*   Updated: 2023/09/12 22:42:33 by anlima           ###   ########.fr       */
+/*   Updated: 2023/09/13 13:40:57 by anlima           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,6 +54,11 @@ void	handle_quotes(char **arg)
 		free(*arg);
 		*arg = ft_strjoin(temp, ft_strjoin("\n", input));
 		free(temp);
+		temp = ft_strdup(term()->command);
+		free(term()->command);
+		(term()->command) = ft_strjoin(temp, (ft_strjoin("\n", input)));
+		free(temp);
+		free(input);
 	}
 }
 
