@@ -6,7 +6,7 @@
 /*   By: anlima <anlima@student.42lisboa.com>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/07 20:47:34 by anlima            #+#    #+#             */
-/*   Updated: 2023/09/14 15:19:39 by anlima           ###   ########.fr       */
+/*   Updated: 2023/09/14 16:32:06 by anlima           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,20 +14,17 @@
 
 int	main(int argc, char **argv, char **env)
 {
-	int	i;
-
-	signal(SIGINT, handle_sigint);
+	signal(SIGINT, handle_sig_c);
 	term()->env = env;
 	term()->user = getenv("USER");
 	term()->home = getenv("HOME");
 	while (1)
 	{
-		i = 0;
-		printf("\x1B[35;4mMinishell\x1B[0m ");
-		term()->command = readline("➜ ");
+		rl_on_new_line();
+		term()->command = readline("\x1B[35;4mMinishell\x1B[0m ➜ ");
 		if (term()->command == NULL)
 			break ;
-		if (*term()->command == '\0')
+		if (*term()->command != '\0')
 		{
 			clean_mallocs();
 			continue ;

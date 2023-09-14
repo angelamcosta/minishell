@@ -6,7 +6,7 @@
 /*   By: anlima <anlima@student.42lisboa.com>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/07 20:48:28 by anlima            #+#    #+#             */
-/*   Updated: 2023/09/13 16:18:21 by anlima           ###   ########.fr       */
+/*   Updated: 2023/09/14 16:25:38 by anlima           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,14 +53,13 @@ typedef struct s_term
 
 // buitins
 void					execute_exit(void);
-void					execute_echo(char *token);
 void					execute_clear(void);
-void					execute_ls(char *str);
-void					execute_cd(void);
-void					execute_pwd(void);
+void					execute_echo(char *str);
+void					execute_cd(char *str);
+void					execute_pwd(char *str);
 void					execute_env(void);
-void					execute_unset(void);
-void					execute_export(void);
+void					execute_unset(char *str);
+void					execute_export(char *str);
 // executor
 void					executor(void);
 // parser
@@ -75,6 +74,7 @@ int						is_valid_argument(char *arg);
 int						is_valid_red(char **tokens, int i);
 void					parser(void);
 // utils
+void					handle_sig_c(int sig);
 void					free_commands(t_command *root);
 void					print_commands(t_command *root);
 t_command				*create_command_node(char *command);
