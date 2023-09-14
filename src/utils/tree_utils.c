@@ -6,7 +6,7 @@
 /*   By: anlima <anlima@student.42lisboa.com>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/11 15:51:15 by anlima            #+#    #+#             */
-/*   Updated: 2023/09/11 17:11:25 by anlima           ###   ########.fr       */
+/*   Updated: 2023/09/14 14:38:58 by anlima           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,8 +31,8 @@ void	print_commands(t_command *root)
 {
 	if (root != NULL)
 	{
-		print_commands(root->left);
 		printf("%s\n", root->command);
+		print_commands(root->left);
 		print_commands(root->right);
 	}
 }
