@@ -6,7 +6,7 @@
 /*   By: anlima <anlima@student.42lisboa.com>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/07 20:47:34 by anlima            #+#    #+#             */
-/*   Updated: 2023/09/13 16:17:11 by anlima           ###   ########.fr       */
+/*   Updated: 2023/09/14 15:19:39 by anlima           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,6 +32,7 @@ int	main(int argc, char **argv, char **env)
 			clean_mallocs();
 			continue ;
 		}
+		trim_argument(&term()->command);
 		lexer();
 		add_history(term()->command);
 		clean_mallocs();
