@@ -6,7 +6,7 @@
 /*   By: anlima <anlima@student.42lisboa.com>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/28 15:52:58 by anlima            #+#    #+#             */
-/*   Updated: 2023/09/11 17:16:52 by anlima           ###   ########.fr       */
+/*   Updated: 2023/09/14 15:20:27 by anlima           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,7 +28,13 @@ void	clean_mallocs(void)
 		term()->cmd_table = NULL;
 	}
 	if (term()->command)
+	{
 		free(term()->command);
-	free_commands(term()->command_tree);
-	term()->command_tree = NULL;
+		term()->command = NULL;
+	}
+	if (term()->command_tree)
+	{
+		free_commands(term()->command_tree);
+		term()->command_tree = NULL;
+	}
 }
