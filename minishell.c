@@ -6,7 +6,7 @@
 /*   By: anlima <anlima@student.42lisboa.com>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/07 20:47:34 by anlima            #+#    #+#             */
-/*   Updated: 2023/09/14 16:32:06 by anlima           ###   ########.fr       */
+/*   Updated: 2023/09/15 12:55:09 by anlima           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,7 @@ int	main(int argc, char **argv, char **env)
 		term()->command = readline("\x1B[35;4mMinishell\x1B[0m ➜ ");
 		if (term()->command == NULL)
 			break ;
-		if (*term()->command != '\0')
+		if (*term()->command == '\0')
 		{
 			clean_mallocs();
 			continue ;

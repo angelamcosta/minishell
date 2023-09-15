@@ -6,7 +6,7 @@
 /*   By: anlima <anlima@student.42lisboa.com>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/07 20:48:28 by anlima            #+#    #+#             */
-/*   Updated: 2023/09/14 16:25:38 by anlima           ###   ########.fr       */
+/*   Updated: 2023/09/15 12:54:00 by anlima           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,12 +54,12 @@ typedef struct s_term
 // buitins
 void					execute_exit(void);
 void					execute_clear(void);
-void					execute_echo(char *str);
-void					execute_cd(char *str);
-void					execute_pwd(char *str);
-void					execute_env(void);
-void					execute_unset(char *str);
-void					execute_export(char *str);
+void					execute_echo(char *token);
+void					execute_cd(void);
+void					execute_pwd(void);
+// void					execute_env(void);
+// void					execute_unset(char *str);
+// void					execute_export(char *str);
 // executor
 void					executor(void);
 // parser
