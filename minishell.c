@@ -6,7 +6,7 @@
 /*   By: anlima <anlima@student.42lisboa.com>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/07 20:47:34 by anlima            #+#    #+#             */
-/*   Updated: 2023/09/15 12:55:09 by anlima           ###   ########.fr       */
+/*   Updated: 2023/09/16 19:29:41 by anlima           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,6 +15,7 @@
 int	main(int argc, char **argv, char **env)
 {
 	signal(SIGINT, handle_sig_c);
+	signal(SIGQUIT, SIG_IGN);
 	term()->env = env;
 	term()->user = getenv("USER");
 	term()->home = getenv("HOME");
