@@ -6,7 +6,7 @@
 /*   By: anlima <anlima@student.42lisboa.com>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/07 20:48:28 by anlima            #+#    #+#             */
-/*   Updated: 2023/09/15 12:54:00 by anlima           ###   ########.fr       */
+/*   Updated: 2023/09/16 18:23:07 by anlima           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,7 +57,7 @@ void					execute_clear(void);
 void					execute_echo(char *token);
 void					execute_cd(void);
 void					execute_pwd(void);
-// void					execute_env(void);
+void					execute_env(void);
 // void					execute_unset(char *str);
 // void					execute_export(char *str);
 // executor
@@ -65,7 +65,9 @@ void					executor(void);
 // parser
 void					trim_argument(char **arg);
 void					handle_token(int *i, int *j);
+void					handle_error(char **input, int i);
 int						is_inside_quotes(char *input, int i);
+void					add_cmd(char *input, int start, int i, int *j);
 void					lexer(void);
 void					handle_red(void);
 void					handle_quotes(void);

@@ -6,7 +6,7 @@
 /*   By: anlima <anlima@student.42lisboa.com>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/02 11:36:42 by anlima            #+#    #+#             */
-/*   Updated: 2023/09/13 16:18:07 by anlima           ###   ########.fr       */
+/*   Updated: 2023/09/16 16:59:50 by anlima           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,8 +20,8 @@ int		is_valid_red(char **tokens, int i);
 
 void	handle_red(void)
 {
-	char		*temp;
-	char		*input;
+	char	*temp;
+	char	*input;
 
 	temp = ft_strdup(term()->command);
 	input = readline("> ");
@@ -32,8 +32,8 @@ void	handle_red(void)
 
 void	handle_quotes(void)
 {
-	char		*temp;
-	char		*input;
+	char	*temp;
+	char	*input;
 
 	temp = ft_strdup(term()->command);
 	input = readline("> ");
@@ -85,20 +85,10 @@ int	is_valid_argument(char *arg)
 
 int	is_valid_red(char **tokens, int i)
 {
-	int			j;
-	static char	*valid_red[] = {"|", "||", "&&", "&", NULL};
-
-	j = -1;
-	while (valid_red[++j])
+	if (ft_strncmp(tokens[i], "|", 1) == 0)
 	{
-		if (ft_strncmp(tokens[i], valid_red[j], ft_strlen(valid_red[j])) == 0
-			|| ft_strncmp(tokens[i], valid_red[j], ft_strlen(valid_red[j])) == 0
-			|| ft_strncmp(tokens[i], valid_red[j],
-				ft_strlen(valid_red[j])) == 0)
-		{
-			if (tokens[i + 1] == NULL && i != 0)
-				return (0);
-		}
+		if (tokens[i + 1] == NULL && i != 0)
+			return (0);
 	}
 	return (1);
 }

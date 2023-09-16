@@ -6,7 +6,7 @@
 /*   By: anlima <anlima@student.42lisboa.com>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/23 14:45:31 by anlima            #+#    #+#             */
-/*   Updated: 2023/09/13 14:09:06 by anlima           ###   ########.fr       */
+/*   Updated: 2023/09/16 17:32:44 by anlima           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,8 +35,7 @@ void	lexer(void)
 			while (input[i] && !((input[i] == '|' || input[i] == '&')
 					&& !(is_inside_quotes(input, i))))
 				i++;
-			(term()->cmd_table[j++]) = ft_substr(input, start, i - start);
-			trim_argument(&(term()->cmd_table[j - 1]));
+			add_cmd(input, start, i, &j);
 		}
 	}
 	term()->cmd_table[j] = NULL;
