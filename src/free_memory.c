@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   free_memory.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: anlima <anlima@student.42lisboa.com>       +#+  +:+       +#+        */
+/*   By: anlima <anlima@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/28 15:52:58 by anlima            #+#    #+#             */
-/*   Updated: 2023/09/14 15:20:27 by anlima           ###   ########.fr       */
+/*   Updated: 2023/09/18 14:10:57 by anlima           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,10 +31,5 @@ void	clean_mallocs(void)
 	{
 		free(term()->command);
 		term()->command = NULL;
-	}
-	if (term()->command_tree)
-	{
-		free_commands(term()->command_tree);
-		term()->command_tree = NULL;
 	}
 }

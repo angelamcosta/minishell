@@ -25,7 +25,6 @@ SRC		=	minishell.c \
 			$(SRC_DIR)/$(PARSER)/parser_utils.c \
 			$(SRC_DIR)/$(PARSER)/parser.c \
 			$(SRC_DIR)/$(UTILS)/signals.c \
-			$(SRC_DIR)/$(UTILS)/tree_utils.c \
 			$(SRC_DIR)/free_memory.c \
 			$(SRC_DIR)/general.c \
 			$(SRC_DIR)/signals.c \
