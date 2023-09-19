@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: anlima <anlima@student.42.fr>              +#+  +:+       +#+        */
+/*   By: anlima <anlima@student.42lisboa.com>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/07 20:48:28 by anlima            #+#    #+#             */
-/*   Updated: 2023/09/18 14:08:09 by anlima           ###   ########.fr       */
+/*   Updated: 2023/09/19 23:52:32 by anlima           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,8 +50,9 @@ void		execute_echo(char *token);
 void		execute_cd(char *str);
 void		execute_pwd(char *str);
 void		execute_env(void);
-// void					execute_unset(char *str);
-// void					execute_export(char *str);
+void		add_to_env(char *input);
+void		execute_unset(char *str);
+void		execute_export(char *str);
 // executor
 void		executor(void);
 // parser
@@ -73,6 +74,7 @@ void		handle_sig_c(int sig);
 void		clean_mallocs(void);
 // general
 t_term		*term(void);
+void		set_env(char **input);
 // signals
 void		handle_sigint(int signum);
 
