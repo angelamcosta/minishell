@@ -6,7 +6,7 @@
 /*   By: anlima <anlima@student.42lisboa.com>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/07 20:48:28 by anlima            #+#    #+#             */
-/*   Updated: 2023/09/19 23:52:32 by anlima           ###   ########.fr       */
+/*   Updated: 2023/09/20 00:23:44 by anlima           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,7 +50,9 @@ void		execute_echo(char *token);
 void		execute_cd(char *str);
 void		execute_pwd(char *str);
 void		execute_env(void);
+void		execute_env(void);
 void		add_to_env(char *input);
+void		remove_env(char *input);
 void		execute_unset(char *str);
 void		execute_export(char *str);
 // executor
