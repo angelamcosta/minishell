@@ -6,7 +6,7 @@
 /*   By: mpedroso <mpedroso@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/31 15:46:17 by anlima            #+#    #+#             */
-/*   Updated: 2023/09/20 22:52:52 by mpedroso         ###   ########.fr       */
+/*   Updated: 2023/09/20 23:06:55 by mpedroso         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,7 +32,7 @@ void	executor(void)
 		else if (ft_strncmp(term()->cmd_table[i], "pwd", 3) == 0)
 			execute_pwd(term()->cmd_table[i]);
 		else if (ft_strncmp(term()->cmd_table[i], "env", 3) == 0)
-			execute_env();
+			execute_env(term()->cmd_table[i]);
 		else if (ft_strncmp(term()->cmd_table[i], "unset", 5) == 0)
 			execute_unset(term()->cmd_table[i]);
 		else if (ft_strncmp(term()->cmd_table[i], "export", 6) == 0)
