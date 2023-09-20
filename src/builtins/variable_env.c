@@ -6,7 +6,7 @@
 /*   By: anlima <anlima@student.42lisboa.com>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/27 23:15:42 by anlima            #+#    #+#             */
-/*   Updated: 2023/09/20 00:23:24 by anlima           ###   ########.fr       */
+/*   Updated: 2023/09/20 16:59:59 by anlima           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,27 +57,31 @@ void	remove_env(char *input)
 {
 	int		i;
 	int		j;
+	int		flag;
 	char	**new_array;
 
-	i = 0;
-	while (term()->env[i] != NULL)
-		i++;
-	new_array = malloc(sizeof(char *) * (i));
-	j = -1;
-	while (++j < i)
+	i = -1;
+	flag = 0;
+	while (term()->env[++i] != NULL && !flag)
 	{
-		if (ft_strncmp(input, term()->env[j], ft_strlen(input)) == 0)
-			continue ;
-		new_array[j] = ft_strdup(term()->env[j]);
+		if (ft_strncmp(term()->env[i], input, ft_strlen(input)) == 0)
+			flag = 1;
 	}
-	new_array[++j] = NULL;
+	if (!flag)
+		return ;
+	new_array = (char **)malloc(sizeof(char *) * (i));
+	j = 0;
 	i = -1;
 	while (term()->env[++i] != NULL)
 	{
-		if (term()->env[i])
-			free(term()->env[i]);
+		if (ft_strncmp(term()->env[i], input, ft_strlen(input)) != 0)
+		{
+			new_array[j] = ft_strdup(term()->env[i]);
+			j++;
+		}
 	}
-	free(term()->env);
+	new_array[j] = NULL;
+	free_env();
 	term()->env = new_array;
 }
 
@@ -96,15 +100,8 @@ void	execute_unset(char *str)
 			continue ;
 		else
 		{
-			j = 0;
-			while (input[i][j] != '=')
-				j++;
-			subs = ft_substr(input[i], 0, j - 1);
-			if (subs)
-			{
-				remove_env(subs);
-				free(subs);
-			}
+			if (input[i])
+				remove_env(input[i]);
 		}
 	}
 }

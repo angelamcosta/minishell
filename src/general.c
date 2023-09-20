@@ -6,13 +6,14 @@
 /*   By: anlima <anlima@student.42lisboa.com>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/27 21:49:20 by anlima            #+#    #+#             */
-/*   Updated: 2023/09/19 23:50:02 by anlima           ###   ########.fr       */
+/*   Updated: 2023/09/20 16:34:08 by anlima           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../include/minishell.h"
 
 t_term	*term(void);
+void	free_env(void);
 void	set_env(char **input);
 
 t_term	*term(void)
@@ -35,4 +36,18 @@ void	set_env(char **input)
 	while (++j < i)
 		term()->env[j] = ft_strdup(input[j]);
 	term()->env[j] = NULL;
+}
+
+void	free_env(void)
+{
+	int	i;
+
+	i = -1;
+	while (term()->env[++i] != NULL)
+	{
+		if (term()->env[i])
+			free(term()->env[i]);
+	}
+	if (term()->env)
+		free(term()->env);
 }

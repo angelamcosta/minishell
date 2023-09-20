@@ -6,7 +6,7 @@
 /*   By: anlima <anlima@student.42lisboa.com>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/07 20:48:28 by anlima            #+#    #+#             */
-/*   Updated: 2023/09/20 00:23:44 by anlima           ###   ########.fr       */
+/*   Updated: 2023/09/20 16:34:18 by anlima           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -76,6 +76,7 @@ void		handle_sig_c(int sig);
 void		clean_mallocs(void);
 // general
 t_term		*term(void);
+void		free_env(void);
 void		set_env(char **input);
 // signals
 void		handle_sigint(int signum);
