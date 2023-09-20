@@ -6,7 +6,6 @@ LIBS	=	-L ./$(LIBFT) -lft -lreadline
 RM		=	rm -rf
 
 LIBFT	=	libft
-GNL		=	get_next_line
 SRC_DIR	=	src
 INC_DIR	=	include
 B_INS	=	builtins
