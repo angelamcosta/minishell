@@ -6,7 +6,7 @@
 /*   By: anlima <anlima@student.42lisboa.com>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/07 20:48:28 by anlima            #+#    #+#             */
-/*   Updated: 2023/09/20 17:09:42 by anlima           ###   ########.fr       */
+/*   Updated: 2023/09/20 17:20:44 by anlima           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,6 @@
 # define BLUE "\033[94;1m"
 # define PINK "\033[95;1m"
 # define CLEAR "\033[0m"
-# include "../get_next_line/get_next_line.h"
 # include "../libft/libft.h"
 # include <dirent.h>
 # include <limits.h>
