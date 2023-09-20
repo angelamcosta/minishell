@@ -6,7 +6,7 @@
 /*   By: anlima <anlima@student.42lisboa.com>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/27 23:15:42 by anlima            #+#    #+#             */
-/*   Updated: 2023/09/20 17:10:58 by anlima           ###   ########.fr       */
+/*   Updated: 2023/09/20 20:23:49 by anlima           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,10 @@ void	execute_env(void)
 
 	i = -1;
 	while (term()->env && term()->env[++i])
-		printf("%s%s%s\n", BLUE, term()->env[i], CLEAR);
+	{
+		if (ft_strchr(term()->env[i], '='))
+			printf("%s%s%s\n", BLUE, term()->env[i], CLEAR);
+	}
 }
 
 void	remove_env(char *input)
@@ -93,6 +96,9 @@ void	execute_export(char *str)
 	{
 		if (ft_strncmp(input[i], "export", 6) == 0)
 			continue ;
+		subs = ft_strchr(input[i], '=');
+		if (!subs)
+			add_to_env(input[i], input[i]);
 		else
 		{
 			j = 0;
