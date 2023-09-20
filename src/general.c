@@ -6,7 +6,7 @@
 /*   By: anlima <anlima@student.42lisboa.com>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/27 21:49:20 by anlima            #+#    #+#             */
-/*   Updated: 2023/09/20 19:41:22 by anlima           ###   ########.fr       */
+/*   Updated: 2023/09/20 20:33:24 by anlima           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,12 +60,10 @@ int	is_env(char *subs)
 
 	i = -1;
 	flag = 0;
-	while (term()->env[++i] != NULL)
+	while (term()->env[++i] != NULL && !flag)
 	{
 		if (ft_strncmp(term()->env[i], subs, ft_strlen(subs)) == 0)
 			flag = 1;
 	}
-	if (flag)
-		return (i);
-	return (-1);
+	return (flag);
 }

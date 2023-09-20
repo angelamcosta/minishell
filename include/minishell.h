@@ -6,30 +6,31 @@
 /*   By: anlima <anlima@student.42lisboa.com>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/07 20:48:28 by anlima            #+#    #+#             */
-/*   Updated: 2023/09/20 19:41:36 by anlima           ###   ########.fr       */
+/*   Updated: 2023/09/20 22:16:13 by anlima           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef MINISHELL_H
 # define MINISHELL_H
+# define CLEAR "\033[0m"
 # define RED "\033[91;1m"
-# define GREEN "\033[92;1m"
-# define YELLOW "\033[93;1m"
 # define BLUE "\033[94;1m"
 # define PINK "\033[95;1m"
-# define CLEAR "\033[0m"
+# define GREEN "\033[92;1m"
+# define YELLOW "\033[93;1m"
 # include "../libft/libft.h"
+# include <errno.h>
+# include <stdio.h>
 # include <dirent.h>
 # include <limits.h>
-# include <readline/history.h>
-# include <readline/readline.h>
 # include <signal.h>
-# include <stdio.h>
 # include <stdlib.h>
 # include <string.h>
-# include <sys/types.h>
-# include <sys/wait.h>
 # include <unistd.h>
+# include <sys/wait.h>
+# include <sys/types.h>
+# include <readline/history.h>
+# include <readline/readline.h>
 # define MAX_TOKENS 100
 # define MAX_TOKEN_LENGTH 100
 
@@ -38,6 +39,7 @@ typedef struct s_term
 	char	*user;
 	char	*home;
 	char	**env;
+	char	**env_sorted;
 	char	*command;
 	char	**cmd_table;
 }			t_term;
@@ -48,7 +50,7 @@ void		execute_clear(void);
 void		execute_echo(char *token);
 void		execute_cd(char *str);
 void		execute_pwd(char *str);
-void		execute_env(void);
+void		execute_env(char *arg);
 void		remove_env(char *input);
 void		execute_unset(char *str);
 void		execute_export(char *str);
