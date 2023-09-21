@@ -6,7 +6,7 @@
 /*   By: anlima <anlima@student.42lisboa.com>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/27 23:16:11 by anlima            #+#    #+#             */
-/*   Updated: 2023/09/16 18:35:39 by anlima           ###   ########.fr       */
+/*   Updated: 2023/09/21 15:38:50 by anlima           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,7 @@ void	execute_exit(void)
 	add_history(term()->command);
 	clean_mallocs();
 	printf("exit\n");
-	exit(1);
+	exit(term()->exit_status);
 }
 
 void	execute_clear(void)

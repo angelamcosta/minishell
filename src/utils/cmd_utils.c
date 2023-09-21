@@ -6,7 +6,7 @@
 /*   By: anlima <anlima@student.42lisboa.com>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/21 14:44:26 by anlima            #+#    #+#             */
-/*   Updated: 2023/09/21 14:53:25 by anlima           ###   ########.fr       */
+/*   Updated: 2023/09/21 15:41:40 by anlima           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,5 +25,6 @@ int	verify_cmd(char *cmd)
 		((ft_strncmp(cmd, "unset", 5) == 0) && (cmd[5] == ' ' || cmd[5] == '\0')) ||
 		((ft_strncmp(cmd, "export", 6) == 0) && (cmd[6] == ' ' || cmd[6] == '\0')))
 			return (1);
+	term()->exit_status = NOT_FOUND;
 	return (0);
 }

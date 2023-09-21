@@ -6,7 +6,7 @@
 /*   By: anlima <anlima@student.42lisboa.com>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/07 20:48:28 by anlima            #+#    #+#             */
-/*   Updated: 2023/09/21 14:55:41 by anlima           ###   ########.fr       */
+/*   Updated: 2023/09/21 15:41:26 by anlima           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,6 +33,10 @@
 # include <readline/readline.h>
 # define MAX_TOKENS 100
 # define MAX_TOKEN_LENGTH 100
+# define PROMPT "\001\e[38;5;206m\002Minishell\001\e[0m\002 ➜ "
+# define SUCCESS 0
+# define FAILURE 1
+# define NOT_FOUND 127
 
 typedef struct s_term
 {
@@ -42,6 +46,7 @@ typedef struct s_term
 	char	**env_sorted;
 	char	*command;
 	char	**cmd_table;
+	int		exit_status;
 }			t_term;
 
 // buitins
@@ -79,9 +84,11 @@ t_term		*term(void);
 void		free_env(void);
 int			is_env(char *subs);
 void		set_env(char **input);
+void		init_program(char **env);
 // cmd_utils
 int			verify_cmd(char *cmd);
 // signals
+void		set_signals(void);
 void		handle_sigint(int signum);
 
 #endif

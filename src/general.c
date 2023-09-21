@@ -6,7 +6,7 @@
 /*   By: anlima <anlima@student.42lisboa.com>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/27 21:49:20 by anlima            #+#    #+#             */
-/*   Updated: 2023/09/20 20:33:24 by anlima           ###   ########.fr       */
+/*   Updated: 2023/09/21 15:35:22 by anlima           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,6 +16,7 @@ t_term	*term(void);
 void	free_env(void);
 int		is_env(char *subs);
 void	set_env(char **input);
+void	init_program(char **env);
 
 t_term	*term(void)
 {
@@ -66,4 +67,12 @@ int	is_env(char *subs)
 			flag = 1;
 	}
 	return (flag);
+}
+
+void	init_program(char **env)
+{
+	set_signals();
+	set_env(env);
+	term()->user = getenv("USER");
+	term()->home = getenv("HOME");
 }

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   navigation.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: anlima <anlima@student.42.fr>              +#+  +:+       +#+        */
+/*   By: anlima <anlima@student.42lisboa.com>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/27 23:13:34 by anlima            #+#    #+#             */
-/*   Updated: 2023/09/18 14:13:35 by anlima           ###   ########.fr       */
+/*   Updated: 2023/09/21 15:43:32 by anlima           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,7 +42,7 @@ void	execute_pwd(char *str)
 	input = ft_split(str, ' ');
 	if (input[1] != NULL)
 	{
-		printf("pwd: too many arguments\n");
+		printf("%spwd: too many arguments%s\n", RED, CLEAR);
 		return ;
 	}
 	path = getcwd(NULL, 0);
