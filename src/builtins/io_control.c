@@ -6,7 +6,7 @@
 /*   By: anlima <anlima@student.42lisboa.com>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/27 23:16:11 by anlima            #+#    #+#             */
-/*   Updated: 2023/09/21 15:38:50 by anlima           ###   ########.fr       */
+/*   Updated: 2023/09/23 16:48:36 by anlima           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,7 +34,8 @@ void	execute_echo(char *str)
 	int		i;
 	char	quote;
 
-	i = 5;
+	i = 4;
+	quote = 0;
 	while (str[i])
 	{
 		while (str[++i] && str[i] != '"' && str[i] != '\'')
