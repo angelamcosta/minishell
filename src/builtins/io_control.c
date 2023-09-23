@@ -6,7 +6,7 @@
 /*   By: anlima <anlima@student.42lisboa.com>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/27 23:16:11 by anlima            #+#    #+#             */
-/*   Updated: 2023/09/23 16:48:36 by anlima           ###   ########.fr       */
+/*   Updated: 2023/09/23 22:00:02 by anlima           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,7 @@ void	execute_echo(char *token);
 void	execute_exit(void)
 {
 	add_history(term()->command);
-	clean_mallocs();
+	// clean_mallocs();
 	printf("exit\n");
 	exit(term()->exit_status);
 }
