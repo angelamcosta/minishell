@@ -6,16 +6,17 @@
 /*   By: anlima <anlima@student.42lisboa.com>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/01 13:48:47 by anlima            #+#    #+#             */
-/*   Updated: 2023/09/23 22:28:10 by anlima           ###   ########.fr       */
+/*   Updated: 2023/09/24 19:37:16 by anlima           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../include/minishell.h"
 
 void	parser(void);
-void	add_argument(int j, char *value);
-void	handle_variables(int j, char *value);
-void	add_red(int j, enum e_TokenType token, char *value);
+void	add_red(char **cmd_list, char *value);
+void	add_argument(t_command *cmd, char *value);
+void	handle_variables(t_command *cmd, char *value);
+void	add_command(t_command *cmd, t_token **tokens);
 
 void	parser(void)
 {
@@ -31,39 +32,44 @@ void	parser(void)
 		if (term()->tokens[i]->type == CMD)
 		{
 			j++;
-			term()->cmd_list[j].name = ft_strdup(term()->tokens[i]->value);
-			term()->cmd_list[j].args[0] = NULL;
+			add_command(&term()->cmd_list[j], &term()->tokens[i]);
 		}
 		else if (term()->tokens[i]->type == ARG)
-			add_argument(j, term()->tokens[i]->value);
-		else if (term()->tokens[i]->type == RED_IN
-			|| term()->tokens[i]->type == RED_OUT)
-			add_red(j, term()->tokens[i]->type, term()->tokens[++i]->value);
+			add_argument(&term()->cmd_list[j], term()->tokens[i]->value);
+		else if (term()->tokens[i]->type == HEREDOC)
+			add_red(term()->cmd_list[j].delimiters, term()->tokens[++i]->value);
+		else if (term()->tokens[i]->type == RED_IN)
+			add_red(term()->cmd_list[j].in_red, term()->tokens[++i]->value);
+		else if (term()->tokens[i]->type == RED_OUT)
+			add_red(term()->cmd_list[j].out_red, term()->tokens[++i]->value);
 		else if (term()->tokens[i]->type == VAR)
-			handle_variables(j, term()->tokens[i]->value);
-		printf("Processed Token %d: %s\tj: %i\n", i, term()->tokens[i]->value, j);
+			handle_variables(&term()->cmd_list[j], term()->tokens[i]->value);
 	}
 }
 
-void	add_argument(int j, char *value)
+void	add_argument(t_command *cmd, char *value)
 {
 	int	i;
 
 	i = 0;
-	while (term()->cmd_list[j].args[i] != NULL)
+	while (cmd->args[i] != NULL && i < MAX_TOKENS)
 		i++;
-	term()->cmd_list[j].args[i] = ft_strdup(value);
+	if (i < MAX_TOKENS)
+		cmd->args[i] = ft_strdup(value);
 }
 
-void	add_red(int j, enum e_TokenType token, char *value)
+void	add_red(char **cmd_list, char *value)
 {
-	if (token == RED_IN)
-		term()->cmd_list[j].in_red = ft_strdup(value);
-	else
-		term()->cmd_list[j].out_red = ft_strdup(value);
+	int	i;
+
+	i = 0;
+	while (cmd_list[i] != NULL && i < MAX_TOKENS)
+		i++;
+	if (i < MAX_TOKENS)
+		cmd_list[i] = ft_strdup(value);
 }
 
-void	handle_variables(int j, char *value)
+void	handle_variables(t_command *cmd, char *value)
 {
 	int		i;
 	int		flag;
@@ -81,5 +87,13 @@ void	handle_variables(int j, char *value)
 		}
 	}
 	if (flag)
-		add_argument(j, term()->env[i] + ft_strlen(var_name) + 1);
+		add_argument(cmd, term()->env[i] + ft_strlen(var_name) + 1);
+}
+
+void	add_command(t_command *cmd, t_token **tokens)
+{
+	cmd->name = ft_strdup((*tokens)->value);
+	cmd->args[0] = NULL;
+	cmd->in_red[0] = NULL;
+	cmd->out_red[0] = NULL;
 }

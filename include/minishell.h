@@ -6,7 +6,7 @@
 /*   By: anlima <anlima@student.42lisboa.com>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/07 20:48:28 by anlima            #+#    #+#             */
-/*   Updated: 2023/09/23 21:56:05 by anlima           ###   ########.fr       */
+/*   Updated: 2023/09/24 20:00:27 by anlima           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,7 +32,7 @@
 # include <sys/wait.h>
 # include <unistd.h>
 # define MAX_TOKENS 100
-# define MAX_TOKEN_LENGTH 100
+# define LEN 25
 # define PROMPT "\001\e[38;5;206m\002Minishell\001\e[0m\002 ➜ "
 # define SUCCESS 0
 # define FAILURE 1
@@ -60,8 +60,9 @@ typedef struct s_command
 {
 	char				*name;
 	char				*args[MAX_TOKENS];
-	char				*in_red;
-	char				*out_red;
+	char				*in_red[LEN];
+	char				*out_red[LEN];
+	char				*delimiters[LEN];
 }						t_command;
 
 typedef struct s_term
@@ -89,32 +90,27 @@ void					add_to_env(char *input, char *subs);
 // executor
 void					executor(void);
 // parser
-void					trim_argument(char **arg);
-void					handle_token(int *i, int *j);
-void					handle_error(char **input, int i);
-int						is_inside_quotes(char *input, int i);
-void					add_cmd(char *input, int start, int i, int *j);
 void					lexer(void);
-void					handle_red(void);
-void					handle_quotes(void);
-char					opened_quote(char *str);
-int						is_valid_argument(char *arg);
-int						is_valid_red(char **tokens, int i);
+void					grammar(void);
+void					add_token(char *input, int i, int flag);
 void					parser(void);
-// utils
-void					handle_sig_c(int sig);
+void					add_red(char **cmd_list, char *value);
+void					add_argument(t_command *cmd, char *value);
+void					handle_variables(t_command *cmd, char *value);
+void					add_command(t_command *cmd, t_token **tokens);
 // free memory
+void					free_tokens(void);
 void					clean_mallocs(void);
+void					free_commands(void);
 // general
 t_term					*term(void);
 void					free_env(void);
 int						is_env(char *subs);
 void					set_env(char **input);
 void					init_program(char **env);
-// cmd_utils
-int						verify_cmd(char *cmd);
 // signals
 void					set_signals(void);
+void					handle_sig_c(int sig);
 void					handle_sigint(int signum);
 
 #endif

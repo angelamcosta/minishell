@@ -6,13 +6,14 @@
 /*   By: anlima <anlima@student.42lisboa.com>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/23 14:45:31 by anlima            #+#    #+#             */
-/*   Updated: 2023/09/23 22:48:24 by anlima           ###   ########.fr       */
+/*   Updated: 2023/09/24 19:57:55 by anlima           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../include/minishell.h"
 
 void	lexer(void);
+void	grammar(void);
 void	add_token(char *input, int i, int flag);
 
 void	lexer(void)
@@ -33,6 +34,12 @@ void	lexer(void)
 		i++;
 	}
 	term()->tokens[i] = NULL;
+	i = 0;
+	while (input && input[i] && i < MAX_TOKENS)
+		free(input[i++]);
+	if (input)
+		free(input);
+	grammar();
 }
 
 void	add_token(char *input, int i, int flag)
@@ -58,4 +65,23 @@ void	add_token(char *input, int i, int flag)
 		token->type = ARG;
 	token->value = ft_strdup(input);
 	term()->tokens[i] = token;
+}
+
+void	grammar(void)
+{
+	int		i;
+	t_token	**tokens;
+
+	i = -1;
+	tokens = term()->tokens;
+	while (tokens && tokens[++i])
+	{
+		if (tokens[i + 1] && (tokens[i]->type == tokens[i + 1]->type))
+		{
+			printf("parse error near `%s`\n", tokens[i]->value);
+			term()->exit_status = FAILURE;
+			return ;
+		}
+	}
+	parser();
 }
