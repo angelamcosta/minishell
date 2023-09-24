@@ -6,21 +6,19 @@
 /*   By: anlima <anlima@student.42lisboa.com>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/27 23:13:34 by anlima            #+#    #+#             */
-/*   Updated: 2023/09/21 15:43:32 by anlima           ###   ########.fr       */
+/*   Updated: 2023/09/24 21:31:31 by anlima           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../include/minishell.h"
 
-void	execute_cd(char *str);
-void	execute_pwd(char *str);
+void	execute_cd(char **args);
+void	execute_pwd(char **args);
 
-void	execute_cd(char *str)
+// TODO: - deal with multiple args in cd
+void	execute_cd(char **args)
 {
-	char	**input;
-
-	input = ft_split(str, ' ');
-	if (input[1] == NULL)
+	if (args[0] == NULL || ft_strncmp(args[0], "~", 2) == 0)
 	{
 		if (term()->home == NULL)
 			return (perror("cd"));
@@ -29,18 +27,16 @@ void	execute_cd(char *str)
 	}
 	else
 	{
-		if (chdir(input[1]) != 0)
+		if (chdir(args[0]) != 0)
 			return (perror("cd"));
 	}
 }
 
-void	execute_pwd(char *str)
+void	execute_pwd(char **args)
 {
 	char	*path;
-	char	**input;
 
-	input = ft_split(str, ' ');
-	if (input[1] != NULL)
+	if (args[0] != NULL)
 	{
 		printf("%spwd: too many arguments%s\n", RED, CLEAR);
 		return ;

@@ -6,7 +6,7 @@
 /*   By: anlima <anlima@student.42lisboa.com>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/07 20:48:28 by anlima            #+#    #+#             */
-/*   Updated: 2023/09/24 20:00:27 by anlima           ###   ########.fr       */
+/*   Updated: 2023/09/24 21:46:21 by anlima           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -79,19 +79,21 @@ typedef struct s_term
 // buitins
 void					execute_exit(void);
 void					execute_clear(void);
-void					execute_echo(char *token);
-void					execute_cd(char *str);
-void					execute_pwd(char *str);
-void					execute_env(char *arg);
+void					execute_echo(char **args);
+void					execute_cd(char **args);
+void					execute_pwd(char **args);
+void					execute_env(char **arg);
 void					remove_env(char *input);
-void					execute_unset(char *str);
-void					execute_export(char *str);
+void					execute_unset(char **input);
+void					execute_export(char **input);
 void					add_to_env(char *input, char *subs);
 // executor
 void					executor(void);
 // parser
 void					lexer(void);
 void					grammar(void);
+int						check_quotes(char *str);
+void					tokenize_input(char *str);
 void					add_token(char *input, int i, int flag);
 void					parser(void);
 void					add_red(char **cmd_list, char *value);

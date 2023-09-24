@@ -6,41 +6,33 @@
 /*   By: anlima <anlima@student.42lisboa.com>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/27 23:15:42 by anlima            #+#    #+#             */
-/*   Updated: 2023/09/21 14:54:44 by anlima           ###   ########.fr       */
+/*   Updated: 2023/09/24 21:45:57 by anlima           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../include/minishell.h"
 
-void	execute_env(char *arg);
+void	execute_env(char **arg);
 void	remove_env(char *input);
-void	execute_unset(char *str);
-void	execute_export(char *str);
+void	execute_unset(char **input);
+void	execute_export(char **input);
 void	add_to_env(char *input, char *subs);
 
-void	execute_env(char *arg)
+void	execute_env(char **arg)
 {
 	int		i;
 	char	**input;
 
-	i = -1;
-	if (ft_strncmp(arg, "env", 3) == 0)
+	if (arg[0] != NULL)
+		printf("%s%s%s\n", BLUE, "env: too many arguments", CLEAR);
+	else
 	{
-		if (arg[3] != '\0')
+		i = -1;
+		while (term()->env && term()->env[++i])
 		{
-			if ((arg[4] >= 65 && arg[4] <= 90) || (arg[4] >= 97
-					&& arg[4] <= 122) || (arg[4] >= '0' && arg[4] <= '9'))
-				printf("env: %s\n", strerror(2));
-			else
-				printf("env: %s\n", strerror(13));
-			return ;
+			if (ft_strchr(term()->env[i], '='))
+				printf("%s%s%s\n", BLUE, term()->env[i], CLEAR);
 		}
-	}
-	i = -1;
-	while (term()->env && term()->env[++i])
-	{
-		if (ft_strchr(term()->env[i], '='))
-			printf("%s%s%s\n", BLUE, term()->env[i], CLEAR);
 	}
 }
 
@@ -73,14 +65,10 @@ void	remove_env(char *input)
 	term()->env = new_array;
 }
 
-void	execute_unset(char *str)
+void	execute_unset(char **input)
 {
 	int		i;
-	int		j;
-	char	*subs;
-	char	**input;
 
-	input = ft_split(str, ' ');
 	i = -1;
 	while (input[++i])
 	{
@@ -94,13 +82,11 @@ void	execute_unset(char *str)
 	}
 }
 
-void	execute_export(char *str)
+void	execute_export(char **input)
 {
 	int		i;
 	char	*subs;
-	char	**input;
 
-	input = ft_split(str, ' ');
 	i = -1;
 	while (input[++i])
 	{
