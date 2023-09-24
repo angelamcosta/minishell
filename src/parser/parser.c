@@ -6,7 +6,7 @@
 /*   By: anlima <anlima@student.42lisboa.com>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/01 13:48:47 by anlima            #+#    #+#             */
-/*   Updated: 2023/09/24 19:37:16 by anlima           ###   ########.fr       */
+/*   Updated: 2023/09/24 21:24:16 by anlima           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,10 +30,7 @@ void	parser(void)
 		if (term()->tokens[i]->type == PIPE)
 			i++;
 		if (term()->tokens[i]->type == CMD)
-		{
-			j++;
-			add_command(&term()->cmd_list[j], &term()->tokens[i]);
-		}
+			add_command(&term()->cmd_list[++j], &term()->tokens[i]);
 		else if (term()->tokens[i]->type == ARG)
 			add_argument(&term()->cmd_list[j], term()->tokens[i]->value);
 		else if (term()->tokens[i]->type == HEREDOC)
@@ -45,6 +42,7 @@ void	parser(void)
 		else if (term()->tokens[i]->type == VAR)
 			handle_variables(&term()->cmd_list[j], term()->tokens[i]->value);
 	}
+	executor();
 }
 
 void	add_argument(t_command *cmd, char *value)
@@ -72,15 +70,22 @@ void	add_red(char **cmd_list, char *value)
 void	handle_variables(t_command *cmd, char *value)
 {
 	int		i;
+	int		j;
 	int		flag;
 	char	*var_name;
 
 	i = -1;
 	flag = 0;
-	var_name = value + 1;
+	if (value[0] == '"')
+		var_name = value + 2;
+	else
+		var_name = value + 1;
 	while (term()->env[++i] != NULL && !flag)
 	{
-		if (ft_strncmp(term()->env[i], var_name, ft_strlen(var_name)) == 0)
+		j = ft_strlen(var_name);
+		if (var_name[j - 1] == '"')
+			j--;
+		if (ft_strncmp(term()->env[i], var_name, j) == 0)
 		{
 			flag = 1;
 			break ;
