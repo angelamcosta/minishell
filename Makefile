@@ -12,7 +12,13 @@ B_INS	=	builtins
 PARSER	=	parser
 SUBS	=	shell_subsystems
 XCTOR	=	executor
-UTILS	=	utils
+VAL		=	--leak-check=full \
+			--show-leak-kinds=all \
+			--track-origins=yes \
+			--verbose \
+			--log-file=valgrind_log.txt \
+			--suppressions=readline.supp \
+			--track-fds=yes
 
 SRC		=	minishell.c \
 			$(SRC_DIR)/$(B_INS)/io_control.c \
@@ -21,8 +27,6 @@ SRC		=	minishell.c \
 			$(SRC_DIR)/$(XCTOR)/executor.c \
 			$(SRC_DIR)/$(PARSER)/lexer.c \
 			$(SRC_DIR)/$(PARSER)/parser.c \
-			$(SRC_DIR)/$(UTILS)/cmd_utils.c \
-			$(SRC_DIR)/$(UTILS)/signals.c \
 			$(SRC_DIR)/free_memory.c \
 			$(SRC_DIR)/general.c \
 			$(SRC_DIR)/signals.c \
@@ -44,5 +48,6 @@ fclean:		clean
 			@$(RM) $(NAME)
 
 re:			fclean all
+			valgrind $(VAL) ./$(NAME)
 
 .PHONY:		all clean fclean re
