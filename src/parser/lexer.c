@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   lexer.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: anlima <anlima@student.42lisboa.com>       +#+  +:+       +#+        */
+/*   By: mpedroso <mpedroso@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/23 14:45:31 by anlima            #+#    #+#             */
-/*   Updated: 2023/09/25 13:03:02 by anlima           ###   ########.fr       */
+/*   Updated: 2023/09/25 21:25:25 by mpedroso         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,7 +65,10 @@ void	grammar(void)
 	while (tokens && tokens[++i])
 	{
 		if (tokens[i + 1] && (tokens[i]->type == tokens[i + 1]->type)
-			&& tokens[i]->type != ARG && tokens[i]->type != VAR)
+			&& (tokens[i]->type != ARG && tokens[i]->type != VAR) 
+			|| (!tokens[i + 1] && (tokens[i]->type == RED_IN 
+					|| tokens[i]->type == RED_OUT) || tokens[i]->type == APPEND 
+				|| tokens[i]->type == HEREDOC))
 		{
 			printf("parse error near `%s`\n", tokens[i]->value);
 			term()->exit_status = EXIT_FAILURE;
