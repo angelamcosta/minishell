@@ -6,7 +6,7 @@
 /*   By: anlima <anlima@student.42lisboa.com>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/27 23:13:34 by anlima            #+#    #+#             */
-/*   Updated: 2023/09/24 21:31:31 by anlima           ###   ########.fr       */
+/*   Updated: 2023/09/25 15:56:26 by anlima           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,7 @@ void	execute_pwd(char **args);
 // TODO: - deal with multiple args in cd
 void	execute_cd(char **args)
 {
-	if (args[0] == NULL || ft_strncmp(args[0], "~", 2) == 0)
+	if (args[1] == NULL || ft_strncmp(args[0], "~", 2) == 0)
 	{
 		if (term()->home == NULL)
 			return (perror("cd"));
@@ -27,7 +27,7 @@ void	execute_cd(char **args)
 	}
 	else
 	{
-		if (chdir(args[0]) != 0)
+		if (chdir(args[1]) != 0)
 			return (perror("cd"));
 	}
 }
@@ -36,7 +36,7 @@ void	execute_pwd(char **args)
 {
 	char	*path;
 
-	if (args[0] != NULL)
+	if (args[1] != NULL)
 	{
 		printf("%spwd: too many arguments%s\n", RED, CLEAR);
 		return ;

@@ -6,7 +6,7 @@
 /*   By: anlima <anlima@student.42lisboa.com>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/01 13:48:47 by anlima            #+#    #+#             */
-/*   Updated: 2023/09/24 21:24:16 by anlima           ###   ########.fr       */
+/*   Updated: 2023/09/25 15:55:50 by anlima           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -98,7 +98,7 @@ void	handle_variables(t_command *cmd, char *value)
 void	add_command(t_command *cmd, t_token **tokens)
 {
 	cmd->name = ft_strdup((*tokens)->value);
-	cmd->args[0] = NULL;
+	cmd->args[0] = ft_strdup((*tokens)->value);
 	cmd->in_red[0] = NULL;
 	cmd->out_red[0] = NULL;
 }

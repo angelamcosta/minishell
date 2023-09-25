@@ -6,7 +6,7 @@
 /*   By: anlima <anlima@student.42lisboa.com>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/07 20:48:28 by anlima            #+#    #+#             */
-/*   Updated: 2023/09/24 21:46:21 by anlima           ###   ########.fr       */
+/*   Updated: 2023/09/25 18:15:12 by anlima           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,6 +21,7 @@
 # include "../libft/libft.h"
 # include <dirent.h>
 # include <errno.h>
+# include <fcntl.h>
 # include <limits.h>
 # include <readline/history.h>
 # include <readline/readline.h>
@@ -34,8 +35,6 @@
 # define MAX_TOKENS 100
 # define LEN 25
 # define PROMPT "\001\e[38;5;206m\002Minishell\001\e[0m\002 ➜ "
-# define SUCCESS 0
-# define FAILURE 1
 # define NOT_FOUND 127
 
 enum					e_TokenType
@@ -74,6 +73,7 @@ typedef struct s_term
 	t_token				**tokens;
 	t_command			cmd_list[MAX_TOKENS];
 	int					exit_status;
+	int					pipe_fd[2];
 }						t_term;
 
 // buitins
@@ -89,6 +89,14 @@ void					execute_export(char **input);
 void					add_to_env(char *input, char *subs);
 // executor
 void					executor(void);
+void					execute_cmd(t_command *cmd);
+void					execute(t_command *cmd, char *in, char *out,
+							char *path);
+void					create_pipe(void);
+char					*get_path(char *cmd_name);
+void					redirect_stdin(char *filename);
+void					redirect_stdout(char *filename);
+void					wait_child_proc(pid_t child_pid);
 // parser
 void					lexer(void);
 void					grammar(void);
@@ -105,6 +113,7 @@ void					free_tokens(void);
 void					clean_mallocs(void);
 void					free_commands(void);
 // general
+void					error_status(char *function, int err);
 t_term					*term(void);
 void					free_env(void);
 int						is_env(char *subs);

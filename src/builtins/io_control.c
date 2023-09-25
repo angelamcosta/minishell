@@ -6,7 +6,7 @@
 /*   By: anlima <anlima@student.42lisboa.com>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/27 23:16:11 by anlima            #+#    #+#             */
-/*   Updated: 2023/09/24 21:25:42 by anlima           ###   ########.fr       */
+/*   Updated: 2023/09/25 15:55:47 by anlima           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,7 +37,7 @@ void	execute_echo(char **args)
 	char	quote;
 	char	*str;
 
-	i = -1;
+	i = 0;
 	while (args && args[++i])
 	{
 		j = -1;

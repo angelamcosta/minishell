@@ -6,7 +6,7 @@
 /*   By: anlima <anlima@student.42lisboa.com>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/23 14:45:31 by anlima            #+#    #+#             */
-/*   Updated: 2023/09/24 21:18:00 by anlima           ###   ########.fr       */
+/*   Updated: 2023/09/25 13:03:02 by anlima           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,7 @@ void	lexer(void)
 	if (!check_quotes(term()->command))
 	{
 		printf("parse error; unbalanced quotes\n");
-		term()->exit_status = FAILURE;
+		term()->exit_status = EXIT_FAILURE;
 		return ;
 	}
 	tokenize_input(term()->command);
@@ -68,7 +68,7 @@ void	grammar(void)
 			&& tokens[i]->type != ARG && tokens[i]->type != VAR)
 		{
 			printf("parse error near `%s`\n", tokens[i]->value);
-			term()->exit_status = FAILURE;
+			term()->exit_status = EXIT_FAILURE;
 			return ;
 		}
 	}

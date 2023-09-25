@@ -6,7 +6,7 @@
 /*   By: anlima <anlima@student.42lisboa.com>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/27 23:15:42 by anlima            #+#    #+#             */
-/*   Updated: 2023/09/24 21:45:57 by anlima           ###   ########.fr       */
+/*   Updated: 2023/09/25 15:56:37 by anlima           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,7 @@ void	execute_env(char **arg)
 	int		i;
 	char	**input;
 
-	if (arg[0] != NULL)
+	if (arg[1] != NULL)
 		printf("%s%s%s\n", BLUE, "env: too many arguments", CLEAR);
 	else
 	{
