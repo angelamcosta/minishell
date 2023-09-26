@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: anlima <anlima@student.42lisboa.com>       +#+  +:+       +#+        */
+/*   By: mpedroso <mpedroso@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/07 20:48:28 by anlima            #+#    #+#             */
-/*   Updated: 2023/09/25 18:15:12 by anlima           ###   ########.fr       */
+/*   Updated: 2023/09/25 22:15:21 by mpedroso         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -100,6 +100,7 @@ void					wait_child_proc(pid_t child_pid);
 // parser
 void					lexer(void);
 void					grammar(void);
+int						grammar_check(int i);
 int						check_quotes(char *str);
 void					tokenize_input(char *str);
 void					add_token(char *input, int i, int flag);
