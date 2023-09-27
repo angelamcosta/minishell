@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: anlima <anlima@student.42.fr>              +#+  +:+       +#+        */
+/*   By: anlima <anlima@student.42lisboa.com>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/07 20:48:28 by anlima            #+#    #+#             */
-/*   Updated: 2023/09/27 18:34:00 by anlima           ###   ########.fr       */
+/*   Updated: 2023/09/27 22:31:09 by anlima           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,6 +74,7 @@ typedef struct s_term
 	t_command			cmd_list[MAX_TOKENS];
 	int					exit_status;
 	int					pipe_fd[2];
+	int					in_cmd;
 }						t_term;
 
 // buitins
@@ -89,7 +90,7 @@ void					execute_export(char **input);
 void					add_to_env(char *input, char *subs);
 // executor
 void					executor(void);
-void					execute_cmd(t_command *cmd);
+void					execute_command(t_command *cmd);
 void					execute_no_red(t_command *cmd, char *path);
 void					execute_in(t_command *cmd, char *filename, char *path);
 void					execute_out(t_command *cmd, char *filename, char *path);
@@ -121,6 +122,5 @@ void					init_program(char **env);
 // signals
 void					set_signals(void);
 void					handle_sig_c(int sig);
-void					handle_sigint(int signum);
 
 #endif
