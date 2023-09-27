@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   io_control.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: anlima <anlima@student.42lisboa.com>       +#+  +:+       +#+        */
+/*   By: anlima <anlima@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/27 23:16:11 by anlima            #+#    #+#             */
-/*   Updated: 2023/09/25 15:55:47 by anlima           ###   ########.fr       */
+/*   Updated: 2023/09/26 15:03:28 by anlima           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,8 +48,8 @@ void	execute_echo(char **args)
 			while (str[j] && (str[j] != '"' && str[j] != '\''))
 				write(1, &str[j++], 1);
 			if (str[j] && quote == 0)
-				quote = str[j++];
-			while (str[j] && str[j] != quote)
+				quote = str[j];
+			while (str[++j] && str[j] != quote)
 				write(1, &str[j++], 1);
 			if (args[i + 1])
 				write(1, " ", 1);
