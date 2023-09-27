@@ -6,7 +6,7 @@
 /*   By: anlima <anlima@student.42lisboa.com>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/23 13:14:35 by anlima            #+#    #+#             */
-/*   Updated: 2023/09/24 19:59:52 by anlima           ###   ########.fr       */
+/*   Updated: 2023/09/27 22:43:35 by anlima           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,6 @@
 
 void	set_signals(void);
 void	handle_sig_c(int sig);
-void	handle_sigint(int signum);
 
 void	set_signals(void)
 {
@@ -22,18 +21,17 @@ void	set_signals(void)
 	signal(SIGQUIT, SIG_IGN);
 }
 
-void	handle_sigint(int signum)
-{
-	printf(PROMPT);
-	rl_on_new_line();
-	rl_replace_line("", 0);
-	rl_redisplay();
-}
-
 void	handle_sig_c(int sig)
 {
 	if (sig == SIGINT)
 	{
+		if (term()->in_cmd)
+		{
+			printf("\n");
+			rl_on_new_line();
+			rl_replace_line("", 0);
+			return ;
+		}
 		printf("\n");
 		rl_on_new_line();
 		rl_replace_line("", 0);
