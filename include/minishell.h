@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mpedroso <mpedroso@student.42lisboa.com    +#+  +:+       +#+        */
+/*   By: anlima <anlima@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/07 20:48:28 by anlima            #+#    #+#             */
-/*   Updated: 2023/09/25 22:15:21 by mpedroso         ###   ########.fr       */
+/*   Updated: 2023/09/27 18:34:00 by anlima           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -90,13 +90,11 @@ void					add_to_env(char *input, char *subs);
 // executor
 void					executor(void);
 void					execute_cmd(t_command *cmd);
-void					execute(t_command *cmd, char *in, char *out,
-							char *path);
+void					execute_no_red(t_command *cmd, char *path);
+void					execute_in(t_command *cmd, char *filename, char *path);
+void					execute_out(t_command *cmd, char *filename, char *path);
 void					create_pipe(void);
 char					*get_path(char *cmd_name);
-void					redirect_stdin(char *filename);
-void					redirect_stdout(char *filename);
-void					wait_child_proc(pid_t child_pid);
 // parser
 void					lexer(void);
 void					grammar(void);

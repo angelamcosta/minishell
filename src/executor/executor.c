@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   executor.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: anlima <anlima@student.42lisboa.com>       +#+  +:+       +#+        */
+/*   By: anlima <anlima@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/31 15:46:17 by anlima            #+#    #+#             */
-/*   Updated: 2023/09/25 18:37:31 by anlima           ###   ########.fr       */
+/*   Updated: 2023/09/27 18:26:42 by anlima           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,9 @@
 
 void	executor(void);
 void	execute_cmd(t_command *cmd);
-void	execute(t_command *cmd, char *in, char *out, char *path);
+void	execute_no_red(t_command *cmd, char *path);
+void	execute_in(t_command *cmd, char *filename, char *path);
+void	execute_out(t_command *cmd, char *filename, char *path);
 
 void	executor(void)
 {
@@ -39,45 +41,14 @@ void	executor(void)
 			execute_unset(term()->cmd_list[i].args);
 		else if (ft_strncmp(term()->cmd_list[i].name, "clear", 6) == 0)
 			execute_clear();
-		else
-			execute_cmd(&term()->cmd_list[i]);
 	}
 }
 
-void	execute_cmd(t_command *cmd)
-{
-	int		i;
-	char	*path;
-
-	path = get_path(cmd->name);
-	if (path == NULL)
-	{
-		printf("Command not found: %s\n", cmd->name);
-		term()->exit_status = NOT_FOUND;
-		return ;
-	}
-	if (cmd->in_red && cmd->in_red[0] != NULL)
-	{
-		i = -1;
-		while (cmd->in_red[++i])
-			execute(cmd, cmd->in_red[i], 0, path);
-	}
-	if (cmd->out_red && cmd->out_red[0] != NULL)
-	{
-		i = -1;
-		while (cmd->out_red[++i])
-			execute(cmd, 0, cmd->out_red[i], path);
-	}
-	else
-		execute(cmd, 0, 0, path);
-	free(path);
-}
-
-void	execute(t_command *cmd, char *in, char *out, char *path)
+void	execute_in(t_command *cmd, char *filename, char *path)
 {
 	pid_t	child_pid;
+	int		in;
 
-	create_pipe();
 	child_pid = fork();
 	if (child_pid == -1)
 	{
@@ -86,11 +57,63 @@ void	execute(t_command *cmd, char *in, char *out, char *path)
 	}
 	if (child_pid == 0)
 	{
-		if (in != NULL)
-			redirect_stdin(in);
-		if (out != NULL)
-			redirect_stdout(out);
-		close(term()->pipe_fd[1]);
+		in = open(filename, O_RDONLY);
+		if (in == -1)
+		{
+			perror("open");
+			exit(EXIT_FAILURE);
+		}
+		dup2(in, STDIN_FILENO);
+		close(in);
+		execve(path, cmd->args, NULL);
+		perror("execve");
+		exit(EXIT_FAILURE);
+	}
+	else
+		waitpid(child_pid, NULL, 0);
+}
+
+void	execute_out(t_command *cmd, char *filename, char *path)
+{
+	int		out;
+	pid_t	child_pid;
+
+	child_pid = fork();
+	if (child_pid == -1)
+	{
+		perror("fork");
+		exit(EXIT_FAILURE);
+	}
+	if (child_pid == 0)
+	{
+		out = open(filename, O_WRONLY | O_CREAT | O_TRUNC, 0777);
+		if (out == -1)
+		{
+			perror("open");
+			exit(EXIT_FAILURE);
+		}
+		dup2(out, STDOUT_FILENO);
+		close(out);
+		execve(path, cmd->args, NULL);
+		perror("execve");
+		exit(EXIT_FAILURE);
+	}
+	else
+		waitpid(child_pid, NULL, 0);
+}
+
+void	execute_no_red(t_command *cmd, char *path)
+{
+	pid_t	child_pid;
+
+	child_pid = fork();
+	if (child_pid == -1)
+	{
+		perror("fork");
+		exit(EXIT_FAILURE);
+	}
+	if (child_pid == 0)
+	{
 		execve(path, cmd->args, NULL);
 		perror("execve");
 		exit(EXIT_FAILURE);
