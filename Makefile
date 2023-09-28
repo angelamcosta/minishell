@@ -24,6 +24,7 @@ SRC		=	minishell.c \
 			$(SRC_DIR)/$(B_INS)/io_control.c \
 			$(SRC_DIR)/$(B_INS)/navigation.c \
 			$(SRC_DIR)/$(B_INS)/variable_env.c \
+			$(SRC_DIR)/$(XCTOR)/executor_utils.c \
 			$(SRC_DIR)/$(XCTOR)/executor.c \
 			$(SRC_DIR)/$(XCTOR)/pipes.c \
 			$(SRC_DIR)/$(PARSER)/lexer.c \

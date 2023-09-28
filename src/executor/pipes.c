@@ -6,7 +6,7 @@
 /*   By: anlima <anlima@student.42lisboa.com>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/28 15:37:42 by anlima            #+#    #+#             */
-/*   Updated: 2023/09/28 16:32:51 by anlima           ###   ########.fr       */
+/*   Updated: 2023/09/28 18:18:19 by anlima           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,8 +14,8 @@
 
 void	create_pipe(void);
 char	*get_path(char *cmd_name);
-void	find_command(t_command *cmd);
-void	set_pipes(t_command *cmd, int fd_in, int fd_out);
+void	set_pipes(int fd_in, int fd_out);
+void	create_fork(t_command *cmd, int fd_in, int fd_out);
 
 void	create_pipe(void)
 {
@@ -34,9 +34,7 @@ char	*get_path(char *cmd_name)
 	char	**paths;
 
 	i = 0;
-	while (ft_strncmp(term()->env[i], "PATH", 4) != 0)
-		i++;
-	paths = ft_split(term()->env[i] + 5, ':');
+	paths = ft_split(getenv("PATH") + 5, ':');
 	i = -1;
 	while (paths[++i])
 	{
@@ -55,7 +53,7 @@ char	*get_path(char *cmd_name)
 	return (path);
 }
 
-void	set_pipes(t_command *cmd, int fd_in, int fd_out)
+void	create_fork(t_command *cmd, int fd_in, int fd_out)
 {
 	pid_t	child_pid;
 
@@ -67,41 +65,31 @@ void	set_pipes(t_command *cmd, int fd_in, int fd_out)
 	}
 	if (child_pid == 0)
 	{
-		if (fd_in != STDIN_FILENO)
-		{
-			dup2(fd_in, STDIN_FILENO);
-			close(fd_in);
-		}
-		if (fd_out != STDOUT_FILENO)
-		{
-			dup2(fd_out, STDOUT_FILENO);
-			if (fd_out != term()->pipe_fd[1])
-				close(fd_out);
-		}
-		find_command(cmd);
+		set_pipes(fd_in, fd_out);
+		execute_red(cmd);
+		exit(0);
 	}
 	else
+	{
 		waitpid(child_pid, NULL, 0);
+		if (fd_in != STDIN_FILENO)
+			close(fd_in);
+		if (fd_out != STDOUT_FILENO && fd_out != term()->pipe_fd[1])
+			close(fd_out);
+	}
 }
 
-void	find_command(t_command *cmd)
+void	set_pipes(int fd_in, int fd_out)
 {
-	if (ft_strncmp(cmd->name, "exit", 5) == 0)
-		execute_exit();
-	else if (ft_strncmp(cmd->name, "echo", 5) == 0)
-		execute_echo(cmd->args);
-	else if (ft_strncmp(cmd->name, "cd", 3) == 0)
-		execute_cd(cmd->args);
-	else if (ft_strncmp(cmd->name, "pwd", 4) == 0)
-		execute_pwd(cmd->args);
-	else if (ft_strncmp(cmd->name, "env", 4) == 0)
-		execute_env(cmd->args);
-	else if (ft_strncmp(cmd->name, "export", 7) == 0)
-		execute_export(cmd->args);
-	else if (ft_strncmp(cmd->name, "unset", 6) == 0)
-		execute_unset(cmd->args);
-	else if (ft_strncmp(cmd->name, "clear", 6) == 0)
-		execute_clear();
-	else
-		execute_red(cmd);
+	if (fd_in != STDIN_FILENO)
+	{
+		dup2(fd_in, STDIN_FILENO);
+		close(fd_in);
+	}
+	if (fd_out != STDOUT_FILENO)
+	{
+		dup2(fd_out, STDOUT_FILENO);
+		if (fd_out != term()->pipe_fd[1])
+			close(fd_out);
+	}
 }

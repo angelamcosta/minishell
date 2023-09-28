@@ -6,7 +6,7 @@
 /*   By: anlima <anlima@student.42lisboa.com>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/31 15:46:17 by anlima            #+#    #+#             */
-/*   Updated: 2023/09/28 16:31:47 by anlima           ###   ########.fr       */
+/*   Updated: 2023/09/28 18:17:13 by anlima           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,16 +27,24 @@ void	executor(void)
 	i = -1;
 	while (term()->cmd_list[++i].name)
 	{
+		if (is_builtin(term()->cmd_list[i].name))
+		{
+			set_pipes(fd_in, STDOUT_FILENO);
+			execute_builtin(&term()->cmd_list[i]);
+			if (fd_in != STDIN_FILENO)
+				close(fd_in);
+			continue ;
+		}
 		if (term()->cmd_list[i + 1].name)
 		{
 			create_pipe();
-			set_pipes(&term()->cmd_list[i], fd_in, term()->pipe_fd[1]);
+			create_fork(&term()->cmd_list[i], fd_in, term()->pipe_fd[1]);
 			close(term()->pipe_fd[1]);
 			fd_in = term()->pipe_fd[0];
 		}
 		else
 		{
-			set_pipes(&term()->cmd_list[i], fd_in, STDOUT_FILENO);
+			create_fork(&term()->cmd_list[i], fd_in, STDOUT_FILENO);
 			if (i != 0)
 				close(fd_in);
 		}
@@ -50,7 +58,7 @@ void	execute_red(t_command *cmd)
 	char	**in_red;
 	char	**out_red;
 
-	path = get_path(cmd->name);
+	path = ft_strdup(get_path(cmd->name));
 	if (cmd->in_red[0] != NULL || cmd->out_red[0] != NULL)
 	{
 		out_red = cmd->out_red;
@@ -58,21 +66,18 @@ void	execute_red(t_command *cmd)
 		i = -1;
 		term()->in_cmd = 1;
 		while (cmd->in_red[++i])
-		{
-			if (!cmd->in_red[i + 1])
-				execute_in(cmd, cmd->in_red[i], path);
-		}
+			execute_in(cmd, cmd->in_red[i], path);
 		i = -1;
 		while (cmd->out_red[++i])
 			execute_out(cmd, cmd->out_red[i], path);
 		term()->in_cmd = 0;
 	}
-	else
-		execute_command(cmd, path);
+	execute_command(cmd, path);
 }
 
 void	execute_command(t_command *cmd, char *path)
 {
+	// printf("Path: %s\nArgs: %s\n", path, cmd->args[0]);
 	execve(path, cmd->args, NULL);
 	perror("execve");
 	exit(EXIT_FAILURE);
