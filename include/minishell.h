@@ -6,7 +6,7 @@
 /*   By: anlima <anlima@student.42lisboa.com>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/07 20:48:28 by anlima            #+#    #+#             */
-/*   Updated: 2023/09/27 22:31:09 by anlima           ###   ########.fr       */
+/*   Updated: 2023/09/28 15:50:18 by anlima           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -90,12 +90,14 @@ void					execute_export(char **input);
 void					add_to_env(char *input, char *subs);
 // executor
 void					executor(void);
-void					execute_command(t_command *cmd);
-void					execute_no_red(t_command *cmd, char *path);
+void					execute_red(t_command *cmd);
+void					execute_command(t_command *cmd, char *path);
 void					execute_in(t_command *cmd, char *filename, char *path);
 void					execute_out(t_command *cmd, char *filename, char *path);
 void					create_pipe(void);
 char					*get_path(char *cmd_name);
+void					find_command(t_command *cmd);
+void					set_pipes(t_command *cmd, int fd_in, int fd_out);
 // parser
 void					lexer(void);
 void					grammar(void);

@@ -6,47 +6,44 @@
 /*   By: anlima <anlima@student.42lisboa.com>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/31 15:46:17 by anlima            #+#    #+#             */
-/*   Updated: 2023/09/27 23:13:36 by anlima           ###   ########.fr       */
+/*   Updated: 2023/09/28 16:31:47 by anlima           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../include/minishell.h"
 
 void	executor(void);
-void	execute_command(t_command *cmd);
-void	execute_no_red(t_command *cmd, char *path);
+void	execute_red(t_command *cmd);
+void	execute_command(t_command *cmd, char *path);
 void	execute_in(t_command *cmd, char *filename, char *path);
 void	execute_out(t_command *cmd, char *filename, char *path);
 
 void	executor(void)
 {
 	int	i;
+	int	fd_in;
 
+	fd_in = STDIN_FILENO;
 	i = -1;
 	while (term()->cmd_list[++i].name)
 	{
-		if (ft_strncmp(term()->cmd_list[i].name, "exit", 5) == 0)
-			execute_exit();
-		else if (ft_strncmp(term()->cmd_list[i].name, "echo", 5) == 0)
-			execute_echo(term()->cmd_list[i].args);
-		else if (ft_strncmp(term()->cmd_list[i].name, "cd", 3) == 0)
-			execute_cd(term()->cmd_list[i].args);
-		else if (ft_strncmp(term()->cmd_list[i].name, "pwd", 4) == 0)
-			execute_pwd(term()->cmd_list[i].args);
-		else if (ft_strncmp(term()->cmd_list[i].name, "env", 4) == 0)
-			execute_env(term()->cmd_list[i].args);
-		else if (ft_strncmp(term()->cmd_list[i].name, "export", 7) == 0)
-			execute_export(term()->cmd_list[i].args);
-		else if (ft_strncmp(term()->cmd_list[i].name, "unset", 6) == 0)
-			execute_unset(term()->cmd_list[i].args);
-		else if (ft_strncmp(term()->cmd_list[i].name, "clear", 6) == 0)
-			execute_clear();
+		if (term()->cmd_list[i + 1].name)
+		{
+			create_pipe();
+			set_pipes(&term()->cmd_list[i], fd_in, term()->pipe_fd[1]);
+			close(term()->pipe_fd[1]);
+			fd_in = term()->pipe_fd[0];
+		}
 		else
-			execute_command(&term()->cmd_list[i]);
+		{
+			set_pipes(&term()->cmd_list[i], fd_in, STDOUT_FILENO);
+			if (i != 0)
+				close(fd_in);
+		}
 	}
 }
 
-void	execute_command(t_command *cmd)
+void	execute_red(t_command *cmd)
 {
 	int		i;
 	char	*path;
@@ -71,83 +68,40 @@ void	execute_command(t_command *cmd)
 		term()->in_cmd = 0;
 	}
 	else
-		execute_no_red(cmd, path);
+		execute_command(cmd, path);
 }
 
-void	execute_no_red(t_command *cmd, char *path)
+void	execute_command(t_command *cmd, char *path)
 {
-	pid_t	child_pid;
-
-	child_pid = fork();
-	if (child_pid == -1)
-	{
-		perror("fork");
-		exit(EXIT_FAILURE);
-	}
-	if (child_pid == 0)
-	{
-		execve(path, cmd->args, NULL);
-		perror("execve");
-		exit(EXIT_FAILURE);
-	}
-	else
-		waitpid(child_pid, NULL, 0);
+	execve(path, cmd->args, NULL);
+	perror("execve");
+	exit(EXIT_FAILURE);
 }
 
 void	execute_in(t_command *cmd, char *filename, char *path)
 {
-	int		in;
-	pid_t	child_pid;
+	int	in;
 
-	child_pid = fork();
-	if (child_pid == -1)
+	in = open(filename, O_RDONLY);
+	if (in == -1)
 	{
-		perror("fork");
+		perror("open");
 		exit(EXIT_FAILURE);
 	}
-	if (child_pid == 0)
-	{
-		in = open(filename, O_RDONLY);
-		if (in == -1)
-		{
-			perror("open");
-			exit(EXIT_FAILURE);
-		}
-		dup2(in, STDIN_FILENO);
-		close(in);
-		execve(path, cmd->args, NULL);
-		perror("execve");
-		exit(EXIT_FAILURE);
-	}
-	else
-		waitpid(child_pid, NULL, 0);
+	dup2(in, STDIN_FILENO);
+	close(in);
 }
 
 void	execute_out(t_command *cmd, char *filename, char *path)
 {
-	int		out;
-	pid_t	child_pid;
+	int	out;
 
-	child_pid = fork();
-	if (child_pid == -1)
+	out = open(filename, O_WRONLY | O_CREAT | O_TRUNC, 0777);
+	if (out == -1)
 	{
-		perror("fork");
+		perror("open");
 		exit(EXIT_FAILURE);
 	}
-	if (child_pid == 0)
-	{
-		out = open(filename, O_WRONLY | O_CREAT | O_TRUNC, 0777);
-		if (out == -1)
-		{
-			perror("open");
-			exit(EXIT_FAILURE);
-		}
-		dup2(out, STDOUT_FILENO);
-		close(out);
-		execve(path, cmd->args, NULL);
-		perror("execve");
-		exit(EXIT_FAILURE);
-	}
-	else
-		waitpid(child_pid, NULL, 0);
+	dup2(out, STDOUT_FILENO);
+	close(out);
 }
