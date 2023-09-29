@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   executor.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: anlima <anlima@student.42lisboa.com>       +#+  +:+       +#+        */
+/*   By: anlima <anlima@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/31 15:46:17 by anlima            #+#    #+#             */
-/*   Updated: 2023/09/28 18:17:13 by anlima           ###   ########.fr       */
+/*   Updated: 2023/09/29 16:17:45 by anlima           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,7 @@ void	executor(void);
 void	execute_red(t_command *cmd);
 void	execute_command(t_command *cmd, char *path);
 void	execute_in(t_command *cmd, char *filename, char *path);
-void	execute_out(t_command *cmd, char *filename, char *path);
+void	execute_out(t_command *cmd, char *filename, char *path, int flag);
 
 void	executor(void)
 {
@@ -64,13 +64,14 @@ void	execute_red(t_command *cmd)
 		out_red = cmd->out_red;
 		in_red = cmd->in_red;
 		i = -1;
-		term()->in_cmd = 1;
 		while (cmd->in_red[++i])
 			execute_in(cmd, cmd->in_red[i], path);
 		i = -1;
 		while (cmd->out_red[++i])
-			execute_out(cmd, cmd->out_red[i], path);
-		term()->in_cmd = 0;
+			execute_out(cmd, cmd->out_red[i], path, 0);
+		i = -1;
+		while (cmd->delimiters[++i])
+			execute_out(cmd, cmd->out_red[i], path, 1);
 	}
 	execute_command(cmd, path);
 }
@@ -97,11 +98,14 @@ void	execute_in(t_command *cmd, char *filename, char *path)
 	close(in);
 }
 
-void	execute_out(t_command *cmd, char *filename, char *path)
+void	execute_out(t_command *cmd, char *filename, char *path, int flag)
 {
 	int	out;
 
-	out = open(filename, O_WRONLY | O_CREAT | O_TRUNC, 0777);
+	if (flag)
+		out = open(filename, O_WRONLY | O_CREAT | O_APPEND, 0777);
+	else
+		out = open(filename, O_WRONLY | O_CREAT | O_TRUNC, 0777);
 	if (out == -1)
 	{
 		perror("open");

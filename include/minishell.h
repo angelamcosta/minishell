@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: anlima <anlima@student.42lisboa.com>       +#+  +:+       +#+        */
+/*   By: anlima <anlima@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/07 20:48:28 by anlima            #+#    #+#             */
-/*   Updated: 2023/09/28 18:08:15 by anlima           ###   ########.fr       */
+/*   Updated: 2023/09/29 16:17:57 by anlima           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,6 +62,7 @@ typedef struct s_command
 	char				*in_red[LEN];
 	char				*out_red[LEN];
 	char				*delimiters[LEN];
+	char				*append[LEN];
 }						t_command;
 
 typedef struct s_term
@@ -74,7 +75,6 @@ typedef struct s_term
 	t_command			cmd_list[MAX_TOKENS];
 	int					exit_status;
 	int					pipe_fd[2];
-	int					in_cmd;
 }						t_term;
 
 // buitins
@@ -95,7 +95,8 @@ void					executor(void);
 void					execute_red(t_command *cmd);
 void					execute_command(t_command *cmd, char *path);
 void					execute_in(t_command *cmd, char *filename, char *path);
-void					execute_out(t_command *cmd, char *filename, char *path);
+void					execute_out(t_command *cmd, char *filename, char *path,
+							int flag);
 void					create_pipe(void);
 char					*get_path(char *cmd_name);
 void					set_pipes(int fd_in, int fd_out);

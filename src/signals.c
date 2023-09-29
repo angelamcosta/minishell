@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   signals.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: anlima <anlima@student.42lisboa.com>       +#+  +:+       +#+        */
+/*   By: anlima <anlima@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/23 13:14:35 by anlima            #+#    #+#             */
-/*   Updated: 2023/09/27 22:43:35 by anlima           ###   ########.fr       */
+/*   Updated: 2023/09/29 16:18:11 by anlima           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,13 +25,6 @@ void	handle_sig_c(int sig)
 {
 	if (sig == SIGINT)
 	{
-		if (term()->in_cmd)
-		{
-			printf("\n");
-			rl_on_new_line();
-			rl_replace_line("", 0);
-			return ;
-		}
 		printf("\n");
 		rl_on_new_line();
 		rl_replace_line("", 0);

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parser.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: anlima <anlima@student.42lisboa.com>       +#+  +:+       +#+        */
+/*   By: anlima <anlima@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/01 13:48:47 by anlima            #+#    #+#             */
-/*   Updated: 2023/09/28 19:11:14 by anlima           ###   ########.fr       */
+/*   Updated: 2023/09/29 16:12:39 by anlima           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,6 +39,8 @@ void	parser(void)
 			add_red(term()->cmd_list[j].in_red, term()->tokens[++i]->value);
 		else if (term()->tokens[i]->type == RED_OUT)
 			add_red(term()->cmd_list[j].out_red, term()->tokens[++i]->value);
+		else if (term()->tokens[i]->type == APPEND)
+			add_red(term()->cmd_list[j].append, term()->tokens[++i]->value);
 		else if (term()->tokens[i]->type == VAR)
 			handle_variables(&term()->cmd_list[j], term()->tokens[i]->value);
 	}
