@@ -6,7 +6,7 @@
 /*   By: anlima <anlima@student.42lisboa.com>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/07 20:48:28 by anlima            #+#    #+#             */
-/*   Updated: 2023/09/30 16:30:05 by anlima           ###   ########.fr       */
+/*   Updated: 2023/09/30 18:47:36 by anlima           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -90,10 +90,10 @@ void					execute_unset(char **input);
 void					execute_export(char **input);
 void					add_to_env(char *input, char *subs);
 // executor
+int						count_commands(void);
 int						check_flag(char *input);
 int						is_builtin(char *cmd_name);
 void					execute_builtin(t_command *cmd);
-void					single_command(t_command *cmd, int fd_in, int fd_out);
 void					executor(void);
 void					execute_red(t_command *cmd);
 void					execute_command(t_command *cmd, char *path);
@@ -103,7 +103,7 @@ void					execute_out(t_command *cmd, char *filename, char *path,
 void					create_pipe(void);
 char					*get_path(char *cmd_name);
 void					set_pipes(int fd_in, int fd_out);
-void					create_fork(t_command *cmd, int fd_in, int fd_out);
+pid_t					create_fork(t_command *cmd, int fd_in, int fd_out);
 // parser
 int						grammar_check(int i);
 char					*get_var_name(char *value);

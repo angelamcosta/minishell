@@ -6,7 +6,7 @@
 /*   By: anlima <anlima@student.42lisboa.com>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/31 15:46:17 by anlima            #+#    #+#             */
-/*   Updated: 2023/09/30 17:11:03 by anlima           ###   ########.fr       */
+/*   Updated: 2023/09/30 19:09:40 by anlima           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,35 +20,38 @@ void	execute_out(t_command *cmd, char *filename, char *path, int flag);
 
 void	executor(void)
 {
-	int	i;
-	int	fd_in;
+	int		i;
+	int		fd_in;
+	pid_t	*child_pids;
 
 	fd_in = STDIN_FILENO;
 	i = -1;
+	child_pids = malloc(count_commands() * sizeof(pid_t));
 	while (term()->cmd_list[++i].name)
 	{
-		if (is_builtin(term()->cmd_list[i].name))
-		{
-			set_pipes(fd_in, STDOUT_FILENO);
-			execute_builtin(&term()->cmd_list[i]);
-			if (fd_in != STDIN_FILENO)
-				close(fd_in);
-			continue ;
-		}
 		if (term()->cmd_list[i + 1].name)
 		{
 			create_pipe();
-			create_fork(&term()->cmd_list[i], fd_in, term()->pipe_fd[1]);
+			child_pids[i] = create_fork(&term()->cmd_list[i], fd_in,
+					term()->pipe_fd[1]);
 			close(term()->pipe_fd[1]);
 			fd_in = term()->pipe_fd[0];
 		}
 		else
 		{
-			create_fork(&term()->cmd_list[i], fd_in, STDOUT_FILENO);
-			if (i != 0)
+			child_pids[i] = create_fork(&term()->cmd_list[i], fd_in,
+					STDOUT_FILENO);
+			if (fd_in != STDIN_FILENO)
 				close(fd_in);
 		}
 	}
+	i = -1;
+	while (++i < count_commands())
+	{
+		if (child_pids[i] > 0)
+			waitpid(child_pids[i], NULL, 0);
+	}
+	free(child_pids);
 }
 
 void	execute_red(t_command *cmd)

@@ -6,12 +6,13 @@
 /*   By: anlima <anlima@student.42lisboa.com>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/31 17:06:45 by anlima            #+#    #+#             */
-/*   Updated: 2023/09/30 17:07:32 by anlima           ###   ########.fr       */
+/*   Updated: 2023/09/30 18:56:34 by anlima           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../include/minishell.h"
 
+int		count_commands(void);
 int		check_flag(char *input);
 int		is_builtin(char *cmd_name);
 void	execute_builtin(t_command *cmd);
@@ -68,4 +69,14 @@ int	check_flag(char *input)
 			return (0);
 	}
 	return (1);
+}
+
+int	count_commands(void)
+{
+	int	i;
+
+	i = -1;
+	while (term()->cmd_list && term()->cmd_list[i].name)
+		i++;
+	return (i);
 }

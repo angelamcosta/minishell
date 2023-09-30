@@ -6,7 +6,7 @@
 /*   By: anlima <anlima@student.42lisboa.com>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/28 15:37:42 by anlima            #+#    #+#             */
-/*   Updated: 2023/09/28 18:18:19 by anlima           ###   ########.fr       */
+/*   Updated: 2023/09/30 18:47:20 by anlima           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,7 @@
 void	create_pipe(void);
 char	*get_path(char *cmd_name);
 void	set_pipes(int fd_in, int fd_out);
-void	create_fork(t_command *cmd, int fd_in, int fd_out);
+pid_t	create_fork(t_command *cmd, int fd_in, int fd_out);
 
 void	create_pipe(void)
 {
@@ -53,7 +53,7 @@ char	*get_path(char *cmd_name)
 	return (path);
 }
 
-void	create_fork(t_command *cmd, int fd_in, int fd_out)
+pid_t	create_fork(t_command *cmd, int fd_in, int fd_out)
 {
 	pid_t	child_pid;
 
@@ -66,17 +66,20 @@ void	create_fork(t_command *cmd, int fd_in, int fd_out)
 	if (child_pid == 0)
 	{
 		set_pipes(fd_in, fd_out);
-		execute_red(cmd);
+		if (is_builtin(cmd->name))
+			execute_builtin(cmd);
+		else
+			execute_red(cmd);
 		exit(0);
 	}
 	else
 	{
-		waitpid(child_pid, NULL, 0);
 		if (fd_in != STDIN_FILENO)
 			close(fd_in);
 		if (fd_out != STDOUT_FILENO && fd_out != term()->pipe_fd[1])
 			close(fd_out);
 	}
+	return (child_pid);
 }
 
 void	set_pipes(int fd_in, int fd_out)

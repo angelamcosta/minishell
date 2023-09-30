@@ -6,7 +6,7 @@
 /*   By: anlima <anlima@student.42lisboa.com>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/07 20:47:34 by anlima            #+#    #+#             */
-/*   Updated: 2023/09/24 20:03:42 by anlima           ###   ########.fr       */
+/*   Updated: 2023/09/30 19:18:07 by anlima           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,3 +29,8 @@ int	main(int argc, char **argv, char **env)
 	}
 	return (0);
 }
+
+// TODO: - Work on append
+// TODO: - Env commands have to work (ie, persist) IF they are the only command or the last command
+// TODO: - HEREDOC
+// TODO: - make the exist status work
