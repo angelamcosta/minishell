@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   executor.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: anlima <anlima@student.42.fr>              +#+  +:+       +#+        */
+/*   By: anlima <anlima@student.42lisboa.com>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/31 15:46:17 by anlima            #+#    #+#             */
-/*   Updated: 2023/09/29 16:17:45 by anlima           ###   ########.fr       */
+/*   Updated: 2023/09/30 17:11:03 by anlima           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,14 +71,13 @@ void	execute_red(t_command *cmd)
 			execute_out(cmd, cmd->out_red[i], path, 0);
 		i = -1;
 		while (cmd->delimiters[++i])
-			execute_out(cmd, cmd->out_red[i], path, 1);
+			execute_out(cmd, cmd->append[i], path, 1);
 	}
 	execute_command(cmd, path);
 }
 
 void	execute_command(t_command *cmd, char *path)
 {
-	// printf("Path: %s\nArgs: %s\n", path, cmd->args[0]);
 	execve(path, cmd->args, NULL);
 	perror("execve");
 	exit(EXIT_FAILURE);
