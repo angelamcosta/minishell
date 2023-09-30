@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parser.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: anlima <anlima@student.42.fr>              +#+  +:+       +#+        */
+/*   By: anlima <anlima@student.42lisboa.com>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/01 13:48:47 by anlima            #+#    #+#             */
-/*   Updated: 2023/09/29 16:12:39 by anlima           ###   ########.fr       */
+/*   Updated: 2023/09/30 13:18:23 by anlima           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -78,10 +78,7 @@ void	handle_variables(t_command *cmd, char *value)
 
 	i = -1;
 	flag = 0;
-	if (value[0] == '"')
-		var_name = value + 2;
-	else
-		var_name = value + 1;
+	var_name = get_var_name(value);
 	while (term()->env[++i] != NULL && !flag)
 	{
 		j = ft_strlen(var_name);

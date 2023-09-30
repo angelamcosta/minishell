@@ -6,7 +6,7 @@
 /*   By: anlima <anlima@student.42lisboa.com>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/27 23:15:42 by anlima            #+#    #+#             */
-/*   Updated: 2023/09/28 17:46:45 by anlima           ###   ########.fr       */
+/*   Updated: 2023/09/30 13:46:02 by anlima           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -105,8 +105,6 @@ void	execute_export(char **input)
 			}
 		}
 	}
-	// if (i == 1)
-	// 	execute_env("declare -x ");
 }
 
 void	add_to_env(char *input, char *subs)

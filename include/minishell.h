@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: anlima <anlima@student.42.fr>              +#+  +:+       +#+        */
+/*   By: anlima <anlima@student.42lisboa.com>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/07 20:48:28 by anlima            #+#    #+#             */
-/*   Updated: 2023/09/29 16:17:57 by anlima           ###   ########.fr       */
+/*   Updated: 2023/09/30 16:30:05 by anlima           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -80,6 +80,7 @@ typedef struct s_term
 // buitins
 void					execute_exit(void);
 void					execute_clear(void);
+void					print_str(char *str);
 void					execute_echo(char **args);
 void					execute_cd(char **args);
 void					execute_pwd(char **args);
@@ -89,8 +90,10 @@ void					execute_unset(char **input);
 void					execute_export(char **input);
 void					add_to_env(char *input, char *subs);
 // executor
+int						check_flag(char *input);
 int						is_builtin(char *cmd_name);
 void					execute_builtin(t_command *cmd);
+void					single_command(t_command *cmd, int fd_in, int fd_out);
 void					executor(void);
 void					execute_red(t_command *cmd);
 void					execute_command(t_command *cmd, char *path);
@@ -102,9 +105,10 @@ char					*get_path(char *cmd_name);
 void					set_pipes(int fd_in, int fd_out);
 void					create_fork(t_command *cmd, int fd_in, int fd_out);
 // parser
+int						grammar_check(int i);
+char					*get_var_name(char *value);
 void					lexer(void);
 void					grammar(void);
-int						grammar_check(int i);
 int						check_quotes(char *str);
 void					tokenize_input(char *str);
 void					add_token(char *input, int i, int flag);

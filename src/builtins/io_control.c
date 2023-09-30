@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   io_control.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: anlima <anlima@student.42.fr>              +#+  +:+       +#+        */
+/*   By: anlima <anlima@student.42lisboa.com>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/27 23:16:11 by anlima            #+#    #+#             */
-/*   Updated: 2023/09/26 15:03:28 by anlima           ###   ########.fr       */
+/*   Updated: 2023/09/30 16:42:07 by anlima           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,7 @@
 
 void	execute_exit(void);
 void	execute_clear(void);
+void	print_str(char *str);
 void	execute_echo(char **args);
 
 void	execute_exit(void)
@@ -32,28 +33,42 @@ void	execute_clear(void)
 
 void	execute_echo(char **args)
 {
-	int		i;
-	int		j;
-	char	quote;
-	char	*str;
+	int	i;
+	int	j;
+	int	flag;
 
 	i = 0;
-	while (args && args[++i])
+	flag = check_flag(args[0]);
+	if (flag)
+		i++;
+	while (args && args[i])
 	{
-		j = -1;
-		quote = 0;
-		str = args[i];
-		while (str && str[++j])
+		if ((i > 0 && !flag) || i > 1 && flag)
+			write(1, " ", 1);
+		print_str(args[i]);
+		i++;
+	}
+}
+
+void	print_str(char *str)
+{
+	int	i;
+	int	quote;
+
+	i = -1;
+	quote = 0;
+	while (str && str[++i])
+	{
+		if (str[i] != '\'' && str[i] != '"')
+			write(1, &str[i], 1);
+		else
 		{
-			while (str[j] && (str[j] != '"' && str[j] != '\''))
-				write(1, &str[j++], 1);
-			if (str[j] && quote == 0)
-				quote = str[j];
-			while (str[++j] && str[j] != quote)
-				write(1, &str[j++], 1);
-			if (args[i + 1])
-				write(1, " ", 1);
+			if (quote == 0)
+				quote = str[i];
+			else if (str[i] == quote)
+				quote = 0;
+			else
+				write(1, &str[i], 1);
 		}
 	}
-	printf("\n");
 }
