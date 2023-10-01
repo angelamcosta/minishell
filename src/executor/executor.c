@@ -6,7 +6,7 @@
 /*   By: anlima <anlima@student.42lisboa.com>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/31 15:46:17 by anlima            #+#    #+#             */
-/*   Updated: 2023/10/01 12:07:37 by anlima           ###   ########.fr       */
+/*   Updated: 2023/10/01 15:39:42 by anlima           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,29 +63,27 @@ void	execute_red(t_command *cmd)
 {
 	int		i;
 	char	*path;
-	char	**in_red;
-	char	**out_red;
 
-	path = ft_strdup(get_path(cmd->name));
-	if (cmd->in_red[0] != NULL || cmd->out_red[0] != NULL)
-	{
-		out_red = cmd->out_red;
-		in_red = cmd->in_red;
-		i = -1;
-		while (cmd->in_red[++i])
-			execute_in(cmd, cmd->in_red[i], path);
-		i = -1;
-		while (cmd->out_red[++i])
-			execute_out(cmd, cmd->out_red[i], path, 0);
-		i = -1;
-		while (cmd->delimiters[++i])
-			execute_out(cmd, cmd->append[i], path, 1);
-	}
+	path = get_path(cmd->name);
+	i = -1;
+	while (cmd->in_red[++i])
+		execute_in(cmd, cmd->in_red[i], path);
+	i = -1;
+	while (cmd->append[++i])
+		execute_out(cmd, cmd->append[i], path, 1);
+	i = -1;
+	while (cmd->out_red[++i])
+		execute_out(cmd, cmd->out_red[i], path, 0);
 	execute_command(cmd, path);
 }
 
 void	execute_command(t_command *cmd, char *path)
 {
+	if (access(path, X_OK) == -1)
+	{
+		fprintf(stderr, "%s: command not found\n", cmd->name);
+		exit(NOT_FOUND);
+	}
 	execve(path, cmd->args, NULL);
 	perror("execve");
 	exit(EXIT_FAILURE);

@@ -6,7 +6,7 @@
 /*   By: anlima <anlima@student.42lisboa.com>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/28 15:37:42 by anlima            #+#    #+#             */
-/*   Updated: 2023/09/30 18:47:20 by anlima           ###   ########.fr       */
+/*   Updated: 2023/10/01 15:39:14 by anlima           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,6 +50,8 @@ char	*get_path(char *cmd_name)
 	while (paths[++i])
 		free(paths[i]);
 	free(paths);
+	if (!path)
+		return (NULL);
 	return (path);
 }
 

@@ -6,11 +6,13 @@
 /*   By: anlima <anlima@student.42lisboa.com>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/07 20:47:34 by anlima            #+#    #+#             */
-/*   Updated: 2023/10/01 12:11:31 by anlima           ###   ########.fr       */
+/*   Updated: 2023/10/01 15:13:32 by anlima           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "./include/minishell.h"
+
+void	print_command(const t_command *cmd);
 
 int	main(int argc, char **argv, char **env)
 {
@@ -30,6 +32,6 @@ int	main(int argc, char **argv, char **env)
 	return (0);
 }
 
-// TODO: - Work on append
 // TODO: - HEREDOC
 // TODO: - make the exist status work
+// TODO: - throw error when command doesnt exist
