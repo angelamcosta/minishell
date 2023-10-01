@@ -6,7 +6,7 @@
 /*   By: anlima <anlima@student.42lisboa.com>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/31 15:46:17 by anlima            #+#    #+#             */
-/*   Updated: 2023/09/30 19:09:40 by anlima           ###   ########.fr       */
+/*   Updated: 2023/10/01 12:07:37 by anlima           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,6 +29,11 @@ void	executor(void)
 	child_pids = malloc(count_commands() * sizeof(pid_t));
 	while (term()->cmd_list[++i].name)
 	{
+		if (i == count_commands() - 1 && (is_builtin(term()->cmd_list[i].name)))
+		{
+			execute_builtin(&term()->cmd_list[i]);
+			break ;
+		}
 		if (term()->cmd_list[i + 1].name)
 		{
 			create_pipe();
