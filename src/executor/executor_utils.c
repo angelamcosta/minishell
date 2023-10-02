@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   executor_utils.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: anlima <anlima@student.42lisboa.com>       +#+  +:+       +#+        */
+/*   By: anlima <anlima@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/31 17:06:45 by anlima            #+#    #+#             */
-/*   Updated: 2023/09/30 18:56:34 by anlima           ###   ########.fr       */
+/*   Updated: 2023/10/02 14:11:56 by anlima           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -76,7 +76,7 @@ int	count_commands(void)
 	int	i;
 
 	i = -1;
-	while (term()->cmd_list && term()->cmd_list[i].name)
+	while (term()->cmd_list[i].name)
 		i++;
 	return (i);
 }

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   lexer.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mpedroso <mpedroso@student.42lisboa.com    +#+  +:+       +#+        */
+/*   By: anlima <anlima@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/23 14:45:31 by anlima            #+#    #+#             */
-/*   Updated: 2023/09/25 22:14:29 by mpedroso         ###   ########.fr       */
+/*   Updated: 2023/10/02 16:08:41 by anlima           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,7 +64,9 @@ void	grammar(void)
 	tokens = term()->tokens;
 	while (tokens && tokens[++i])
 	{
-		if (grammar_check(i) == 0)
+		if (grammar_check(i) == 0 || (i == 0 && tokens[i]->value[0] == '|')
+			|| ((tokens[i + 1]) && tokens[i]->type == PIPE
+				&& tokens[i]->type == tokens[i + 1]->type))
 		{
 			printf("parse error near `%s`\n", tokens[i]->value);
 			term()->exit_status = EXIT_FAILURE;
@@ -103,8 +105,7 @@ void	tokenize_input(char *str)
 	term()->tokens = (t_token **)malloc(sizeof(t_token *) * (MAX_TOKENS + 1));
 	while (input && input[i] && i < MAX_TOKENS)
 	{
-		if (i == 0 || (input[i - 1] && (ft_strncmp(input[i - 1], "|", 1) == 0
-					|| ft_strncmp(input[i - 1], "&", 1) == 0)))
+		if (i == 0 || (input[i - 1] && (ft_strncmp(input[i - 1], "|", 1) == 0 && input[i][0] != '|')))
 			add_token(input[i], i, 1);
 		else
 			add_token(input[i], i, 0);
