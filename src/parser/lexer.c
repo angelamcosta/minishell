@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   lexer.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: anlima <anlima@student.42.fr>              +#+  +:+       +#+        */
+/*   By: anlima <anlima@student.42lisboa.com>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/23 14:45:31 by anlima            #+#    #+#             */
-/*   Updated: 2023/10/02 16:08:41 by anlima           ###   ########.fr       */
+/*   Updated: 2023/10/03 12:31:45 by anlima           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,8 +26,11 @@ void	lexer(void)
 		term()->exit_status = EXIT_FAILURE;
 		return ;
 	}
-	tokenize_input(term()->command);
-	grammar();
+	if (read_string())
+	{
+		tokenize_input(term()->command);
+		grammar();
+	}
 }
 
 void	add_token(char *input, int i, int flag)
@@ -105,7 +108,8 @@ void	tokenize_input(char *str)
 	term()->tokens = (t_token **)malloc(sizeof(t_token *) * (MAX_TOKENS + 1));
 	while (input && input[i] && i < MAX_TOKENS)
 	{
-		if (i == 0 || (input[i - 1] && (ft_strncmp(input[i - 1], "|", 1) == 0 && input[i][0] != '|')))
+		if (i == 0 || i - 1 >= 0 && ((ft_strncmp(input[i - 1], "|", 1) == 0)
+				&& (input[i][0] != '|')))
 			add_token(input[i], i, 1);
 		else
 			add_token(input[i], i, 0);

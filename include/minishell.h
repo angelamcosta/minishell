@@ -6,7 +6,7 @@
 /*   By: anlima <anlima@student.42lisboa.com>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/07 20:48:28 by anlima            #+#    #+#             */
-/*   Updated: 2023/09/30 18:47:36 by anlima           ###   ########.fr       */
+/*   Updated: 2023/10/03 12:30:16 by anlima           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,6 +36,7 @@
 # define LEN 25
 # define PROMPT "\001\e[38;5;206m\002Minishell\001\e[0m\002 ➜ "
 # define NOT_FOUND 127
+# define BUFF_SIZE 1024
 
 enum					e_TokenType
 {
@@ -78,6 +79,7 @@ typedef struct s_term
 }						t_term;
 
 // buitins
+void					heredoc(char *delimiter);
 void					execute_exit(void);
 void					execute_clear(void);
 void					print_str(char *str);
@@ -105,6 +107,7 @@ char					*get_path(char *cmd_name);
 void					set_pipes(int fd_in, int fd_out);
 pid_t					create_fork(t_command *cmd, int fd_in, int fd_out);
 // parser
+int						read_string(void);
 int						grammar_check(int i);
 char					*get_var_name(char *value);
 void					lexer(void);
