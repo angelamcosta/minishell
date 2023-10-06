@@ -3,16 +3,15 @@
 /*                                                        :::      ::::::::   */
 /*   executor_utils.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: anlima <anlima@student.42.fr>              +#+  +:+       +#+        */
+/*   By: anlima <anlima@student.42lisboa.com>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/31 17:06:45 by anlima            #+#    #+#             */
-/*   Updated: 2023/10/02 14:11:56 by anlima           ###   ########.fr       */
+/*   Updated: 2023/10/06 14:40:05 by anlima           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../include/minishell.h"
 
-int		count_commands(void);
 int		check_flag(char *input);
 int		is_builtin(char *cmd_name);
 void	execute_builtin(t_command *cmd);
@@ -44,6 +43,8 @@ void	execute_builtin(t_command *cmd)
 
 int	is_builtin(char *cmd_name)
 {
+	if (!cmd_name)
+		return (0);
 	if ((ft_strncmp(cmd_name, "exit", 5) == 0) || (ft_strncmp(cmd_name, "echo",
 				5) == 0) || (ft_strncmp(cmd_name, "cd", 3) == 0)
 		|| (ft_strncmp(cmd_name, "pwd", 4) == 0) || (ft_strncmp(cmd_name, "env",
@@ -69,14 +70,4 @@ int	check_flag(char *input)
 			return (0);
 	}
 	return (1);
-}
-
-int	count_commands(void)
-{
-	int	i;
-
-	i = -1;
-	while (term()->cmd_list[i].name)
-		i++;
-	return (i);
 }

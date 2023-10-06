@@ -6,7 +6,7 @@
 /*   By: anlima <anlima@student.42lisboa.com>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/07 20:48:28 by anlima            #+#    #+#             */
-/*   Updated: 2023/10/03 12:30:16 by anlima           ###   ########.fr       */
+/*   Updated: 2023/10/06 16:02:29 by anlima           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,6 +33,7 @@
 # include <sys/wait.h>
 # include <unistd.h>
 # define MAX_TOKENS 100
+# define HERETXT "temp_here.txt"
 # define LEN 25
 # define PROMPT "\001\e[38;5;206m\002Minishell\001\e[0m\002 ➜ "
 # define NOT_FOUND 127
@@ -76,6 +77,7 @@ typedef struct s_term
 	t_command			cmd_list[MAX_TOKENS];
 	int					exit_status;
 	int					pipe_fd[2];
+	int					count_cmd;
 }						t_term;
 
 // buitins
@@ -92,7 +94,6 @@ void					execute_unset(char **input);
 void					execute_export(char **input);
 void					add_to_env(char *input, char *subs);
 // executor
-int						count_commands(void);
 int						check_flag(char *input);
 int						is_builtin(char *cmd_name);
 void					execute_builtin(t_command *cmd);
@@ -109,6 +110,7 @@ pid_t					create_fork(t_command *cmd, int fd_in, int fd_out);
 // parser
 int						read_string(void);
 int						grammar_check(int i);
+void					count_commands(void);
 char					*get_var_name(char *value);
 void					lexer(void);
 void					grammar(void);

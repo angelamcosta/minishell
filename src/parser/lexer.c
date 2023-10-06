@@ -6,7 +6,7 @@
 /*   By: anlima <anlima@student.42lisboa.com>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/23 14:45:31 by anlima            #+#    #+#             */
-/*   Updated: 2023/10/03 12:31:45 by anlima           ###   ########.fr       */
+/*   Updated: 2023/10/06 15:45:53 by anlima           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,24 +38,25 @@ void	add_token(char *input, int i, int flag)
 	t_token	*token;
 
 	token = malloc(sizeof(t_token));
-	if (flag)
-		token->type = CMD;
-	else if (ft_strncmp(input, ">>", 2) == 0)
+	if (ft_strncmp(input, ">>", 2) == 0)
 		token->type = APPEND;
 	else if (ft_strncmp(input, "<<", 2) == 0)
 		token->type = HEREDOC;
-	else if (input[0] == '|' || input[0] == '&')
-		token->type = PIPE;
 	else if (input[0] == '<')
 		token->type = RED_IN;
 	else if (input[0] == '>')
 		token->type = RED_OUT;
+	else if (flag)
+		token->type = CMD;
+	else if (input[0] == '|' || input[0] == '&')
+		token->type = PIPE;
 	else if (input[0] == '$' || (input[0] == '"' && input[1] == '$'))
 		token->type = VAR;
 	else
 		token->type = ARG;
 	token->value = ft_strdup(input);
 	term()->tokens[i] = token;
+	printf("DEBUG: value %s is type %i\n", token->value, token->type);
 }
 
 void	grammar(void)

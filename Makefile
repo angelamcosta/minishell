@@ -21,6 +21,7 @@ VAL		=	--leak-check=full \
 			--track-fds=yes
 
 SRC		=	minishell.c \
+			$(SRC_DIR)/$(B_INS)/heredoc.c \
 			$(SRC_DIR)/$(B_INS)/io_control.c \
 			$(SRC_DIR)/$(B_INS)/navigation.c \
 			$(SRC_DIR)/$(B_INS)/variable_env.c \

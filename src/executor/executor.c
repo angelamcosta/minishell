@@ -6,7 +6,7 @@
 /*   By: anlima <anlima@student.42lisboa.com>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/31 15:46:17 by anlima            #+#    #+#             */
-/*   Updated: 2023/10/01 15:39:42 by anlima           ###   ########.fr       */
+/*   Updated: 2023/10/06 15:43:29 by anlima           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,15 +26,17 @@ void	executor(void)
 
 	fd_in = STDIN_FILENO;
 	i = -1;
-	child_pids = malloc(count_commands() * sizeof(pid_t));
-	while (term()->cmd_list[++i].name)
+	child_pids = malloc(term()->count_cmd * sizeof(pid_t));
+	printf("DEBUG: count_cmd value is %i\n", term()->count_cmd);
+	while (++i < term()->count_cmd - 1)
 	{
-		if (i == count_commands() - 1 && (is_builtin(term()->cmd_list[i].name)))
+		if (i == term()->count_cmd - 1 && (is_builtin(term()->cmd_list[i].name)))
 		{
+			printf("DEBUG: cmd %s\n",term()->cmd_list[i].name);
 			execute_builtin(&term()->cmd_list[i]);
 			break ;
 		}
-		if (term()->cmd_list[i + 1].name)
+		if (i < term()->count_cmd - 1)
 		{
 			create_pipe();
 			child_pids[i] = create_fork(&term()->cmd_list[i], fd_in,
@@ -51,7 +53,7 @@ void	executor(void)
 		}
 	}
 	i = -1;
-	while (++i < count_commands())
+	while (++i < term()->count_cmd)
 	{
 		if (child_pids[i] > 0)
 			waitpid(child_pids[i], NULL, 0);
@@ -79,6 +81,8 @@ void	execute_red(t_command *cmd)
 
 void	execute_command(t_command *cmd, char *path)
 {
+	if (!cmd->name)
+		exit(EXIT_SUCCESS);
 	if (access(path, X_OK) == -1)
 	{
 		fprintf(stderr, "%s: command not found\n", cmd->name);

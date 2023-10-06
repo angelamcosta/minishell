@@ -6,7 +6,7 @@
 /*   By: anlima <anlima@student.42lisboa.com>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/25 22:12:43 by mpedroso          #+#    #+#             */
-/*   Updated: 2023/10/03 11:57:53 by anlima           ###   ########.fr       */
+/*   Updated: 2023/10/06 16:08:29 by anlima           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,7 @@
 
 int		read_string(void);
 int		grammar_check(int i);
+void	count_commands(void);
 char	*get_var_name(char *value);
 
 int	grammar_check(int i)
@@ -58,4 +59,24 @@ int	read_string(void)
 		}
 	}
 	return (1);
+}
+
+void	count_commands(void)
+{
+	int			i;
+	int			flag;
+	t_command	*cmd_list;
+
+	i = 0;
+	flag = 1;
+	cmd_list = term()->cmd_list;
+	while (flag)
+	{
+		flag = 0;
+		if ((cmd_list[i].name) || (cmd_list[i].args[0] != NULL) || (cmd_list[i].in_red[0] != NULL) || (cmd_list[i].out_red[0] != NULL) || (cmd_list[i].delimiters[0] != NULL) || (cmd_list[i].append[0] != NULL))
+			flag = 1;
+		if (flag)
+			++i;
+	}
+	term()->count_cmd = i;
 }
