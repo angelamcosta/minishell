@@ -6,7 +6,7 @@
 /*   By: anlima <anlima@student.42lisboa.com>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/07 20:48:28 by anlima            #+#    #+#             */
-/*   Updated: 2023/10/06 16:02:29 by anlima           ###   ########.fr       */
+/*   Updated: 2023/10/09 17:27:04 by anlima           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -109,7 +109,6 @@ void					set_pipes(int fd_in, int fd_out);
 pid_t					create_fork(t_command *cmd, int fd_in, int fd_out);
 // parser
 int						read_string(void);
-int						grammar_check(int i);
 void					count_commands(void);
 char					*get_var_name(char *value);
 void					lexer(void);

@@ -6,7 +6,7 @@
 /*   By: anlima <anlima@student.42lisboa.com>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/23 14:45:31 by anlima            #+#    #+#             */
-/*   Updated: 2023/10/09 16:33:11 by anlima           ###   ########.fr       */
+/*   Updated: 2023/10/09 17:27:16 by anlima           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,9 +67,9 @@ void	grammar(void)
 	tokens = term()->tokens;
 	while (tokens && tokens[++i])
 	{
-		if (grammar_check(i) == 0 || (i == 0 && tokens[i]->value[0] == '|')
+		if ((i == 0 && tokens[i]->value[0] == '|')
 			|| ((tokens[i + 1]) && tokens[i]->type == PIPE
-				&& tokens[i]->type == tokens[i + 1]->type))
+				&& tokens[i + 1]->type == PIPE))
 		{
 			printf("parse error near `%s`\n", tokens[i]->value);
 			term()->exit_status = EXIT_FAILURE;

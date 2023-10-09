@@ -6,7 +6,7 @@
 /*   By: anlima <anlima@student.42lisboa.com>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/31 15:46:17 by anlima            #+#    #+#             */
-/*   Updated: 2023/10/09 16:57:47 by anlima           ###   ########.fr       */
+/*   Updated: 2023/10/09 17:31:10 by anlima           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,11 +30,15 @@ void	executor(void)
 	fd_out = dup(STDOUT_FILENO);
 	i = -1;
 	j = -1;
-	child_pids = malloc(term()->count_cmd * sizeof(pid_t));
 	while (++i < term()->count_cmd)
 	{
 		while (term()->cmd_list[i].delimiters[++j])
 			heredoc(term()->cmd_list[i].delimiters[j]);
+	}
+	child_pids = malloc(term()->count_cmd * sizeof(pid_t));
+	i = -1;
+	while (++i < term()->count_cmd)
+	{
 		if (i == term()->count_cmd - 1 && (is_builtin(term()->cmd_list[i].name)))
 		{
 			execute_red(&term()->cmd_list[i]);
