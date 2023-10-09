@@ -6,7 +6,7 @@
 /*   By: anlima <anlima@student.42lisboa.com>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/23 14:45:31 by anlima            #+#    #+#             */
-/*   Updated: 2023/10/06 15:45:53 by anlima           ###   ########.fr       */
+/*   Updated: 2023/10/09 16:33:11 by anlima           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,7 +56,6 @@ void	add_token(char *input, int i, int flag)
 		token->type = ARG;
 	token->value = ft_strdup(input);
 	term()->tokens[i] = token;
-	printf("DEBUG: value %s is type %i\n", token->value, token->type);
 }
 
 void	grammar(void)

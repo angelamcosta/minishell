@@ -6,7 +6,7 @@
 /*   By: anlima <anlima@student.42lisboa.com>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/31 15:46:17 by anlima            #+#    #+#             */
-/*   Updated: 2023/10/06 15:43:29 by anlima           ###   ########.fr       */
+/*   Updated: 2023/10/09 16:57:47 by anlima           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,19 +21,26 @@ void	execute_out(t_command *cmd, char *filename, char *path, int flag);
 void	executor(void)
 {
 	int		i;
+	int		j;
 	int		fd_in;
+	int		fd_out;
 	pid_t	*child_pids;
 
 	fd_in = STDIN_FILENO;
+	fd_out = dup(STDOUT_FILENO);
 	i = -1;
+	j = -1;
 	child_pids = malloc(term()->count_cmd * sizeof(pid_t));
-	printf("DEBUG: count_cmd value is %i\n", term()->count_cmd);
-	while (++i < term()->count_cmd - 1)
+	while (++i < term()->count_cmd)
 	{
+		while (term()->cmd_list[i].delimiters[++j])
+			heredoc(term()->cmd_list[i].delimiters[j]);
 		if (i == term()->count_cmd - 1 && (is_builtin(term()->cmd_list[i].name)))
 		{
-			printf("DEBUG: cmd %s\n",term()->cmd_list[i].name);
+			execute_red(&term()->cmd_list[i]);
 			execute_builtin(&term()->cmd_list[i]);
+			dup2(fd_out, STDOUT_FILENO);
+			close(fd_out);
 			break ;
 		}
 		if (i < term()->count_cmd - 1)
@@ -76,7 +83,8 @@ void	execute_red(t_command *cmd)
 	i = -1;
 	while (cmd->out_red[++i])
 		execute_out(cmd, cmd->out_red[i], path, 0);
-	execute_command(cmd, path);
+	if (!is_builtin(cmd->name))
+		execute_command(cmd, path);
 }
 
 void	execute_command(t_command *cmd, char *path)
@@ -120,6 +128,7 @@ void	execute_out(t_command *cmd, char *filename, char *path, int flag)
 		perror("open");
 		exit(EXIT_FAILURE);
 	}
+	printf("DEBUG: Opened file %s with fd: %i\n", filename, out);
 	dup2(out, STDOUT_FILENO);
 	close(out);
 }

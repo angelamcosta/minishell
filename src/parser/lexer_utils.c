@@ -6,7 +6,7 @@
 /*   By: anlima <anlima@student.42lisboa.com>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/25 22:12:43 by mpedroso          #+#    #+#             */
-/*   Updated: 2023/10/06 16:08:29 by anlima           ###   ########.fr       */
+/*   Updated: 2023/10/09 13:32:47 by anlima           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,7 +73,7 @@ void	count_commands(void)
 	while (flag)
 	{
 		flag = 0;
-		if ((cmd_list[i].name) || (cmd_list[i].args[0] != NULL) || (cmd_list[i].in_red[0] != NULL) || (cmd_list[i].out_red[0] != NULL) || (cmd_list[i].delimiters[0] != NULL) || (cmd_list[i].append[0] != NULL))
+		if ((cmd_list[i].name != NULL) || (cmd_list[i].args[0] != NULL) || (cmd_list[i].in_red[0] != NULL) || (cmd_list[i].out_red[0] != NULL) || (cmd_list[i].delimiters[0] != NULL) || (cmd_list[i].append[0] != NULL))
 			flag = 1;
 		if (flag)
 			++i;

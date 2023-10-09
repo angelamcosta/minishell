@@ -6,7 +6,7 @@
 /*   By: anlima <anlima@student.42lisboa.com>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/01 13:48:47 by anlima            #+#    #+#             */
-/*   Updated: 2023/10/06 16:02:56 by anlima           ###   ########.fr       */
+/*   Updated: 2023/10/09 13:39:56 by anlima           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,13 +24,15 @@ void	parser(void)
 	int	j;
 
 	i = -1;
-	j = -1;
+	j = 0;
 	while (term()->tokens[++i])
 	{
-		if (term()->tokens[i]->type == PIPE)
-			i++;
 		if (term()->tokens[i]->type == CMD)
-			add_command(&term()->cmd_list[++j], &term()->tokens[i]);
+		{
+			if (i > 0)
+				j++;
+			add_command(&term()->cmd_list[j], &term()->tokens[i]);
+		}
 		else if (term()->tokens[i]->type == ARG)
 			add_argument(&term()->cmd_list[j], term()->tokens[i]->value);
 		else if (term()->tokens[i]->type == HEREDOC)
