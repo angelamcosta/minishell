@@ -6,7 +6,7 @@
 /*   By: anlima <anlima@student.42lisboa.com>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/02 13:58:32 by anlima            #+#    #+#             */
-/*   Updated: 2023/10/03 16:01:56 by anlima           ###   ########.fr       */
+/*   Updated: 2023/10/09 17:59:43 by anlima           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,6 +23,7 @@ void	heredoc(char *delimiter)
 	fd = open("temp_here.txt", O_WRONLY | O_CREAT | O_APPEND, 0777);
 	while (1)
 	{
+		write(1, "> ", 2);
 		bytes_read = read(STDIN_FILENO, &line, BUFF_SIZE);
 		if (ft_strncmp(delimiter, line, ft_strlen(delimiter)) == 0)
 			break ;

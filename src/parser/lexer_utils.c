@@ -6,7 +6,7 @@
 /*   By: anlima <anlima@student.42lisboa.com>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/25 22:12:43 by mpedroso          #+#    #+#             */
-/*   Updated: 2023/10/09 17:26:54 by anlima           ###   ########.fr       */
+/*   Updated: 2023/10/12 17:11:26 by anlima           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,6 +15,7 @@
 int		read_string(void);
 void	count_commands(void);
 char	*get_var_name(char *value);
+void	add_tokens_from_command(char *command, int *token_index);
 
 char	*get_var_name(char *value)
 {
@@ -55,10 +56,34 @@ void	count_commands(void)
 	while (flag)
 	{
 		flag = 0;
-		if ((cmd_list[i].name != NULL) || (cmd_list[i].args[0] != NULL) || (cmd_list[i].in_red[0] != NULL) || (cmd_list[i].out_red[0] != NULL) || (cmd_list[i].delimiters[0] != NULL) || (cmd_list[i].append[0] != NULL))
+		if ((cmd_list[i].name != NULL) || (cmd_list[i].args[0] != NULL)
+			|| (cmd_list[i].in_red[0] != NULL)
+			|| (cmd_list[i].out_red[0] != NULL)
+			|| (cmd_list[i].delimiters[0] != NULL)
+			|| (cmd_list[i].append[0] != NULL))
 			flag = 1;
 		if (flag)
 			++i;
 	}
 	term()->count_cmd = i;
+}
+
+void	add_tokens_from_command(char *command, int *token_index)
+{
+    int j;
+    char **temp = NULL;
+
+    if (ft_strncmp(command, "echo ", 5) == 0)
+        temp = treat_echo(command);
+    else
+        temp = ft_split(command, ' ');
+	j = -1;
+    while (temp && temp[++j] && *token_index < MAX_TOKENS)
+    {
+		if (j == 0)
+			add_token(temp[j], *token_index, 1);
+		else
+			add_token(temp[j], *token_index, 0);
+        (*token_index)++;
+    }
 }

@@ -6,7 +6,7 @@
 /*   By: anlima <anlima@student.42lisboa.com>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/07 20:48:28 by anlima            #+#    #+#             */
-/*   Updated: 2023/10/09 17:27:04 by anlima           ###   ########.fr       */
+/*   Updated: 2023/10/12 18:36:51 by anlima           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -108,9 +108,15 @@ char					*get_path(char *cmd_name);
 void					set_pipes(int fd_in, int fd_out);
 pid_t					create_fork(t_command *cmd, int fd_in, int fd_out);
 // parser
+int 					count_words(char *input);
+char 					**treat_echo(char *input);
+char					*expand_var(char *value);
+char					*extract_varname(char *str);
+int						should_expand(char *input);
 int						read_string(void);
 void					count_commands(void);
 char					*get_var_name(char *value);
+void					add_tokens_from_command(char *command, int *token_index);
 void					lexer(void);
 void					grammar(void);
 int						check_quotes(char *str);
@@ -119,12 +125,13 @@ void					add_token(char *input, int i, int flag);
 void					parser(void);
 void					add_red(char **cmd_list, char *value);
 void					add_argument(t_command *cmd, char *value);
-void					handle_variables(t_command *cmd, char *value);
+char					*handle_variables(char *value);
 void					add_command(t_command *cmd, t_token **tokens);
 // free memory
-void					free_tokens(void);
 void					clean_mallocs(void);
-void					free_commands(void);
+void					free_token(t_token *token);
+void					free_command(t_command *cmd);
+void					free_term(t_term *term);
 // general
 void					error_status(char *function, int err);
 t_term					*term(void);

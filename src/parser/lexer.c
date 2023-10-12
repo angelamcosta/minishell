@@ -6,7 +6,7 @@
 /*   By: anlima <anlima@student.42lisboa.com>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/23 14:45:31 by anlima            #+#    #+#             */
-/*   Updated: 2023/10/09 17:27:16 by anlima           ###   ########.fr       */
+/*   Updated: 2023/10/12 17:11:19 by anlima           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,9 +67,8 @@ void	grammar(void)
 	tokens = term()->tokens;
 	while (tokens && tokens[++i])
 	{
-		if ((i == 0 && tokens[i]->value[0] == '|')
-			|| ((tokens[i + 1]) && tokens[i]->type == PIPE
-				&& tokens[i + 1]->type == PIPE))
+		if ((i == 0 && tokens[i]->value[0] == '|') || ((tokens[i + 1])
+				&& tokens[i]->type == PIPE && tokens[i + 1]->type == PIPE))
 		{
 			printf("parse error near `%s`\n", tokens[i]->value);
 			term()->exit_status = EXIT_FAILURE;
@@ -98,27 +97,19 @@ int	check_quotes(char *str)
 	return (1);
 }
 
-void	tokenize_input(char *str)
+void tokenize_input(char *str)
 {
-	int		i;
-	char	**input;
+    int i;
+    int token_index;
+    char **input = ft_split(term()->command, '|');
 
 	i = 0;
-	input = ft_split(term()->command, ' ');
-	term()->tokens = (t_token **)malloc(sizeof(t_token *) * (MAX_TOKENS + 1));
-	while (input && input[i] && i < MAX_TOKENS)
-	{
-		if (i == 0 || i - 1 >= 0 && ((ft_strncmp(input[i - 1], "|", 1) == 0)
-				&& (input[i][0] != '|')))
-			add_token(input[i], i, 1);
-		else
-			add_token(input[i], i, 0);
-		i++;
-	}
-	term()->tokens[i] = NULL;
-	i = 0;
-	while (input && input[i] && i < MAX_TOKENS)
-		free(input[i++]);
-	if (input)
-		free(input);
+	token_index = 0;
+    term()->tokens = (t_token **)malloc(sizeof(t_token *) * (MAX_TOKENS + 1));
+    while (input && input[i] && i < MAX_TOKENS)
+    {
+        add_tokens_from_command(input[i], &token_index);
+        i++;
+    }
+    term()->tokens[token_index] = NULL;
 }

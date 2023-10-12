@@ -6,7 +6,7 @@
 /*   By: anlima <anlima@student.42lisboa.com>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/01 13:48:47 by anlima            #+#    #+#             */
-/*   Updated: 2023/10/09 13:39:56 by anlima           ###   ########.fr       */
+/*   Updated: 2023/10/12 18:37:09 by anlima           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,7 @@
 void	parser(void);
 void	add_red(char **cmd_list, char *value);
 void	add_argument(t_command *cmd, char *value);
-void	handle_variables(t_command *cmd, char *value);
+char	*handle_variables(char *value);
 void	add_command(t_command *cmd, t_token **tokens);
 
 void	parser(void)
@@ -44,7 +44,7 @@ void	parser(void)
 		else if (term()->tokens[i]->type == RED_OUT)
 			add_red(term()->cmd_list[j].out_red, term()->tokens[++i]->value);
 		else if (term()->tokens[i]->type == VAR)
-			handle_variables(&term()->cmd_list[j], term()->tokens[i]->value);
+			add_argument(&term()->cmd_list[j], term()->tokens[i]->value);
 	}
 	count_commands();
 	executor();
@@ -53,17 +53,27 @@ void	parser(void)
 void	add_argument(t_command *cmd, char *value)
 {
 	int	i;
+	char	*expanded;
 
 	i = 0;
 	while (cmd->args[i] != NULL && i < MAX_TOKENS)
 		i++;
 	if (i < MAX_TOKENS)
-		cmd->args[i] = ft_strdup(value);
+	{
+		if (should_expand(value))
+		{
+			expanded = expand_var(value);
+			cmd->args[i] = ft_strdup(expanded);
+			free(expanded);
+		}
+		else
+			cmd->args[i] = ft_strdup(value);
+	}
 }
 
 void	add_red(char **cmd_list, char *value)
 {
-	int	i;
+	int		i;
 
 	i = 0;
 	while (cmd_list[i] != NULL && i < MAX_TOKENS)
@@ -72,32 +82,25 @@ void	add_red(char **cmd_list, char *value)
 		cmd_list[i] = ft_strdup(value);
 }
 
-void	handle_variables(t_command *cmd, char *value)
+char	*handle_variables(char *value)
 {
 	int		i;
-	int		j;
 	int		flag;
-	char	*var_name;
 
 	i = -1;
 	flag = 0;
-	var_name = get_var_name(value);
 	while (term()->env[++i] != NULL && !flag)
 	{
-		j = ft_strlen(var_name);
-		if (var_name[j - 1] == '"')
-			j--;
-		if (ft_strncmp(term()->env[i], var_name, j) == 0)
+		if (ft_strncmp(term()->env[i], value, ft_strlen(value)) == 0)
 		{
 			flag = 1;
 			break ;
 		}
 	}
-	j = 1;
-	if (value[ft_strlen(value) - 1] == '"')
-		j--;
 	if (flag)
-		add_argument(cmd, term()->env[i] + ft_strlen(var_name) + j);
+		return (term()->env[i] + ft_strlen(value) + 1);
+	else
+		return (NULL);
 }
 
 void	add_command(t_command *cmd, t_token **tokens)

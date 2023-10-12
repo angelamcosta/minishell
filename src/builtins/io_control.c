@@ -6,7 +6,7 @@
 /*   By: anlima <anlima@student.42lisboa.com>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/27 23:16:11 by anlima            #+#    #+#             */
-/*   Updated: 2023/09/30 16:42:07 by anlima           ###   ########.fr       */
+/*   Updated: 2023/10/12 14:23:12 by anlima           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,7 +67,7 @@ void	print_str(char *str)
 				quote = str[i];
 			else if (str[i] == quote)
 				quote = 0;
-			else
+			else if (quote != str[i])
 				write(1, &str[i], 1);
 		}
 	}

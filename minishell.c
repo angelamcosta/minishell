@@ -6,7 +6,7 @@
 /*   By: anlima <anlima@student.42lisboa.com>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/07 20:47:34 by anlima            #+#    #+#             */
-/*   Updated: 2023/10/06 16:09:34 by anlima           ###   ########.fr       */
+/*   Updated: 2023/10/12 17:27:58 by anlima           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,3 +34,4 @@ int	main(int argc, char **argv, char **env)
 }
 
 // TODO: - make the exist status work
+// TODO: - get var inside an argument

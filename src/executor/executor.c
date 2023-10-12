@@ -6,7 +6,7 @@
 /*   By: anlima <anlima@student.42lisboa.com>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/31 15:46:17 by anlima            #+#    #+#             */
-/*   Updated: 2023/10/09 17:31:10 by anlima           ###   ########.fr       */
+/*   Updated: 2023/10/10 12:48:52 by anlima           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -132,7 +132,6 @@ void	execute_out(t_command *cmd, char *filename, char *path, int flag)
 		perror("open");
 		exit(EXIT_FAILURE);
 	}
-	printf("DEBUG: Opened file %s with fd: %i\n", filename, out);
 	dup2(out, STDOUT_FILENO);
 	close(out);
 }
