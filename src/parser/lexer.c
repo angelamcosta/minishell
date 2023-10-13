@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   lexer.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mpedroso <mpedroso@student.42lisboa.com    +#+  +:+       +#+        */
+/*   By: anlima <anlima@student.42lisboa.com>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/23 14:45:31 by anlima            #+#    #+#             */
-/*   Updated: 2023/10/13 13:32:12 by mpedroso         ###   ########.fr       */
+/*   Updated: 2023/10/13 15:33:08 by anlima           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,7 +46,7 @@ void	add_token(char *input, int i, int flag)
 		token->type = RED_IN;
 	else if (input[0] == '>')
 		token->type = RED_OUT;
-	else if (flag)
+	else if (flag || ft_strncmp(input, "$?", 2) == 0)
 		token->type = CMD;
 	else if (input[0] == '|' || input[0] == '&')
 		token->type = PIPE;

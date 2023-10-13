@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mpedroso <mpedroso@student.42lisboa.com    +#+  +:+       +#+        */
+/*   By: anlima <anlima@student.42lisboa.com>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/07 20:48:28 by anlima            #+#    #+#             */
-/*   Updated: 2023/10/13 14:31:07 by mpedroso         ###   ########.fr       */
+/*   Updated: 2023/10/13 16:06:37 by anlima           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -94,6 +94,7 @@ void					execute_unset(char **input);
 void					execute_export(char **input);
 void					add_to_env(char *input, char *subs);
 // executor
+void					fork_builtin(void);
 int						check_flag(char *input);
 int						is_builtin(char *cmd_name);
 void					execute_builtin(t_command *cmd);
@@ -116,8 +117,8 @@ int						should_expand(char *input);
 int						read_string(void);
 void					count_commands(void);
 char					*get_var_name(char *value);
-void					add_tokens_from_command(char *command,
-							int *token_index);
+void	add_tokens_from_command(char *command,
+								int *token_index);
 void					lexer(void);
 void					grammar(void);
 int						check_quotes(char *str);

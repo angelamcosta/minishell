@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   lexer_echo.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mpedroso <mpedroso@student.42lisboa.com    +#+  +:+       +#+        */
+/*   By: anlima <anlima@student.42lisboa.com>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/12 17:09:57 by anlima            #+#    #+#             */
-/*   Updated: 2023/10/13 14:31:31 by mpedroso         ###   ########.fr       */
+/*   Updated: 2023/10/13 17:28:46 by anlima           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,22 +27,19 @@ char	**treat_echo(char *input)
 	char	**strs;
 
 	i = 4;
-	j = 0;
 	k = -1;
 	quote = 0;
 	strs = (char **)malloc(sizeof(char *) * (count_words(input) + 2));
 	strs[++k] = ft_strdup("echo");
 	while (input[i] == ' ')
 		i++;
+	j = i;
 	while (i <= ft_strlen(input))
 	{
 		if (input[i] == '"' || input[i] == '\'')
 		{
 			if (quote == 0)
-			{
-				j = i;
 				quote = input[i];
-			}
 			else if (quote == input[i])
 				quote = 0;
 		}
@@ -97,19 +94,40 @@ int	count_words(char *input)
 char	*expand_var(char *value)
 {
 	int		i;
+	int		j;
 	char	*var_name;
 	char	*replacement;
 	char	*result;
-	char	*temp;
 
 	i = 0;
-	while (value[i] && value[i] != '$')
-		i++;
-	var_name = extract_varname(&value[i]);
-	replacement = handle_variables(var_name);
-	result = ft_strjoin(ft_substr(value, 0, i), replacement);
-	temp = ft_strdup(result);
-	result = ft_strjoin(temp, &value[i + ft_strlen(var_name) + 1]);
+	j = 0;
+	result = NULL;
+	while (value[i])
+	{
+		if (value[i] == '$')
+		{
+			if (i - 1 > 0)
+			{
+				if (result)
+					result = ft_strjoin(result, ft_substr(value, j, i - j));
+				else
+					result = ft_substr(value, j, i - j);
+			}
+			var_name = extract_varname(&value[i]);
+			replacement = handle_variables(var_name);
+			if (replacement)
+			{
+				if (result)
+					result = ft_strjoin(result, replacement);
+				else
+					result = replacement;
+				i += (ft_strlen(var_name) + 1);
+				j = i;
+			}
+		}
+		if (value[i] != '\0')
+			i++;
+	}
 	return (result);
 }
 

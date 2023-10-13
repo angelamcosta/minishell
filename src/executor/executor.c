@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   executor.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mpedroso <mpedroso@student.42lisboa.com    +#+  +:+       +#+        */
+/*   By: anlima <anlima@student.42lisboa.com>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/31 15:46:17 by anlima            #+#    #+#             */
-/*   Updated: 2023/10/13 14:31:22 by mpedroso         ###   ########.fr       */
+/*   Updated: 2023/10/13 15:55:17 by anlima           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,8 +68,9 @@ void	executor(void)
 	while (++i < term()->count_cmd)
 	{
 		if (child_pids[i] > 0)
-			waitpid(child_pids[i], NULL, 0);
+			wait(&j);
 	}
+	term()->exit_status = WEXITSTATUS(j);
 	free(child_pids);
 }
 

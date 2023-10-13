@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parser.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mpedroso <mpedroso@student.42lisboa.com    +#+  +:+       +#+        */
+/*   By: anlima <anlima@student.42lisboa.com>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/01 13:48:47 by anlima            #+#    #+#             */
-/*   Updated: 2023/10/13 14:15:37 by mpedroso         ###   ########.fr       */
+/*   Updated: 2023/10/13 17:22:05 by anlima           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,7 +64,6 @@ void	add_argument(t_command *cmd, char *value)
 		{
 			expanded = expand_var(value);
 			cmd->args[i] = ft_strdup(expanded);
-			free(expanded);
 		}
 		else
 			cmd->args[i] = ft_strdup(value);
@@ -73,7 +72,7 @@ void	add_argument(t_command *cmd, char *value)
 
 void	add_red(char **cmd_list, char *value)
 {
-	int		i;
+	int	i;
 
 	i = 0;
 	while (cmd_list[i] != NULL && i < MAX_TOKENS)
@@ -84,11 +83,13 @@ void	add_red(char **cmd_list, char *value)
 
 char	*handle_variables(char *value)
 {
-	int		i;
-	int		flag;
+	int	i;
+	int	flag;
 
 	i = -1;
 	flag = 0;
+	if (ft_strncmp(value, "?", 2) == 0)
+		return (ft_itoa(term()->exit_status));
 	while (term()->env[++i] != NULL && !flag)
 	{
 		if (ft_strncmp(term()->env[i], value, ft_strlen(value)) == 0)
