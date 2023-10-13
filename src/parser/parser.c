@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parser.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: anlima <anlima@student.42lisboa.com>       +#+  +:+       +#+        */
+/*   By: mpedroso <mpedroso@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/01 13:48:47 by anlima            #+#    #+#             */
-/*   Updated: 2023/10/12 18:37:09 by anlima           ###   ########.fr       */
+/*   Updated: 2023/10/13 14:15:37 by mpedroso         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,7 +52,7 @@ void	parser(void)
 
 void	add_argument(t_command *cmd, char *value)
 {
-	int	i;
+	int		i;
 	char	*expanded;
 
 	i = 0;
@@ -60,7 +60,7 @@ void	add_argument(t_command *cmd, char *value)
 		i++;
 	if (i < MAX_TOKENS)
 	{
-		if (should_expand(value))
+		if (should_expand(value) && (ft_strncmp(cmd->args[0], "echo", 4) == 0))
 		{
 			expanded = expand_var(value);
 			cmd->args[i] = ft_strdup(expanded);

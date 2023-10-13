@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   lexer.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: anlima <anlima@student.42lisboa.com>       +#+  +:+       +#+        */
+/*   By: mpedroso <mpedroso@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/23 14:45:31 by anlima            #+#    #+#             */
-/*   Updated: 2023/10/12 17:11:19 by anlima           ###   ########.fr       */
+/*   Updated: 2023/10/13 13:32:12 by mpedroso         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -97,19 +97,20 @@ int	check_quotes(char *str)
 	return (1);
 }
 
-void tokenize_input(char *str)
+void	tokenize_input(char *str)
 {
-    int i;
-    int token_index;
-    char **input = ft_split(term()->command, '|');
+	int		i;
+	int		token_index;
+	char	**input;
 
+	input = ft_split(term()->command, '|');
 	i = 0;
 	token_index = 0;
-    term()->tokens = (t_token **)malloc(sizeof(t_token *) * (MAX_TOKENS + 1));
-    while (input && input[i] && i < MAX_TOKENS)
-    {
-        add_tokens_from_command(input[i], &token_index);
-        i++;
-    }
-    term()->tokens[token_index] = NULL;
+	term()->tokens = (t_token **)malloc(sizeof(t_token *) * (MAX_TOKENS + 1));
+	while (input && input[i] && i < MAX_TOKENS)
+	{
+		add_tokens_from_command(input[i], &token_index);
+		i++;
+	}
+	term()->tokens[token_index] = NULL;
 }

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   executor.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: anlima <anlima@student.42lisboa.com>       +#+  +:+       +#+        */
+/*   By: mpedroso <mpedroso@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/31 15:46:17 by anlima            #+#    #+#             */
-/*   Updated: 2023/10/10 12:48:52 by anlima           ###   ########.fr       */
+/*   Updated: 2023/10/13 14:31:22 by mpedroso         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,7 +39,8 @@ void	executor(void)
 	i = -1;
 	while (++i < term()->count_cmd)
 	{
-		if (i == term()->count_cmd - 1 && (is_builtin(term()->cmd_list[i].name)))
+		if (i == term()->count_cmd - 1
+			&& (is_builtin(term()->cmd_list[i].name)))
 		{
 			execute_red(&term()->cmd_list[i]);
 			execute_builtin(&term()->cmd_list[i]);

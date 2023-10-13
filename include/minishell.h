@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: anlima <anlima@student.42lisboa.com>       +#+  +:+       +#+        */
+/*   By: mpedroso <mpedroso@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/07 20:48:28 by anlima            #+#    #+#             */
-/*   Updated: 2023/10/12 18:36:51 by anlima           ###   ########.fr       */
+/*   Updated: 2023/10/13 14:31:07 by mpedroso         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -108,15 +108,16 @@ char					*get_path(char *cmd_name);
 void					set_pipes(int fd_in, int fd_out);
 pid_t					create_fork(t_command *cmd, int fd_in, int fd_out);
 // parser
-int 					count_words(char *input);
-char 					**treat_echo(char *input);
+int						count_words(char *input);
+char					**treat_echo(char *input);
 char					*expand_var(char *value);
 char					*extract_varname(char *str);
 int						should_expand(char *input);
 int						read_string(void);
 void					count_commands(void);
 char					*get_var_name(char *value);
-void					add_tokens_from_command(char *command, int *token_index);
+void					add_tokens_from_command(char *command,
+							int *token_index);
 void					lexer(void);
 void					grammar(void);
 int						check_quotes(char *str);

@@ -3,28 +3,28 @@
 /*                                                        :::      ::::::::   */
 /*   lexer_echo.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: anlima <anlima@student.42lisboa.com>       +#+  +:+       +#+        */
+/*   By: mpedroso <mpedroso@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/12 17:09:57 by anlima            #+#    #+#             */
-/*   Updated: 2023/10/12 18:38:25 by anlima           ###   ########.fr       */
+/*   Updated: 2023/10/13 14:31:31 by mpedroso         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../include/minishell.h"
 
-int 	count_words(char *input);
-char 	**treat_echo(char *input);
+int		count_words(char *input);
+char	**treat_echo(char *input);
 char	*expand_var(char *value);
 char	*extract_varname(char *str);
 int		should_expand(char *input);
 
-char **treat_echo(char *input)
+char	**treat_echo(char *input)
 {
-	int i;
-	int j;
-	int k;
-	int quote;
-	char **strs;
+	int		i;
+	int		j;
+	int		k;
+	int		quote;
+	char	**strs;
 
 	i = 4;
 	j = 0;
@@ -54,7 +54,7 @@ char **treat_echo(char *input)
 			while (input[i] != '\0' && input[i] == ' ' && quote == 0)
 				i++;
 			if (i >= ft_strlen(input))
-				break;
+				break ;
 		}
 		else
 			i++;
@@ -63,11 +63,11 @@ char **treat_echo(char *input)
 	return (strs);
 }
 
-int count_words(char *input)
+int	count_words(char *input)
 {
-	int i;
-	int j;
-	int quote;
+	int	i;
+	int	j;
+	int	quote;
 
 	i = 4;
 	j = 0;
@@ -81,7 +81,7 @@ int count_words(char *input)
 			if (input[i] != '\0')
 				j++;
 			else
-				break;
+				break ;
 		}
 		if (input[i] == '"' || input[i] == '\'')
 		{
@@ -94,25 +94,24 @@ int count_words(char *input)
 	return (j);
 }
 
-char *expand_var(char *value)
+char	*expand_var(char *value)
 {
-    int 	i;
-    char 	*var_name;
+	int		i;
+	char	*var_name;
 	char	*replacement;
-	char 	*result;
+	char	*result;
 	char	*temp;
 
-    i = 0;
-    while (value[i] && value[i] != '$')
-        i++;
-    var_name = extract_varname(&value[i]);
-    replacement = handle_variables(var_name);
-    result = ft_strjoin(ft_substr(value, 0, i), replacement);
-    temp = ft_strdup(result);
-    result = ft_strjoin(temp, &value[i + ft_strlen(var_name) + 1]);
-    return (result);
+	i = 0;
+	while (value[i] && value[i] != '$')
+		i++;
+	var_name = extract_varname(&value[i]);
+	replacement = handle_variables(var_name);
+	result = ft_strjoin(ft_substr(value, 0, i), replacement);
+	temp = ft_strdup(result);
+	result = ft_strjoin(temp, &value[i + ft_strlen(var_name) + 1]);
+	return (result);
 }
-
 
 char	*extract_varname(char *str)
 {
@@ -130,19 +129,16 @@ int	should_expand(char *input)
 	int	quote;
 
 	i = 0;
-	quote = 0;
+	quote = 1;
 	while (input[i])
 	{
-		if (input[i] == '"' || input[i] == '\'')
-		{
-			if (quote == 0)
-				quote = input[i];
-			else if (quote == input[i])
-				quote = 0;
-		}
-		if (quote == '\'' && ft_strrchr(input, '$'))
+		if (input[i] == '"' && ft_strrchr(input, '$'))
+			return (1);
+		if (input[i] == '\'')
 			return (0);
 		i++;
 	}
-	return (1);
+	if (ft_strrchr(input, '$'))
+		return (1);
+	return (0);
 }

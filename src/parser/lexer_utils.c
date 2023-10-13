@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   lexer_utils.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: anlima <anlima@student.42lisboa.com>       +#+  +:+       +#+        */
+/*   By: mpedroso <mpedroso@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/25 22:12:43 by mpedroso          #+#    #+#             */
-/*   Updated: 2023/10/12 17:11:26 by anlima           ###   ########.fr       */
+/*   Updated: 2023/10/13 13:29:06 by mpedroso         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,20 +70,21 @@ void	count_commands(void)
 
 void	add_tokens_from_command(char *command, int *token_index)
 {
-    int j;
-    char **temp = NULL;
+	int		j;
+	char	**temp;
 
-    if (ft_strncmp(command, "echo ", 5) == 0)
-        temp = treat_echo(command);
-    else
-        temp = ft_split(command, ' ');
+	temp = NULL;
+	if (ft_strncmp(command, "echo ", 5) == 0)
+		temp = treat_echo(command);
+	else
+		temp = ft_split(command, ' ');
 	j = -1;
-    while (temp && temp[++j] && *token_index < MAX_TOKENS)
-    {
+	while (temp && temp[++j] && *token_index < MAX_TOKENS)
+	{
 		if (j == 0)
 			add_token(temp[j], *token_index, 1);
 		else
 			add_token(temp[j], *token_index, 0);
-        (*token_index)++;
-    }
+		(*token_index)++;
+	}
 }

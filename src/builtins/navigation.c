@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   navigation.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: anlima <anlima@student.42lisboa.com>       +#+  +:+       +#+        */
+/*   By: mpedroso <mpedroso@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/27 23:13:34 by anlima            #+#    #+#             */
-/*   Updated: 2023/09/25 15:56:26 by anlima           ###   ########.fr       */
+/*   Updated: 2023/10/13 14:27:59 by mpedroso         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,10 +15,9 @@
 void	execute_cd(char **args);
 void	execute_pwd(char **args);
 
-// TODO: - deal with multiple args in cd
 void	execute_cd(char **args)
 {
-	if (args[1] == NULL || ft_strncmp(args[0], "~", 2) == 0)
+	if (args[1] == NULL || ft_strncmp(args[1], "~", 2) == 0)
 	{
 		if (term()->home == NULL)
 			return (perror("cd"));
