@@ -6,7 +6,7 @@
 /*   By: anlima <anlima@student.42lisboa.com>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/31 15:46:17 by anlima            #+#    #+#             */
-/*   Updated: 2023/10/15 15:46:26 by anlima           ###   ########.fr       */
+/*   Updated: 2023/10/15 23:48:23 by anlima           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,14 +52,14 @@ void	executor(void)
 		{
 			create_pipe();
 			child_pids[i] = create_fork(&term()->cmd_list[i], fd_in,
-					term()->pipe_fd[1]);
+				term()->pipe_fd[1]);
 			close(term()->pipe_fd[1]);
 			fd_in = term()->pipe_fd[0];
 		}
 		else
 		{
 			child_pids[i] = create_fork(&term()->cmd_list[i], fd_in,
-					STDOUT_FILENO);
+				STDOUT_FILENO);
 			if (fd_in != STDIN_FILENO)
 				close(fd_in);
 		}
@@ -79,7 +79,8 @@ void	execute_red(t_command *cmd)
 	int		i;
 	char	*path;
 
-	if (cmd->name && cmd->name[0] == '/')
+	if (cmd->name && (cmd->name[0] == '/' || (ft_strncmp(cmd->name, "./",
+					2) == 0)))
 		path = ft_strdup(cmd->name);
 	else
 		path = get_path(cmd->name);
@@ -117,10 +118,7 @@ void	execute_in(char *filename)
 
 	in = open(filename, O_RDONLY);
 	if (in == -1)
-	{
-		perror("open");
 		exit(EXIT_FAILURE);
-	}
 	dup2(in, STDIN_FILENO);
 	close(in);
 }
@@ -134,10 +132,7 @@ void	execute_out(char *filename, int flag)
 	else
 		out = open(filename, O_WRONLY | O_CREAT | O_TRUNC, 0777);
 	if (out == -1)
-	{
-		perror("open");
 		exit(EXIT_FAILURE);
-	}
 	dup2(out, STDOUT_FILENO);
 	close(out);
 }
