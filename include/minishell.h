@@ -6,7 +6,7 @@
 /*   By: anlima <anlima@student.42lisboa.com>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/07 20:48:28 by anlima            #+#    #+#             */
-/*   Updated: 2023/10/13 16:06:37 by anlima           ###   ########.fr       */
+/*   Updated: 2023/10/15 15:39:42 by anlima           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,24 +19,25 @@
 # define GREEN "\033[92;1m"
 # define YELLOW "\033[93;1m"
 # include "../libft/libft.h"
-# include <dirent.h>
 # include <errno.h>
 # include <fcntl.h>
-# include <limits.h>
-# include <readline/history.h>
-# include <readline/readline.h>
-# include <signal.h>
 # include <stdio.h>
+# include <dirent.h>
+# include <limits.h>
+# include <signal.h>
 # include <stdlib.h>
 # include <string.h>
-# include <sys/types.h>
 # include <sys/wait.h>
 # include <unistd.h>
+# include <sys/types.h>
+# include <readline/history.h>
+# include <readline/readline.h>
 # define MAX_TOKENS 100
 # define HERETXT "temp_here.txt"
 # define LEN 25
 # define PROMPT "\001\e[38;5;206m\002Minishell\001\e[0m\002 ➜ "
 # define NOT_FOUND 127
+# define ERR_PERMISSION 126
 # define BUFF_SIZE 1024
 
 enum					e_TokenType
@@ -81,13 +82,16 @@ typedef struct s_term
 }						t_term;
 
 // buitins
+int						is_valid_varname(char *str);
+void					handle_heredocs(void);
 void					heredoc(char *delimiter);
-void					execute_exit(void);
 void					execute_clear(void);
 void					print_str(char *str);
+int						is_numeric(char *arg);
 void					execute_echo(char **args);
+void					execute_exit(char **args);
+void					execute_pwd(void);
 void					execute_cd(char **args);
-void					execute_pwd(char **args);
 void					execute_env(char **arg);
 void					remove_env(char *input);
 void					execute_unset(char **input);
@@ -99,11 +103,10 @@ int						check_flag(char *input);
 int						is_builtin(char *cmd_name);
 void					execute_builtin(t_command *cmd);
 void					executor(void);
+void					execute_in(char *filename);
 void					execute_red(t_command *cmd);
+void					execute_out(char *filename, int flag);
 void					execute_command(t_command *cmd, char *path);
-void					execute_in(t_command *cmd, char *filename, char *path);
-void					execute_out(t_command *cmd, char *filename, char *path,
-							int flag);
 void					create_pipe(void);
 char					*get_path(char *cmd_name);
 void					set_pipes(int fd_in, int fd_out);
@@ -117,12 +120,12 @@ int						should_expand(char *input);
 int						read_string(void);
 void					count_commands(void);
 char					*get_var_name(char *value);
-void	add_tokens_from_command(char *command,
-								int *token_index);
+void					add_tokens_from_command(char *command,
+							int *token_index);
 void					lexer(void);
 void					grammar(void);
+void					tokenize_input(void);
 int						check_quotes(char *str);
-void					tokenize_input(char *str);
 void					add_token(char *input, int i, int flag);
 void					parser(void);
 void					add_red(char **cmd_list, char *value);
@@ -135,7 +138,6 @@ void					free_token(t_token *token);
 void					free_command(t_command *cmd);
 void					free_term(t_term *term);
 // general
-void					error_status(char *function, int err);
 t_term					*term(void);
 void					free_env(void);
 int						is_env(char *subs);

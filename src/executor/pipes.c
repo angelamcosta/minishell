@@ -6,7 +6,7 @@
 /*   By: anlima <anlima@student.42lisboa.com>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/28 15:37:42 by anlima            #+#    #+#             */
-/*   Updated: 2023/10/01 15:39:14 by anlima           ###   ########.fr       */
+/*   Updated: 2023/10/15 15:08:09 by anlima           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,7 +33,6 @@ char	*get_path(char *cmd_name)
 	char	*test_path;
 	char	**paths;
 
-	i = 0;
 	paths = ft_split(getenv("PATH") + 5, ':');
 	i = -1;
 	while (paths[++i])

@@ -6,7 +6,7 @@
 /*   By: anlima <anlima@student.42lisboa.com>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/12 17:09:57 by anlima            #+#    #+#             */
-/*   Updated: 2023/10/15 13:45:56 by anlima           ###   ########.fr       */
+/*   Updated: 2023/10/15 14:43:05 by anlima           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,7 +34,7 @@ char	**treat_echo(char *input)
 	while (input[i] == ' ')
 		i++;
 	j = i;
-	while (i <= ft_strlen(input))
+	while (i <= (int)(ft_strlen(input)))
 	{
 		if (input[i] == '"' || input[i] == '\'')
 		{
@@ -50,7 +50,7 @@ char	**treat_echo(char *input)
 			strs[++k] = ft_substr(input, j, i - j);
 			while (input[i] != '\0' && input[i] == ' ' && quote == 0)
 				i++;
-			if (i >= ft_strlen(input))
+			if (i >= (int)(ft_strlen(input)))
 				break ;
 		}
 		else

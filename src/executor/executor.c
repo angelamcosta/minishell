@@ -6,17 +6,17 @@
 /*   By: anlima <anlima@student.42lisboa.com>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/31 15:46:17 by anlima            #+#    #+#             */
-/*   Updated: 2023/10/13 15:55:17 by anlima           ###   ########.fr       */
+/*   Updated: 2023/10/15 15:46:26 by anlima           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../include/minishell.h"
 
 void	executor(void);
+void	execute_in(char *filename);
 void	execute_red(t_command *cmd);
+void	execute_out(char *filename, int flag);
 void	execute_command(t_command *cmd, char *path);
-void	execute_in(t_command *cmd, char *filename, char *path);
-void	execute_out(t_command *cmd, char *filename, char *path, int flag);
 
 void	executor(void)
 {
@@ -79,16 +79,19 @@ void	execute_red(t_command *cmd)
 	int		i;
 	char	*path;
 
-	path = get_path(cmd->name);
+	if (cmd->name && cmd->name[0] == '/')
+		path = ft_strdup(cmd->name);
+	else
+		path = get_path(cmd->name);
 	i = -1;
 	while (cmd->in_red[++i])
-		execute_in(cmd, cmd->in_red[i], path);
+		execute_in(cmd->in_red[i]);
 	i = -1;
 	while (cmd->append[++i])
-		execute_out(cmd, cmd->append[i], path, 1);
+		execute_out(cmd->append[i], 1);
 	i = -1;
 	while (cmd->out_red[++i])
-		execute_out(cmd, cmd->out_red[i], path, 0);
+		execute_out(cmd->out_red[i], 0);
 	if (!is_builtin(cmd->name))
 		execute_command(cmd, path);
 }
@@ -103,11 +106,12 @@ void	execute_command(t_command *cmd, char *path)
 		exit(NOT_FOUND);
 	}
 	execve(path, cmd->args, NULL);
+	set_signals();
 	perror("execve");
 	exit(EXIT_FAILURE);
 }
 
-void	execute_in(t_command *cmd, char *filename, char *path)
+void	execute_in(char *filename)
 {
 	int	in;
 
@@ -121,7 +125,7 @@ void	execute_in(t_command *cmd, char *filename, char *path)
 	close(in);
 }
 
-void	execute_out(t_command *cmd, char *filename, char *path, int flag)
+void	execute_out(char *filename, int flag)
 {
 	int	out;
 

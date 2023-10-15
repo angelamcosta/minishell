@@ -6,7 +6,7 @@
 /*   By: anlima <anlima@student.42lisboa.com>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/31 17:06:45 by anlima            #+#    #+#             */
-/*   Updated: 2023/10/13 16:49:28 by anlima           ###   ########.fr       */
+/*   Updated: 2023/10/15 15:33:56 by anlima           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,7 @@ void	execute_builtin(t_command *cmd)
 		return ;
 	}
 	if (ft_strncmp(cmd->name, "exit", 5) == 0)
-		execute_exit();
+		execute_exit(&cmd->args[1]);
 	else if (ft_strncmp(cmd->name, "echo", 5) == 0)
 	{
 		execute_echo(&cmd->args[1]);
@@ -34,18 +34,17 @@ void	execute_builtin(t_command *cmd)
 		write(1, "\n", 1);
 	}
 	else if (ft_strncmp(cmd->name, "cd", 3) == 0)
-		execute_cd(cmd->args);
+		execute_cd(&cmd->args[1]);
 	else if (ft_strncmp(cmd->name, "pwd", 4) == 0)
-		execute_pwd(cmd->args);
+		execute_pwd();
 	else if (ft_strncmp(cmd->name, "env", 4) == 0)
-		execute_env(cmd->args);
+		execute_env(&cmd->args[1]);
 	else if (ft_strncmp(cmd->name, "export", 7) == 0)
 		execute_export(&cmd->args[1]);
 	else if (ft_strncmp(cmd->name, "unset", 6) == 0)
-		execute_unset(cmd->args);
+		execute_unset(&cmd->args[1]);
 	else if (ft_strncmp(cmd->name, "clear", 6) == 0)
 		execute_clear();
-	fork_builtin();
 }
 
 int	is_builtin(char *cmd_name)
@@ -77,19 +76,4 @@ int	check_flag(char *input)
 			return (0);
 	}
 	return (1);
-}
-
-void	fork_builtin(void)
-{
-	int		status;
-	pid_t	child_pid;
-
-	child_pid = fork();
-	if (child_pid == -1)
-	{
-		perror("fork");
-		exit(EXIT_FAILURE);
-	}
-	if (child_pid == 0)
-		exit(term()->exit_status);
 }

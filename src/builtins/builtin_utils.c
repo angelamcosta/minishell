@@ -1,36 +1,28 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   minishell.c                                        :+:      :+:    :+:   */
+/*   builtin_utils.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: anlima <anlima@student.42lisboa.com>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/06/07 20:47:34 by anlima            #+#    #+#             */
-/*   Updated: 2023/10/15 15:08:46 by anlima           ###   ########.fr       */
+/*   Created: 2023/10/15 13:52:47 by anlima            #+#    #+#             */
+/*   Updated: 2023/10/15 14:37:27 by anlima           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "./include/minishell.h"
+#include "../../include/minishell.h"
 
-int	main(int argc, char **argv, char **env)
+int	is_valid_varname(char *str);
+
+int	is_valid_varname(char *str)
 {
-	(void)(argc);
-	(void)(argv);
-	init_program(env);
-	while (1)
-	{
-		rl_on_new_line();
-		term()->command = readline(PROMPT);
-		if (term()->command == NULL)
-			break ;
-		if (*term()->command == '\0')
-			continue ;
-		lexer();
-		add_history(term()->command);
-		clean_mallocs();
-		remove(HERETXT);
-	}
-	return (0);
-}
+	int	i;
 
-// TODO: - make the exist status work
+	i = -1;
+	while (str[++i])
+	{
+		if (str[i] == '-')
+			return (0);
+	}
+	return (1);
+}

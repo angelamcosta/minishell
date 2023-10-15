@@ -6,23 +6,31 @@
 /*   By: anlima <anlima@student.42lisboa.com>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/27 23:16:11 by anlima            #+#    #+#             */
-/*   Updated: 2023/10/12 14:23:12 by anlima           ###   ########.fr       */
+/*   Updated: 2023/10/15 15:24:02 by anlima           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../include/minishell.h"
 
-void	execute_exit(void);
 void	execute_clear(void);
 void	print_str(char *str);
+int		is_numeric(char *arg);
 void	execute_echo(char **args);
+void	execute_exit(char **args);
 
-void	execute_exit(void)
+void	execute_exit(char **args)
 {
 	add_history(term()->command);
 	clean_mallocs();
 	free_env();
-	printf("exit\n");
+	print_str("exit\n");
+	if (args[0] && !is_numeric(args[0]))
+		printf("exit: %s:  numeric argument required", args[1]);
+	else if (args[1] != NULL)
+	{
+		print_str("exit: too many arguments");
+		term()->exit_status = EXIT_FAILURE;
+	}
 	exit(term()->exit_status);
 }
 
@@ -34,7 +42,6 @@ void	execute_clear(void)
 void	execute_echo(char **args)
 {
 	int	i;
-	int	j;
 	int	flag;
 
 	i = 0;
@@ -43,7 +50,7 @@ void	execute_echo(char **args)
 		i++;
 	while (args && args[i])
 	{
-		if ((i > 0 && !flag) || i > 1 && flag)
+		if ((i > 0 && !flag) || (i > 1 && flag))
 			write(1, " ", 1);
 		print_str(args[i]);
 		i++;
@@ -71,4 +78,17 @@ void	print_str(char *str)
 				write(1, &str[i], 1);
 		}
 	}
+}
+
+int	is_numeric(char *arg)
+{
+	int	i;
+
+	i = -1;
+	while (arg[++i])
+	{
+		if (!ft_isdigit(arg[i]))
+			return (0);
+	}
+	return (1);
 }

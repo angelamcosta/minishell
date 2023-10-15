@@ -6,7 +6,7 @@
 /*   By: anlima <anlima@student.42lisboa.com>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/01 13:48:47 by anlima            #+#    #+#             */
-/*   Updated: 2023/10/13 17:22:05 by anlima           ###   ########.fr       */
+/*   Updated: 2023/10/15 15:32:52 by anlima           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,11 +38,11 @@ void	parser(void)
 		else if (term()->tokens[i]->type == HEREDOC)
 			add_red(term()->cmd_list[j].delimiters, term()->tokens[++i]->value);
 		else if (term()->tokens[i]->type == RED_IN)
-			add_red(term()->cmd_list[j].in_red, term()->tokens[++i]->value);
+			add_red(term()->cmd_list[j].in_red, term()->tokens[i]->value);
 		else if (term()->tokens[i]->type == APPEND)
-			add_red(term()->cmd_list[j].append, term()->tokens[++i]->value);
+			add_red(term()->cmd_list[j].append, term()->tokens[i]->value);
 		else if (term()->tokens[i]->type == RED_OUT)
-			add_red(term()->cmd_list[j].out_red, term()->tokens[++i]->value);
+			add_red(term()->cmd_list[j].out_red, term()->tokens[i]->value);
 		else if (term()->tokens[i]->type == VAR)
 			add_argument(&term()->cmd_list[j], term()->tokens[i]->value);
 	}
@@ -60,10 +60,11 @@ void	add_argument(t_command *cmd, char *value)
 		i++;
 	if (i < MAX_TOKENS)
 	{
-		if (should_expand(value) && (ft_strncmp(cmd->args[0], "echo", 4) == 0))
+		if (should_expand(value))
 		{
 			expanded = expand_var(value);
 			cmd->args[i] = ft_strdup(expanded);
+			free(expanded);
 		}
 		else
 			cmd->args[i] = ft_strdup(value);
@@ -99,7 +100,7 @@ char	*handle_variables(char *value)
 		}
 	}
 	if (flag)
-		return (term()->env[i] + ft_strlen(value) + 1);
+		return (ft_strdup(term()->env[i] + ft_strlen(value) + 1));
 	else
 		return (NULL);
 }

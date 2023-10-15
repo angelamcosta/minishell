@@ -6,7 +6,7 @@
 /*   By: anlima <anlima@student.42lisboa.com>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/27 23:15:42 by anlima            #+#    #+#             */
-/*   Updated: 2023/10/13 15:59:28 by anlima           ###   ########.fr       */
+/*   Updated: 2023/10/15 14:38:47 by anlima           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,12 +21,11 @@ void	add_to_env(char *input, char *subs);
 void	execute_env(char **arg)
 {
 	int		i;
-	char	**input;
 
 	if (arg[1] != NULL)
 	{
 		term()->exit_status = EXIT_FAILURE;
-		printf("%s%s%s\n", BLUE, "env: too many arguments", CLEAR);
+		printf("%s\n", "env: too many arguments");
 	}
 	else
 	{
@@ -34,7 +33,7 @@ void	execute_env(char **arg)
 		while (term()->env && term()->env[++i])
 		{
 			if (ft_strchr(term()->env[i], '='))
-				printf("%s%s%s\n", BLUE, term()->env[i], CLEAR);
+				printf("%s\n", term()->env[i]);
 		}
 	}
 }
@@ -96,16 +95,16 @@ void	execute_export(char **input)
 		if (ft_strncmp(input[i], "export", 6) == 0)
 			continue ;
 		subs = ft_strchr(input[i], '=');
-		if (!subs)
+		if (!subs && is_valid_varname(input[i]))
 			add_to_env(input[i], input[i]);
 		else
 		{
 			subs = ft_substr(input[i], 0, subs - input[i]);
-			if (subs)
-			{
+			if (subs && is_valid_varname(subs))
 				add_to_env(input[i], subs);
-				free(subs);
-			}
+			else
+				term()->exit_status = 1;
+			free(subs);
 		}
 	}
 }
