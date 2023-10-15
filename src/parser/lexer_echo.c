@@ -6,7 +6,7 @@
 /*   By: anlima <anlima@student.42lisboa.com>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/12 17:09:57 by anlima            #+#    #+#             */
-/*   Updated: 2023/10/13 17:28:46 by anlima           ###   ########.fr       */
+/*   Updated: 2023/10/15 13:45:56 by anlima           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -147,16 +147,23 @@ int	should_expand(char *input)
 	int	quote;
 
 	i = 0;
-	quote = 1;
+	quote = 0;
 	while (input[i])
 	{
-		if (input[i] == '"' && ft_strrchr(input, '$'))
-			return (1);
-		if (input[i] == '\'')
-			return (0);
+		if (input[i] == '"' || input[i] == '\'')
+		{
+			if (quote == 0)
+				quote = input[i];
+			else if (quote == input[i])
+				quote = 0;
+		}
+		if (input[i] == '$' && (quote == 0 || quote == '"'))
+		{
+			if ((input[i + 1] != '\0' && input[i + 1] != ' ' && quote == 0)
+				|| (quote == '"' && input[i + 1] != ' ' && input[i + 1] != '"'))
+				return (1);
+		}
 		i++;
 	}
-	if (ft_strrchr(input, '$'))
-		return (1);
 	return (0);
 }
