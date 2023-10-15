@@ -1,7 +1,7 @@
 NAME	=	minishell
 
 CC		=	cc
-FLAGS	=	-Wall -Werror -Wextra -g
+CFLAGS	=	-Wall -Werror -Wextra -g
 LIBS	=	-L ./$(LIBFT) -lft -lreadline
 RM		=	rm -rf
 
@@ -21,6 +21,7 @@ VAL		=	--leak-check=full \
 			--track-fds=yes
 
 SRC		=	minishell.c \
+			$(SRC_DIR)/$(B_INS)/builtin_utils.c \
 			$(SRC_DIR)/$(B_INS)/heredoc.c \
 			$(SRC_DIR)/$(B_INS)/io_control.c \
 			$(SRC_DIR)/$(B_INS)/navigation.c \
