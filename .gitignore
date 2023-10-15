@@ -4,3 +4,4 @@ a.out
 *.o
 minishell
 libft.a
+minishell_tester
