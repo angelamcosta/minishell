@@ -6,7 +6,7 @@
 /*   By: anlima <anlima@student.42lisboa.com>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/25 22:12:43 by mpedroso          #+#    #+#             */
-/*   Updated: 2023/10/16 16:02:00 by anlima           ###   ########.fr       */
+/*   Updated: 2023/10/16 18:35:18 by anlima           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,8 +55,9 @@ int	should_expand(char *input)
 		}
 		if (input[i] == '$' && (quote == 0 || quote == '"'))
 		{
-			if ((input[i + 1] != '\0' && input[i + 1] != ' ' && quote == 0)
+			if (((input[i + 1] != '\0' && input[i + 1] != ' ' && quote == 0)
 				|| (quote == '"' && input[i + 1] != ' ' && input[i + 1] != '"'))
+				&& (ft_strncmp(&input[i], "$?", 2) != 0))
 				return (1);
 		}
 		i++;

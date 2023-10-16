@@ -6,7 +6,7 @@
 /*   By: anlima <anlima@student.42lisboa.com>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/07 20:48:28 by anlima            #+#    #+#             */
-/*   Updated: 2023/10/16 15:41:39 by anlima           ###   ########.fr       */
+/*   Updated: 2023/10/16 17:54:59 by anlima           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -113,7 +113,7 @@ void					set_pipes(int fd_in, int fd_out);
 pid_t					create_fork(t_command *cmd, int fd_in, int fd_out);
 // parser
 int						count_words(char *input);
-char					**treat_echo(char *input);
+char					**split_command(char *input);
 char					*expand_var(char *value);
 char					*extract_varname(char *str);
 int						should_expand(char *input);

@@ -6,7 +6,7 @@
 /*   By: anlima <anlima@student.42lisboa.com>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/01 13:48:47 by anlima            #+#    #+#             */
-/*   Updated: 2023/10/16 16:40:59 by anlima           ###   ########.fr       */
+/*   Updated: 2023/10/16 16:49:10 by anlima           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,25 +44,12 @@ void	count_commands(void)
 void	add_argument(t_command *cmd, char *value)
 {
 	int		i;
-	char	*expanded;
 
 	i = 0;
 	while (cmd->args[i] != NULL && i < MAX_TOKENS)
 		i++;
 	if (i < MAX_TOKENS)
-	{
-		if (should_expand(value))
-		{
-			expanded = expand_var(value);
-			if (expanded)
-			{
-				cmd->args[i] = ft_strdup(expanded);
-				free(expanded);
-			}
-		}
-		else
-			cmd->args[i] = ft_strdup(value);
-	}
+		cmd->args[i] = ft_strdup(value);
 }
 
 void	add_red(char **cmd_list, char *value)

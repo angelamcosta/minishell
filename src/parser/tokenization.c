@@ -6,7 +6,7 @@
 /*   By: anlima <anlima@student.42lisboa.com>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/16 15:53:12 by anlima            #+#    #+#             */
-/*   Updated: 2023/10/16 16:35:24 by anlima           ###   ########.fr       */
+/*   Updated: 2023/10/16 19:46:02 by anlima           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,11 +42,13 @@ int	count_words(char *input)
 	int	j;
 	int	quote;
 
-	i = 4;
+	i = -1;
 	j = 0;
 	quote = 0;
 	while (input[++i])
 	{
+		if (i == 0 && input[0] != ' ')
+			j++;
 		if (input[i] == ' ' && quote == 0)
 		{
 			while (input[i] == ' ' && quote == 0)
@@ -98,11 +100,7 @@ void	add_tokens_from_command(char *command, int *token_index)
 	int		j;
 	char	**temp;
 
-	temp = NULL;
-	if (ft_strncmp(command, "echo ", 5) == 0)
-		temp = treat_echo(command);
-	else
-		temp = ft_split(command, ' ');
+	temp = split_command(command);
 	j = -1;
 	while (temp && temp[++j] && *token_index < MAX_TOKENS)
 	{

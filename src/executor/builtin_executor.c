@@ -6,7 +6,7 @@
 /*   By: anlima <anlima@student.42lisboa.com>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/16 15:35:02 by anlima            #+#    #+#             */
-/*   Updated: 2023/10/16 15:49:53 by anlima           ###   ########.fr       */
+/*   Updated: 2023/10/16 19:57:56 by anlima           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,7 +37,7 @@ void	executor(void)
 		if (child_pids[i] > 0)
 			wait(&status);
 	}
-	term()->exit_status = WEXITSTATUS(status);
+	term()->exit_status = 0;
 	free(child_pids);
 }
 

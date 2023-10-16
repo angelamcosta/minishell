@@ -1,41 +1,46 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   lexer_echo.c                                       :+:      :+:    :+:   */
+/*   string_handling.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: anlima <anlima@student.42lisboa.com>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/12 17:09:57 by anlima            #+#    #+#             */
-/*   Updated: 2023/10/16 15:56:08 by anlima           ###   ########.fr       */
+/*   Updated: 2023/10/16 19:49:44 by anlima           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../include/minishell.h"
 
 char	*expand_var(char *value);
-char	**treat_echo(char *input);
 char	*get_var_name(char *value);
 char	*extract_varname(char *str);
+char	**split_command(char *input);
 char	*handle_variables(char *value);
 
-char	**treat_echo(char *input)
+char	**split_command(char *input)
 {
 	int		i;
 	int		j;
 	int		k;
 	int		quote;
 	char	**strs;
+	char	*subs;
+	char	*temp;
 
-	i = 4;
+	i = -1;
 	k = -1;
+	j = 0;
 	quote = 0;
-	strs = (char **)malloc(sizeof(char *) * (count_words(input) + 2));
-	strs[++k] = ft_strdup("echo");
-	while (input[i] == ' ')
-		i++;
-	j = i;
-	while (i <= (int)(ft_strlen(input)))
+	strs = (char **)malloc(sizeof(char *) * (count_words(input) + 1));
+	while (++i < (int)ft_strlen(input) && count_words(input))
 	{
+		while (input[i] == ' ' && quote == 0)
+		{
+			i++;
+			if (input[i] != ' ')
+				j = i;
+		}
 		if (input[i] == '"' || input[i] == '\'')
 		{
 			if (quote == 0)
@@ -43,18 +48,21 @@ char	**treat_echo(char *input)
 			else if (quote == input[i])
 				quote = 0;
 		}
-		else if (input[i - 1] == ' ' && quote == 0)
-			j = i;
-		if ((input[i] == '\0' || input[i] == ' ') && quote == 0)
+		if ((input[i + 1] == '\0' || input[i + 1] == ' ') && quote == 0)
 		{
-			strs[++k] = ft_substr(input, j, i - j);
-			while (input[i] != '\0' && input[i] == ' ' && quote == 0)
-				i++;
-			if (i >= (int)(ft_strlen(input)))
-				break ;
+			subs = ft_substr(input, j, i + 1 - j);
+			if (should_expand(subs))
+			{
+				temp = expand_var(subs);
+				if (temp != NULL)
+					strs[++k] = ft_strdup(temp);
+			}
+			else
+				strs[++k] = ft_strdup(subs);
 		}
-		else
-			i++;
+		if ((input[i - 1] == ' ' && quote == 0) || (input[i] == quote && input[i
+				- 1] == ' ' && input[i] != '\0'))
+			j = i;
 	}
 	strs[++k] = NULL;
 	return (strs);
@@ -64,38 +72,54 @@ char	*expand_var(char *value)
 {
 	int		i;
 	int		j;
+	int		quote;
 	char	*var_name;
 	char	*replacement;
 	char	*result;
 
-	i = 0;
+	i = -1;
 	j = 0;
+	quote = 0;
 	result = NULL;
-	while (value[i])
+	while (++i <= (int)ft_strlen(value))
 	{
-		if (value[i] == '$')
+		while (value[i] == ' ' && quote == 0)
 		{
-			if (i - 1 > 0)
+			i++;
+			if (value[i] != ' ')
+				j = i;
+		}
+		if (value[i] == '"' || value[i] == '\'')
+		{
+			if (quote == 0)
+				quote = value[i];
+			else if (quote == value[i])
+				quote = 0;
+		}
+		else if (value[i] == '$')
+		{
+			if (i - j > 0)
 			{
 				if (result)
 					result = ft_strjoin(result, ft_substr(value, j, i - j));
 				else
 					result = ft_substr(value, j, i - j);
 			}
+			j = i;
 			var_name = extract_varname(&value[i]);
 			replacement = handle_variables(var_name);
-			if (replacement)
+			while (value[++j])
 			{
-				if (result)
-					result = ft_strjoin(result, replacement);
-				else
-					result = replacement;
-				i += (ft_strlen(var_name) + 1);
-				j = i;
+				if (value[j] == ' ' || !ft_isalnum(value[j]))
+					break ;
 			}
+			if (result)
+				result = ft_strjoin(result, replacement);
+			else
+				result = replacement;
 		}
-		if (value[i] != '\0')
-			i++;
+		else if (value[i] == '\0' && j != i)
+			result = ft_strjoin(result, ft_substr(value, j, i - j));
 	}
 	return (result);
 }
