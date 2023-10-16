@@ -1,36 +1,70 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   lexer.c                                            :+:      :+:    :+:   */
+/*   tokenization.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: anlima <anlima@student.42lisboa.com>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/08/23 14:45:31 by anlima            #+#    #+#             */
-/*   Updated: 2023/10/16 14:43:12 by anlima           ###   ########.fr       */
+/*   Created: 2023/10/16 15:53:12 by anlima            #+#    #+#             */
+/*   Updated: 2023/10/16 16:18:14 by anlima           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../include/minishell.h"
 
-void	lexer(void);
-void	grammar(void);
 void	tokenize_input(void);
-int		check_quotes(char *str);
+int		count_words(char *input);
+int		handle_red(char *input, int *i);
 void	add_token(char *input, int *i, int flag);
+void	add_tokens_from_command(char *command, int *token_index);
 
-void	lexer(void)
+void	tokenize_input(void)
 {
-	if (!check_quotes(term()->command))
+	int		i;
+	int		token_index;
+	char	**input;
+
+	input = ft_split(term()->command, '|');
+	i = 0;
+	token_index = 0;
+	term()->tokens = (t_token **)malloc(sizeof(t_token *) * (MAX_TOKENS + 1));
+	while (input && input[i] && i < MAX_TOKENS)
 	{
-		printf("parse error; unbalanced quotes\n");
-		term()->exit_status = EXIT_FAILURE;
-		return ;
+		add_tokens_from_command(input[i], &token_index);
+		i++;
 	}
-	if (read_string())
+	term()->tokens[token_index] = NULL;
+}
+
+int	count_words(char *input)
+{
+	int	i;
+	int	j;
+	int	quote;
+
+	i = 4;
+	j = 0;
+	quote = 0;
+	while (input[++i])
 	{
-		tokenize_input();
-		grammar();
+		if (input[i] == ' ' && quote == 0)
+		{
+			while (input[i] == ' ' && quote == 0)
+				i++;
+			if (input[i] != '\0')
+				j++;
+			else
+				break ;
+		}
+		if (input[i] == '"' || input[i] == '\'')
+		{
+			if (quote == 0)
+				quote = input[i];
+			else if (quote == input[i])
+				quote = 0;
+		}
 	}
+	return (j);
 }
 
 void	add_token(char *input, int *i, int flag)
@@ -56,8 +90,8 @@ void	add_token(char *input, int *i, int flag)
 		token->type = VAR;
 	else
 		token->type = ARG;
-	if ((token->type == RED_IN || token->type == RED_OUT)
-		&& (input[1] != ' ' && input[1] != '\0'))
+	if ((token->type == RED_IN || token->type == RED_OUT) && (input[1] != ' '
+			&& input[1] != '\0'))
 	{
 		j = 1;
 		token->value = ft_substr(input, 0, 1);
@@ -78,59 +112,23 @@ void	add_token(char *input, int *i, int flag)
 	}
 }
 
-void	grammar(void)
+void	add_tokens_from_command(char *command, int *token_index)
 {
-	int		i;
-	t_token	**tokens;
+	int		j;
+	char	**temp;
 
-	i = -1;
-	tokens = term()->tokens;
-	while (tokens && tokens[++i])
+	temp = NULL;
+	if (ft_strncmp(command, "echo ", 5) == 0)
+		temp = treat_echo(command);
+	else
+		temp = ft_split(command, ' ');
+	j = -1;
+	while (temp && temp[++j] && *token_index < MAX_TOKENS)
 	{
-		if ((i == 0 && tokens[i]->value[0] == '|') || ((tokens[i + 1])
-				&& tokens[i]->type == PIPE && tokens[i + 1]->type == PIPE))
-		{
-			printf("parse error near `%s`\n", tokens[i]->value);
-			term()->exit_status = EXIT_FAILURE;
-			return ;
-		}
+		if (j == 0)
+			add_token(temp[j], token_index, 1);
+		else
+			add_token(temp[j], token_index, 0);
+		(*token_index)++;
 	}
-	parser();
-}
-
-int	check_quotes(char *str)
-{
-	int	i;
-	int	quote;
-
-	i = -1;
-	quote = 0;
-	while (str && str[++i])
-	{
-		if ((str[i] == '"' || str[i] == '\'') && quote == 0)
-			quote = str[i];
-		else if ((str[i] == '"' || str[i] == '\'') && quote == str[i])
-			quote = 0;
-	}
-	if (quote != 0)
-		return (0);
-	return (1);
-}
-
-void	tokenize_input(void)
-{
-	int		i;
-	int		token_index;
-	char	**input;
-
-	input = ft_split(term()->command, '|');
-	i = 0;
-	token_index = 0;
-	term()->tokens = (t_token **)malloc(sizeof(t_token *) * (MAX_TOKENS + 1));
-	while (input && input[i] && i < MAX_TOKENS)
-	{
-		add_tokens_from_command(input[i], &token_index);
-		i++;
-	}
-	term()->tokens[token_index] = NULL;
 }

@@ -1,21 +1,45 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   executor_utils.c                                   :+:      :+:    :+:   */
+/*   builtin_executor.c                                 :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: anlima <anlima@student.42lisboa.com>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/08/31 17:06:45 by anlima            #+#    #+#             */
-/*   Updated: 2023/10/15 15:33:56 by anlima           ###   ########.fr       */
+/*   Created: 2023/10/16 15:35:02 by anlima            #+#    #+#             */
+/*   Updated: 2023/10/16 15:49:53 by anlima           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../include/minishell.h"
 
-void	fork_builtin(void);
-int		check_flag(char *input);
-int		is_builtin(char *cmd_name);
+void	executor(void);
 void	execute_builtin(t_command *cmd);
+void	handle_commands(int i, int fd_out, int *fd_in, pid_t *child_pids);
+
+void	executor(void)
+{
+	int		i;
+	int		fd_in;
+	int		fd_out;
+	int		status;
+	pid_t	*child_pids;
+
+	handle_heredocs();
+	fd_in = STDIN_FILENO;
+	fd_out = dup(STDOUT_FILENO);
+	child_pids = malloc(term()->count_cmd * sizeof(pid_t));
+	i = -1;
+	while (++i < term()->count_cmd)
+		handle_commands(i, fd_out, &fd_in, child_pids);
+	i = -1;
+	while (++i < term()->count_cmd)
+	{
+		if (child_pids[i] > 0)
+			wait(&status);
+	}
+	term()->exit_status = WEXITSTATUS(status);
+	free(child_pids);
+}
 
 void	execute_builtin(t_command *cmd)
 {
@@ -30,8 +54,7 @@ void	execute_builtin(t_command *cmd)
 	{
 		execute_echo(&cmd->args[1]);
 		if (check_flag(cmd->args[1]) && cmd->args[2])
-			write(1, "\e[38;5;0;48;5;255m%\e[0m", 24);
-		write(1, "\n", 1);
+			write(1, "\e[38;5;0;48;5;255m%\e[0m\n", 24);
 	}
 	else if (ft_strncmp(cmd->name, "cd", 3) == 0)
 		execute_cd(&cmd->args[1]);
@@ -47,33 +70,29 @@ void	execute_builtin(t_command *cmd)
 		execute_clear();
 }
 
-int	is_builtin(char *cmd_name)
+void	handle_commands(int i, int fd_out, int *fd_in, pid_t *child_pids)
 {
-	if (!cmd_name)
-		return (0);
-	if ((ft_strncmp(cmd_name, "$?", 2) == 0) || (ft_strncmp(cmd_name, "exit",
-				5) == 0) || (ft_strncmp(cmd_name, "echo", 5) == 0)
-		|| (ft_strncmp(cmd_name, "cd", 3) == 0) || (ft_strncmp(cmd_name, "pwd",
-				4) == 0) || (ft_strncmp(cmd_name, "env", 4) == 0)
-		|| (ft_strncmp(cmd_name, "export", 7) == 0) || (ft_strncmp(cmd_name,
-				"unset", 6) == 0) || (ft_strncmp(cmd_name, "clear", 6) == 0))
-		return (1);
-	return (0);
-}
-
-int	check_flag(char *input)
-{
-	int	i;
-
-	if (!input)
-		return (0);
-	if (input[0] != '-')
-		return (0);
-	i = 0;
-	while (input[++i])
+	if (i == term()->count_cmd - 1 && (is_builtin(term()->cmd_list[i].name)))
 	{
-		if (input[i] != 'n')
-			return (0);
+		execute_red(&term()->cmd_list[i]);
+		execute_builtin(&term()->cmd_list[i]);
+		dup2(fd_out, STDOUT_FILENO);
+		close(fd_out);
+		return ;
 	}
-	return (1);
+	else if (i < term()->count_cmd - 1)
+	{
+		create_pipe();
+		child_pids[i] = create_fork(&term()->cmd_list[i], *fd_in,
+				term()->pipe_fd[1]);
+		close(term()->pipe_fd[1]);
+		*fd_in = term()->pipe_fd[0];
+	}
+	else
+	{
+		child_pids[i] = create_fork(&term()->cmd_list[i], *fd_in,
+				STDOUT_FILENO);
+		if (*fd_in != STDIN_FILENO)
+			close(*fd_in);
+	}
 }

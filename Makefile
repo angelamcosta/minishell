@@ -26,13 +26,16 @@ SRC		=	minishell.c \
 			$(SRC_DIR)/$(B_INS)/io_control.c \
 			$(SRC_DIR)/$(B_INS)/navigation.c \
 			$(SRC_DIR)/$(B_INS)/variable_env.c \
-			$(SRC_DIR)/$(XCTOR)/executor_utils.c \
-			$(SRC_DIR)/$(XCTOR)/executor.c \
-			$(SRC_DIR)/$(XCTOR)/pipes.c \
-			$(SRC_DIR)/$(PARSER)/lexer.c \
-			$(SRC_DIR)/$(PARSER)/lexer_utils.c \
-			$(SRC_DIR)/$(PARSER)/lexer_echo.c \
+			$(SRC_DIR)/$(XCTOR)/builtin_executor.c \
+			$(SRC_DIR)/$(XCTOR)/command_executor.c \
+			$(SRC_DIR)/$(XCTOR)/command_parser.c \
+			$(SRC_DIR)/$(XCTOR)/file_executor.c \
+			$(SRC_DIR)/$(XCTOR)/process_management.c \
+			$(SRC_DIR)/$(PARSER)/command_parsing.c \
 			$(SRC_DIR)/$(PARSER)/parser.c \
+			$(SRC_DIR)/$(PARSER)/string_handling.c \
+			$(SRC_DIR)/$(PARSER)/syntax_parsing.c \
+			$(SRC_DIR)/$(PARSER)/tokenization.c \
 			$(SRC_DIR)/free_memory.c \
 			$(SRC_DIR)/general.c \
 			$(SRC_DIR)/signals.c \

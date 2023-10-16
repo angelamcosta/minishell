@@ -6,17 +6,17 @@
 /*   By: anlima <anlima@student.42lisboa.com>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/12 17:09:57 by anlima            #+#    #+#             */
-/*   Updated: 2023/10/15 14:43:05 by anlima           ###   ########.fr       */
+/*   Updated: 2023/10/16 15:56:08 by anlima           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../include/minishell.h"
 
-int		count_words(char *input);
-char	**treat_echo(char *input);
 char	*expand_var(char *value);
+char	**treat_echo(char *input);
+char	*get_var_name(char *value);
 char	*extract_varname(char *str);
-int		should_expand(char *input);
+char	*handle_variables(char *value);
 
 char	**treat_echo(char *input)
 {
@@ -60,37 +60,6 @@ char	**treat_echo(char *input)
 	return (strs);
 }
 
-int	count_words(char *input)
-{
-	int	i;
-	int	j;
-	int	quote;
-
-	i = 4;
-	j = 0;
-	quote = 0;
-	while (input[++i])
-	{
-		if (input[i] == ' ' && quote == 0)
-		{
-			while (input[i] == ' ' && quote == 0)
-				i++;
-			if (input[i] != '\0')
-				j++;
-			else
-				break ;
-		}
-		if (input[i] == '"' || input[i] == '\'')
-		{
-			if (quote == 0)
-				quote = input[i];
-			else if (quote == input[i])
-				quote = 0;
-		}
-	}
-	return (j);
-}
-
 char	*expand_var(char *value)
 {
 	int		i;
@@ -131,6 +100,13 @@ char	*expand_var(char *value)
 	return (result);
 }
 
+char	*get_var_name(char *value)
+{
+	if (value[0] == '"')
+		return (value + 2);
+	return (value + 1);
+}
+
 char	*extract_varname(char *str)
 {
 	int	i;
@@ -141,29 +117,25 @@ char	*extract_varname(char *str)
 	return (ft_substr(str, 1, i - 1));
 }
 
-int	should_expand(char *input)
+char	*handle_variables(char *value)
 {
 	int	i;
-	int	quote;
+	int	flag;
 
-	i = 0;
-	quote = 0;
-	while (input[i])
+	i = -1;
+	flag = 0;
+	if (ft_strncmp(value, "?", 2) == 0)
+		return (ft_itoa(term()->exit_status));
+	while (term()->env[++i] != NULL && !flag)
 	{
-		if (input[i] == '"' || input[i] == '\'')
+		if (ft_strncmp(term()->env[i], value, ft_strlen(value)) == 0)
 		{
-			if (quote == 0)
-				quote = input[i];
-			else if (quote == input[i])
-				quote = 0;
+			flag = 1;
+			break ;
 		}
-		if (input[i] == '$' && (quote == 0 || quote == '"'))
-		{
-			if ((input[i + 1] != '\0' && input[i + 1] != ' ' && quote == 0)
-				|| (quote == '"' && input[i + 1] != ' ' && input[i + 1] != '"'))
-				return (1);
-		}
-		i++;
 	}
-	return (0);
+	if (flag)
+		return (ft_strdup(term()->env[i] + ft_strlen(value) + 1));
+	else
+		return (NULL);
 }
