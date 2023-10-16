@@ -6,7 +6,7 @@
 /*   By: anlima <anlima@student.42lisboa.com>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/01 13:48:47 by anlima            #+#    #+#             */
-/*   Updated: 2023/10/16 15:59:24 by anlima           ###   ########.fr       */
+/*   Updated: 2023/10/16 16:40:59 by anlima           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,8 +54,11 @@ void	add_argument(t_command *cmd, char *value)
 		if (should_expand(value))
 		{
 			expanded = expand_var(value);
-			cmd->args[i] = ft_strdup(expanded);
-			free(expanded);
+			if (expanded)
+			{
+				cmd->args[i] = ft_strdup(expanded);
+				free(expanded);
+			}
 		}
 		else
 			cmd->args[i] = ft_strdup(value);

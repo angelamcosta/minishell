@@ -6,7 +6,7 @@
 /*   By: anlima <anlima@student.42lisboa.com>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/27 23:16:11 by anlima            #+#    #+#             */
-/*   Updated: 2023/10/15 15:24:02 by anlima           ###   ########.fr       */
+/*   Updated: 2023/10/16 16:42:01 by anlima           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,6 +55,7 @@ void	execute_echo(char **args)
 		print_str(args[i]);
 		i++;
 	}
+	write(1, "\n", 1);
 }
 
 void	print_str(char *str)
