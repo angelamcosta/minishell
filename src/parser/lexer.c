@@ -6,7 +6,7 @@
 /*   By: anlima <anlima@student.42lisboa.com>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/23 14:45:31 by anlima            #+#    #+#             */
-/*   Updated: 2023/10/15 16:15:00 by anlima           ###   ########.fr       */
+/*   Updated: 2023/10/16 14:43:12 by anlima           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,7 @@ void	lexer(void);
 void	grammar(void);
 void	tokenize_input(void);
 int		check_quotes(char *str);
-void	add_token(char *input, int i, int flag);
+void	add_token(char *input, int *i, int flag);
 
 void	lexer(void)
 {
@@ -33,7 +33,7 @@ void	lexer(void)
 	}
 }
 
-void	add_token(char *input, int i, int flag)
+void	add_token(char *input, int *i, int flag)
 {
 	int		j;
 	t_token	*token;
@@ -57,13 +57,25 @@ void	add_token(char *input, int i, int flag)
 	else
 		token->type = ARG;
 	if ((token->type == RED_IN || token->type == RED_OUT)
-		&& (input[j + 1] != ' '))
-		j++;
-	if ((token->type == APPEND || token->type == HEREDOC)
-		&& (input[j + 2] != ' '))
-		j += 2;
-	token->value = ft_strdup(&input[j]);
-	term()->tokens[i] = token;
+		&& (input[1] != ' ' && input[1] != '\0'))
+	{
+		j = 1;
+		token->value = ft_substr(input, 0, 1);
+	}
+	else if ((token->type == APPEND || token->type == HEREDOC)
+		&& (input[2] != ' ' && input[1] != '\0'))
+	{
+		j = 2;
+		token->value = ft_substr(input, 0, 2);
+	}
+	else
+		token->value = ft_strdup(input);
+	term()->tokens[*i] = token;
+	if (j > 0)
+	{
+		(*i)++;
+		add_token(&input[j], i, 0);
+	}
 }
 
 void	grammar(void)

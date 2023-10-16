@@ -6,7 +6,7 @@
 /*   By: anlima <anlima@student.42lisboa.com>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/07 20:48:28 by anlima            #+#    #+#             */
-/*   Updated: 2023/10/15 15:39:42 by anlima           ###   ########.fr       */
+/*   Updated: 2023/10/16 15:29:20 by anlima           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,19 +19,19 @@
 # define GREEN "\033[92;1m"
 # define YELLOW "\033[93;1m"
 # include "../libft/libft.h"
+# include <dirent.h>
 # include <errno.h>
 # include <fcntl.h>
-# include <stdio.h>
-# include <dirent.h>
 # include <limits.h>
-# include <signal.h>
-# include <stdlib.h>
-# include <string.h>
-# include <sys/wait.h>
-# include <unistd.h>
-# include <sys/types.h>
 # include <readline/history.h>
 # include <readline/readline.h>
+# include <signal.h>
+# include <stdio.h>
+# include <stdlib.h>
+# include <string.h>
+# include <sys/types.h>
+# include <sys/wait.h>
+# include <unistd.h>
 # define MAX_TOKENS 100
 # define HERETXT "temp_here.txt"
 # define LEN 25
@@ -126,7 +126,7 @@ void					lexer(void);
 void					grammar(void);
 void					tokenize_input(void);
 int						check_quotes(char *str);
-void					add_token(char *input, int i, int flag);
+void					add_token(char *input, int *i, int flag);
 void					parser(void);
 void					add_red(char **cmd_list, char *value);
 void					add_argument(t_command *cmd, char *value);
@@ -145,6 +145,8 @@ void					set_env(char **input);
 void					init_program(char **env);
 // signals
 void					set_signals(void);
+void					signals_child(void);
 void					handle_sig_c(int sig);
+void					handle_fork_signals(int sig);
 
 #endif

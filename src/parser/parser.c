@@ -6,7 +6,7 @@
 /*   By: anlima <anlima@student.42lisboa.com>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/01 13:48:47 by anlima            #+#    #+#             */
-/*   Updated: 2023/10/15 15:32:52 by anlima           ###   ########.fr       */
+/*   Updated: 2023/10/16 14:28:38 by anlima           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,13 +38,13 @@ void	parser(void)
 		else if (term()->tokens[i]->type == HEREDOC)
 			add_red(term()->cmd_list[j].delimiters, term()->tokens[++i]->value);
 		else if (term()->tokens[i]->type == RED_IN)
-			add_red(term()->cmd_list[j].in_red, term()->tokens[i]->value);
+			add_red(term()->cmd_list[j].in_red, term()->tokens[++i]->value);
 		else if (term()->tokens[i]->type == APPEND)
-			add_red(term()->cmd_list[j].append, term()->tokens[i]->value);
+			add_red(term()->cmd_list[j].append, term()->tokens[++i]->value);
 		else if (term()->tokens[i]->type == RED_OUT)
-			add_red(term()->cmd_list[j].out_red, term()->tokens[i]->value);
+			add_red(term()->cmd_list[j].out_red, term()->tokens[++i]->value);
 		else if (term()->tokens[i]->type == VAR)
-			add_argument(&term()->cmd_list[j], term()->tokens[i]->value);
+			add_argument(&term()->cmd_list[j], term()->tokens[++i]->value);
 	}
 	count_commands();
 	executor();
