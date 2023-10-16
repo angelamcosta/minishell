@@ -6,7 +6,7 @@
 /*   By: anlima <anlima@student.42lisboa.com>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/16 15:53:12 by anlima            #+#    #+#             */
-/*   Updated: 2023/10/16 16:18:14 by anlima           ###   ########.fr       */
+/*   Updated: 2023/10/16 16:35:24 by anlima           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,8 +14,8 @@
 
 void	tokenize_input(void);
 int		count_words(char *input);
-int		handle_red(char *input, int *i);
 void	add_token(char *input, int *i, int flag);
+void	set_token_type(t_token *token, char *input, int flag);
 void	add_tokens_from_command(char *command, int *token_index);
 
 void	tokenize_input(void)
@@ -69,42 +69,23 @@ int	count_words(char *input)
 
 void	add_token(char *input, int *i, int flag)
 {
-	int		j;
 	t_token	*token;
+	int		j;
 
-	j = 0;
 	token = malloc(sizeof(t_token));
-	if (ft_strncmp(input, ">>", 2) == 0)
-		token->type = APPEND;
-	else if (ft_strncmp(input, "<<", 2) == 0)
-		token->type = HEREDOC;
-	else if (input[0] == '<')
-		token->type = RED_IN;
-	else if (input[0] == '>')
-		token->type = RED_OUT;
-	else if (flag || ft_strncmp(input, "$?", 2) == 0)
-		token->type = CMD;
-	else if (input[0] == '|' || input[0] == '&')
-		token->type = PIPE;
-	else if (input[0] == '$' || (input[0] == '"' && input[1] == '$'))
-		token->type = VAR;
-	else
-		token->type = ARG;
+	j = 0;
+	set_token_type(token, input, flag);
 	if ((token->type == RED_IN || token->type == RED_OUT) && (input[1] != ' '
 			&& input[1] != '\0'))
-	{
 		j = 1;
-		token->value = ft_substr(input, 0, 1);
-	}
 	else if ((token->type == APPEND || token->type == HEREDOC)
 		&& (input[2] != ' ' && input[1] != '\0'))
-	{
 		j = 2;
-		token->value = ft_substr(input, 0, 2);
-	}
+	if (j > 0)
+		token->value = ft_substr(input, 0, j);
 	else
 		token->value = ft_strdup(input);
-	term()->tokens[*i] = token;
+	term()->tokens[(*i)] = token;
 	if (j > 0)
 	{
 		(*i)++;
@@ -131,4 +112,24 @@ void	add_tokens_from_command(char *command, int *token_index)
 			add_token(temp[j], token_index, 0);
 		(*token_index)++;
 	}
+}
+
+void	set_token_type(t_token *token, char *input, int flag)
+{
+	if (flag || ft_strncmp(input, "$?", 2) == 0)
+		token->type = CMD;
+	else if (input[0] == '|' || input[0] == '&')
+		token->type = PIPE;
+	else if (input[0] == '$' || (input[0] == '"' && input[1] == '$'))
+		token->type = VAR;
+	else if (input[0] == '<')
+		token->type = RED_IN;
+	else if (input[0] == '>')
+		token->type = RED_OUT;
+	else if (ft_strncmp(input, ">>", 2) == 0)
+		token->type = APPEND;
+	else if (ft_strncmp(input, "<<", 2) == 0)
+		token->type = HEREDOC;
+	else
+		token->type = ARG;
 }
