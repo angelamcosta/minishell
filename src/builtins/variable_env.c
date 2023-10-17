@@ -6,7 +6,7 @@
 /*   By: anlima <anlima@student.42lisboa.com>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/27 23:15:42 by anlima            #+#    #+#             */
-/*   Updated: 2023/10/15 14:38:47 by anlima           ###   ########.fr       */
+/*   Updated: 2023/10/17 15:04:15 by anlima           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,11 +20,11 @@ void	add_to_env(char *input, char *subs);
 
 void	execute_env(char **arg)
 {
-	int		i;
+	int	i;
 
 	if (arg[1] != NULL)
 	{
-		term()->exit_status = EXIT_FAILURE;
+		g_exit = EXIT_FAILURE;
 		printf("%s\n", "env: too many arguments");
 	}
 	else
@@ -35,6 +35,7 @@ void	execute_env(char **arg)
 			if (ft_strchr(term()->env[i], '='))
 				printf("%s\n", term()->env[i]);
 		}
+		g_exit = EXIT_SUCCESS;
 	}
 }
 
@@ -42,13 +43,9 @@ void	remove_env(char *input)
 {
 	int		i;
 	int		j;
-	int		flag;
 	char	**new_array;
 
 	i = 0;
-	flag = is_env(input);
-	if (!flag)
-		return ;
 	while (term()->env[++i] != NULL)
 		i++;
 	new_array = (char **)malloc(sizeof(char *) * (i));
@@ -65,6 +62,7 @@ void	remove_env(char *input)
 	new_array[j] = NULL;
 	free_env();
 	term()->env = new_array;
+	g_exit = EXIT_SUCCESS;
 }
 
 void	execute_unset(char **input)
@@ -78,8 +76,10 @@ void	execute_unset(char **input)
 			continue ;
 		else
 		{
-			if (input[i])
+			if (input[i] && is_env(input[i]))
 				remove_env(input[i]);
+			else if (!is_env(input[i]))
+				g_exit = EXIT_FAILURE;
 		}
 	}
 }
@@ -101,9 +101,12 @@ void	execute_export(char **input)
 		{
 			subs = ft_substr(input[i], 0, subs - input[i]);
 			if (subs && is_valid_varname(subs))
+			{
 				add_to_env(input[i], subs);
+				g_exit = EXIT_SUCCESS;
+			}
 			else
-				term()->exit_status = 1;
+				g_exit = EXIT_FAILURE;
 			free(subs);
 		}
 	}

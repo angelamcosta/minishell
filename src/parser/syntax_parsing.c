@@ -6,7 +6,7 @@
 /*   By: anlima <anlima@student.42lisboa.com>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/25 22:12:43 by mpedroso          #+#    #+#             */
-/*   Updated: 2023/10/17 10:20:26 by anlima           ###   ########.fr       */
+/*   Updated: 2023/10/17 14:23:04 by anlima           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,6 +16,7 @@ void	grammar(void);
 int		read_string(void);
 int		check_quotes(char *str);
 int		should_expand(char *input);
+void	change_quote(int *quote, char input);
 
 void	grammar(void)
 {
@@ -30,7 +31,7 @@ void	grammar(void)
 				&& tokens[i]->type == PIPE && tokens[i + 1]->type == PIPE))
 		{
 			printf("parse error near `%s`\n", tokens[i]->value);
-			term()->exit_status = EXIT_FAILURE;
+			g_exit = EXIT_FAILURE;
 			return ;
 		}
 	}
@@ -47,12 +48,7 @@ int	should_expand(char *input)
 	while (input[i])
 	{
 		if (input[i] == '"' || input[i] == '\'')
-		{
-			if (quote == 0)
-				quote = input[i];
-			else if (quote == input[i])
-				quote = 0;
-		}
+			change_quote(&quote, input[i]);
 		if (input[i] == '$' && (quote == 0 || quote == '"'))
 		{
 			if ((input[i + 1] != '\0' && input[i + 1] != ' ' && quote == 0)
@@ -76,7 +72,7 @@ int	read_string(void)
 			if (i == 0 || (i > 0 && term()->command[i - 1] == '|'))
 			{
 				printf("parse error near `%c`\n", term()->command[i]);
-				term()->exit_status = EXIT_FAILURE;
+				g_exit = EXIT_FAILURE;
 				return (0);
 			}
 		}
@@ -101,4 +97,12 @@ int	check_quotes(char *str)
 	if (quote != 0)
 		return (0);
 	return (1);
+}
+
+void	change_quote(int *quote, char input)
+{
+	if (*quote == 0)
+		*quote = input;
+	else if (*quote == input)
+		*quote = 0;
 }

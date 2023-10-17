@@ -33,6 +33,7 @@ SRC		=	minishell.c \
 			$(SRC_DIR)/$(XCTOR)/process_management.c \
 			$(SRC_DIR)/$(PARSER)/command_parsing.c \
 			$(SRC_DIR)/$(PARSER)/parser.c \
+			$(SRC_DIR)/$(PARSER)/parsing_utils.c \
 			$(SRC_DIR)/$(PARSER)/string_handling.c \
 			$(SRC_DIR)/$(PARSER)/syntax_parsing.c \
 			$(SRC_DIR)/$(PARSER)/tokenization.c \

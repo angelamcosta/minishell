@@ -6,7 +6,7 @@
 /*   By: anlima <anlima@student.42lisboa.com>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/27 23:16:11 by anlima            #+#    #+#             */
-/*   Updated: 2023/10/16 19:56:57 by anlima           ###   ########.fr       */
+/*   Updated: 2023/10/17 14:35:42 by anlima           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,14 +29,15 @@ void	execute_exit(char **args)
 	else if (args[1] != NULL)
 	{
 		print_str("exit: too many arguments");
-		term()->exit_status = EXIT_FAILURE;
+		g_exit = EXIT_FAILURE;
 	}
-	exit(term()->exit_status);
+	exit(g_exit);
 }
 
 void	execute_clear(void)
 {
 	printf("\033c");
+	g_exit = EXIT_SUCCESS;
 }
 
 void	execute_echo(char **args)
@@ -56,6 +57,7 @@ void	execute_echo(char **args)
 		i++;
 	}
 	write(1, "\n", 1);
+	g_exit = EXIT_SUCCESS;
 }
 
 void	print_str(char *str)

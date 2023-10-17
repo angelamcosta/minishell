@@ -6,7 +6,7 @@
 /*   By: anlima <anlima@student.42lisboa.com>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/23 14:45:31 by anlima            #+#    #+#             */
-/*   Updated: 2023/10/16 16:39:43 by anlima           ###   ########.fr       */
+/*   Updated: 2023/10/17 14:22:43 by anlima           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,7 @@ void	lexer(void)
 	if (!check_quotes(term()->command))
 	{
 		printf("parse error; unbalanced quotes\n");
-		term()->exit_status = EXIT_FAILURE;
+		g_exit = EXIT_FAILURE;
 		return ;
 	}
 	if (read_string())
@@ -55,8 +55,6 @@ void	parser(void)
 			add_red(term()->cmd_list[j].append, term()->tokens[++i]->value);
 		else if (term()->tokens[i]->type == RED_OUT)
 			add_red(term()->cmd_list[j].out_red, term()->tokens[++i]->value);
-		else if (term()->tokens[i]->type == VAR)
-			add_argument(&term()->cmd_list[j], term()->tokens[i]->value);
 	}
 	count_commands();
 	executor();

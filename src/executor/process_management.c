@@ -6,7 +6,7 @@
 /*   By: anlima <anlima@student.42lisboa.com>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/28 15:37:42 by anlima            #+#    #+#             */
-/*   Updated: 2023/10/16 15:39:04 by anlima           ###   ########.fr       */
+/*   Updated: 2023/10/17 14:22:35 by anlima           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,8 +20,8 @@ void	create_pipe(void)
 {
 	if (pipe(term()->pipe_fd) == -1)
 	{
-		term()->exit_status = EXIT_FAILURE;
-		exit(EXIT_FAILURE);
+		g_exit = EXIT_FAILURE;
+		exit(g_exit);
 	}
 }
 
@@ -57,14 +57,11 @@ pid_t	create_fork(t_command *cmd, int fd_in, int fd_out)
 			execute_builtin(cmd);
 		else
 			execute_red(cmd);
-		exit(0);
+		exit(g_exit);
 	}
-	else
-	{
-		if (fd_in != STDIN_FILENO)
-			close(fd_in);
-		if (fd_out != STDOUT_FILENO && fd_out != term()->pipe_fd[1])
-			close(fd_out);
-	}
+	if (fd_out != STDOUT_FILENO)
+		close(fd_out);
+	if (fd_in != STDIN_FILENO)
+		close(fd_in);
 	return (child_pid);
 }

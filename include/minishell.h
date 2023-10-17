@@ -6,7 +6,7 @@
 /*   By: anlima <anlima@student.42lisboa.com>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/07 20:48:28 by anlima            #+#    #+#             */
-/*   Updated: 2023/10/17 10:08:54 by anlima           ###   ########.fr       */
+/*   Updated: 2023/10/17 14:20:30 by anlima           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,11 +40,12 @@
 # define ERR_PERMISSION 126
 # define BUFF_SIZE 1024
 
+extern int				g_exit;
+
 enum					e_TokenType
 {
 	CMD = 1,
 	ARG,
-	VAR,
 	PIPE,
 	APPEND,
 	RED_IN,
@@ -61,27 +62,27 @@ typedef struct s_token
 typedef struct s_command
 {
 	char				*name;
-	char				*args[MAX_TOKENS];
+	char				*append[LEN];
 	char				*in_red[LEN];
 	char				*out_red[LEN];
 	char				*delimiters[LEN];
-	char				*append[LEN];
+	char				*args[MAX_TOKENS];
 }						t_command;
 
 typedef struct s_term
 {
+	int					count_cmd;
+	int					pipe_fd[2];
 	char				*user;
 	char				*home;
-	char				**env;
 	char				*command;
+	char				**env;
 	t_token				**tokens;
 	t_command			cmd_list[MAX_TOKENS];
-	int					exit_status;
-	int					pipe_fd[2];
-	int					count_cmd;
 }						t_term;
 
 // buitins
+int						can_fork(t_command *cmd);
 int						is_valid_varname(char *str);
 void					handle_heredocs(void);
 void					heredoc(char *delimiter);
@@ -114,12 +115,15 @@ pid_t					create_fork(t_command *cmd, int fd_in, int fd_out);
 // parser
 // command parsing
 void					count_commands(void);
+char					**ft_split_pipes(char *input);
 void					add_red(char **cmd_list, char *value);
 void					add_argument(t_command *cmd, char *value);
 void					add_command(t_command *cmd, t_token **tokens);
 // parser
 void					lexer(void);
 void					parser(void);
+// parsing_utils
+int						count_pipes(char *input);
 // string_handling
 char					*expand_var(char *value);
 char					*get_var_name(char *value);
@@ -131,6 +135,7 @@ void					grammar(void);
 int						read_string(void);
 int						check_quotes(char *str);
 int						should_expand(char *input);
+void					change_quote(int *quote, char input);
 // tokenization
 void					tokenize_input(void);
 int						count_words(char *input);

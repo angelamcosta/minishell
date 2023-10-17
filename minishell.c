@@ -6,11 +6,13 @@
 /*   By: anlima <anlima@student.42lisboa.com>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/07 20:47:34 by anlima            #+#    #+#             */
-/*   Updated: 2023/10/16 20:05:12 by anlima           ###   ########.fr       */
+/*   Updated: 2023/10/17 14:20:47 by anlima           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "./include/minishell.h"
+
+int	g_exit = 0;
 
 int	main(int argc, char **argv, char **env)
 {
@@ -33,5 +35,6 @@ int	main(int argc, char **argv, char **env)
 	return (0);
 }
 
-// TODO: - make the exist status work
-// TODO: - main split has to ignore pipes inside quotes
+// TODO: - make the exit status work <=
+// TODO: - make `cat | cat | ls` work as intended <=
+// TODO: - make try executing a dir throw the same error as bash

@@ -6,7 +6,7 @@
 /*   By: anlima <anlima@student.42lisboa.com>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/16 15:35:02 by anlima            #+#    #+#             */
-/*   Updated: 2023/10/16 19:57:56 by anlima           ###   ########.fr       */
+/*   Updated: 2023/10/17 14:30:38 by anlima           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,9 +35,12 @@ void	executor(void)
 	while (++i < term()->count_cmd)
 	{
 		if (child_pids[i] > 0)
-			wait(&status);
+		{
+			waitpid(child_pids[i], &status, 0);
+			if (WIFEXITED(status))
+				g_exit = WEXITSTATUS(status);
+		}
 	}
-	term()->exit_status = 0;
 	free(child_pids);
 }
 
@@ -45,7 +48,7 @@ void	execute_builtin(t_command *cmd)
 {
 	if (ft_strncmp(cmd->name, "$?", 2) == 0)
 	{
-		printf("%i\n", term()->exit_status);
+		printf("%i\n", g_exit);
 		return ;
 	}
 	if (ft_strncmp(cmd->name, "exit", 5) == 0)
@@ -72,26 +75,28 @@ void	execute_builtin(t_command *cmd)
 
 void	handle_commands(int i, int fd_out, int *fd_in, pid_t *child_pids)
 {
-	if (i == term()->count_cmd - 1 && (is_builtin(term()->cmd_list[i].name)))
+	if (i == term()->count_cmd - 1 && (!can_fork(&term()->cmd_list[i])))
 	{
-		execute_red(&term()->cmd_list[i]);
-		execute_builtin(&term()->cmd_list[i]);
-		dup2(fd_out, STDOUT_FILENO);
-		close(fd_out);
-		return ;
+		if (term()->cmd_list[i].name)
+		{
+			execute_red(&term()->cmd_list[i]);
+			execute_builtin(&term()->cmd_list[i]);
+			dup2(fd_out, STDOUT_FILENO);
+			close(fd_out);
+		}
 	}
 	else if (i < term()->count_cmd - 1)
 	{
 		create_pipe();
 		child_pids[i] = create_fork(&term()->cmd_list[i], *fd_in,
-				term()->pipe_fd[1]);
+			term()->pipe_fd[1]);
 		close(term()->pipe_fd[1]);
 		*fd_in = term()->pipe_fd[0];
 	}
 	else
 	{
 		child_pids[i] = create_fork(&term()->cmd_list[i], *fd_in,
-				STDOUT_FILENO);
+			STDOUT_FILENO);
 		if (*fd_in != STDIN_FILENO)
 			close(*fd_in);
 	}
