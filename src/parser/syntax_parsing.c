@@ -6,7 +6,7 @@
 /*   By: anlima <anlima@student.42lisboa.com>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/25 22:12:43 by mpedroso          #+#    #+#             */
-/*   Updated: 2023/10/17 14:23:04 by anlima           ###   ########.fr       */
+/*   Updated: 2023/10/17 15:37:53 by anlima           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,6 +31,15 @@ void	grammar(void)
 				&& tokens[i]->type == PIPE && tokens[i + 1]->type == PIPE))
 		{
 			printf("parse error near `%s`\n", tokens[i]->value);
+			g_exit = EXIT_FAILURE;
+			return ;
+		}
+		if (!(tokens[i + 1]) && (tokens[i]->type == APPEND
+				|| tokens[i]->type == HEREDOC 
+				|| tokens[i]->type == RED_IN
+				|| tokens[i]->type == RED_OUT))
+		{
+			printf("syntax error near unexpected token `newline`\n");
 			g_exit = EXIT_FAILURE;
 			return ;
 		}
