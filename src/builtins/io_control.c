@@ -6,7 +6,7 @@
 /*   By: anlima <anlima@student.42lisboa.com>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/27 23:16:11 by anlima            #+#    #+#             */
-/*   Updated: 2023/10/17 14:35:42 by anlima           ###   ########.fr       */
+/*   Updated: 2023/10/17 17:40:11 by anlima           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,16 +21,20 @@ void	execute_exit(char **args);
 void	execute_exit(char **args)
 {
 	add_history(term()->command);
+	if (args[1] && args[1] != NULL)
+		g_exit = EXIT_FAILURE;
+	else if (args[0] && !is_numeric(args[0]))
+		g_exit = 2;
+	else if (args[0] && is_numeric(args[0]))
+	{
+		g_exit = treat_exit_arg(args[0]);
+		if (g_exit < 0)
+			g_exit = (g_exit + 256);
+		g_exit = g_exit % 256;
+	}
+	print_str("exit\n");
 	clean_mallocs();
 	free_env();
-	print_str("exit\n");
-	if (args[0] && !is_numeric(args[0]))
-		printf("exit: %s:  numeric argument required", args[1]);
-	else if (args[1] != NULL)
-	{
-		print_str("exit: too many arguments");
-		g_exit = EXIT_FAILURE;
-	}
 	exit(g_exit);
 }
 
@@ -86,11 +90,27 @@ void	print_str(char *str)
 int	is_numeric(char *arg)
 {
 	int	i;
+	int	f_plus;
+	int	f_minus;
 
+	f_plus = 0;
+	f_minus = 0;
 	i = -1;
 	while (arg[++i])
 	{
-		if (!ft_isdigit(arg[i]))
+		if (arg[i] == '-')
+		{
+			if (f_minus)
+				return (0);
+			f_minus = 1;
+		}
+		if (arg[i] == '+')
+		{
+			if (f_plus)
+				return (0);
+			f_plus = 1;
+		}
+		if (ft_isalpha(arg[i]))
 			return (0);
 	}
 	return (1);

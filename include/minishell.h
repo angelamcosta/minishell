@@ -6,7 +6,7 @@
 /*   By: anlima <anlima@student.42lisboa.com>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/07 20:48:28 by anlima            #+#    #+#             */
-/*   Updated: 2023/10/17 14:20:30 by anlima           ###   ########.fr       */
+/*   Updated: 2023/10/17 17:42:24 by anlima           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -83,6 +83,7 @@ typedef struct s_term
 
 // buitins
 int						can_fork(t_command *cmd);
+int						treat_exit_arg(char *str);
 int						is_valid_varname(char *str);
 void					handle_heredocs(void);
 void					heredoc(char *delimiter);

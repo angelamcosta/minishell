@@ -6,7 +6,7 @@
 /*   By: anlima <anlima@student.42lisboa.com>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/27 23:13:34 by anlima            #+#    #+#             */
-/*   Updated: 2023/10/17 14:34:50 by anlima           ###   ########.fr       */
+/*   Updated: 2023/10/17 17:51:10 by anlima           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,21 +22,26 @@ void	execute_cd(char **args)
 		if (term()->home == NULL || chdir(term()->home) != 0)
 		{
 			g_exit = EXIT_FAILURE;
-			print_str("cd: No such file or directory\n");
+			perror("cd: No such file or directory\n");
+			return ;
 		}
-		else
-			g_exit = EXIT_SUCCESS;
 	}
 	else
 	{
-		if (chdir(args[1]) != 0)
+		if (args[2])
 		{
 			g_exit = EXIT_FAILURE;
-			print_str("cd: No such file or directory\n");
+			perror("cd: too many arguments\n");
+			return ;
 		}
-		else
-			g_exit = EXIT_SUCCESS;
+		else if (chdir(args[1]) != 0)
+		{
+			g_exit = EXIT_FAILURE;
+			perror("cd: No such file or directory\n");
+			return ;
+		}
 	}
+	g_exit = EXIT_SUCCESS;
 }
 
 void	execute_pwd(void)

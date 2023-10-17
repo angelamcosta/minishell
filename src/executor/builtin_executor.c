@@ -6,7 +6,7 @@
 /*   By: anlima <anlima@student.42lisboa.com>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/16 15:35:02 by anlima            #+#    #+#             */
-/*   Updated: 2023/10/17 14:30:38 by anlima           ###   ########.fr       */
+/*   Updated: 2023/10/17 17:47:29 by anlima           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,11 +47,8 @@ void	executor(void)
 void	execute_builtin(t_command *cmd)
 {
 	if (ft_strncmp(cmd->name, "$?", 2) == 0)
-	{
 		printf("%i\n", g_exit);
-		return ;
-	}
-	if (ft_strncmp(cmd->name, "exit", 5) == 0)
+	else if (ft_strncmp(cmd->name, "exit", 5) == 0)
 		execute_exit(&cmd->args[1]);
 	else if (ft_strncmp(cmd->name, "echo", 5) == 0)
 	{
@@ -60,7 +57,7 @@ void	execute_builtin(t_command *cmd)
 			write(1, "\e[38;5;0;48;5;255m%\e[0m\n", 24);
 	}
 	else if (ft_strncmp(cmd->name, "cd", 3) == 0)
-		execute_cd(&cmd->args[1]);
+		execute_cd(cmd->args);
 	else if (ft_strncmp(cmd->name, "pwd", 4) == 0)
 		execute_pwd();
 	else if (ft_strncmp(cmd->name, "env", 4) == 0)

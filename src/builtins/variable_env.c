@@ -6,7 +6,7 @@
 /*   By: anlima <anlima@student.42lisboa.com>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/27 23:15:42 by anlima            #+#    #+#             */
-/*   Updated: 2023/10/17 15:04:15 by anlima           ###   ########.fr       */
+/*   Updated: 2023/10/17 17:55:26 by anlima           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -78,10 +78,9 @@ void	execute_unset(char **input)
 		{
 			if (input[i] && is_env(input[i]))
 				remove_env(input[i]);
-			else if (!is_env(input[i]))
-				g_exit = EXIT_FAILURE;
 		}
 	}
+	g_exit = EXIT_SUCCESS;
 }
 
 void	execute_export(char **input)
@@ -121,6 +120,8 @@ void	add_to_env(char *input, char *subs)
 
 	i = 0;
 	flag = is_env(subs);
+	if (!is_valid_varname(subs))
+		return ;
 	while (term()->env[++i] != NULL)
 		i++;
 	if (flag)
