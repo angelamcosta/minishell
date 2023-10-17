@@ -6,7 +6,7 @@
 /*   By: anlima <anlima@student.42lisboa.com>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/16 15:53:12 by anlima            #+#    #+#             */
-/*   Updated: 2023/10/17 10:03:42 by anlima           ###   ########.fr       */
+/*   Updated: 2023/10/17 15:30:12 by anlima           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,7 @@ void	tokenize_input(void)
 	int		token_index;
 	char	**input;
 
-	input = ft_split(term()->command, '|');
+	input = ft_split_pipes(term()->command);
 	i = 0;
 	token_index = 0;
 	term()->tokens = (t_token **)malloc(sizeof(t_token *) * (MAX_TOKENS + 1));
@@ -74,19 +74,19 @@ void	add_token(char *input, int *i, int flag)
 	t_token	*token;
 	int		j;
 
-	token = malloc(sizeof(t_token));
 	j = 0;
+	token = malloc(sizeof(t_token));
 	set_token_type(token, input, flag);
-	if ((token->type == RED_IN || token->type == RED_OUT) && (input[1] != ' '
-			&& input[1] != '\0'))
+	if ((token->type == RED_IN || token->type == RED_OUT) && input[1] != ' '
+		&& input[1] != '\0')
 		j = 1;
 	else if ((token->type == APPEND || token->type == HEREDOC)
-		&& (input[2] != ' ' && input[1] != '\0'))
+		&& input[2] != ' ' && input[2] != '\0')
 		j = 2;
 	if (j > 0)
 		token->value = ft_substr(input, 0, j);
 	else
-		token->value = ft_strdup(input);
+		token->value = ft_substr(input, 0, ft_strlen(input));
 	term()->tokens[(*i)] = token;
 	if (j > 0)
 	{
@@ -104,7 +104,7 @@ void	add_tokens_from_command(char *command, int *token_index)
 	j = -1;
 	while (temp && temp[++j] && *token_index < MAX_TOKENS)
 	{
-		if (j == 0)
+		if (j == 0 && !ft_isdigit(*temp[0]))
 			add_token(temp[j], token_index, 1);
 		else
 			add_token(temp[j], token_index, 0);
@@ -114,20 +114,18 @@ void	add_tokens_from_command(char *command, int *token_index)
 
 void	set_token_type(t_token *token, char *input, int flag)
 {
-	if (flag || ft_strncmp(input, "$?", 2) == 0)
-		token->type = CMD;
-	else if (input[0] == '|' || input[0] == '&')
-		token->type = PIPE;
-	else if (input[0] == '$' || (input[0] == '"' && input[1] == '$'))
-		token->type = VAR;
+	if (ft_strncmp(input, ">>", 2) == 0)
+		token->type = APPEND;
+	else if (ft_strncmp(input, "<<", 2) == 0)
+		token->type = HEREDOC;
 	else if (input[0] == '<')
 		token->type = RED_IN;
 	else if (input[0] == '>')
 		token->type = RED_OUT;
-	else if (ft_strncmp(input, ">>", 2) == 0)
-		token->type = APPEND;
-	else if (ft_strncmp(input, "<<", 2) == 0)
-		token->type = HEREDOC;
+	else if (flag || ft_strncmp(input, "$?", 2) == 0)
+		token->type = CMD;
+	else if (input[0] == '|' || input[0] == '&')
+		token->type = PIPE;
 	else
 		token->type = ARG;
 }

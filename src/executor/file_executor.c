@@ -6,7 +6,7 @@
 /*   By: anlima <anlima@student.42lisboa.com>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/31 17:06:45 by anlima            #+#    #+#             */
-/*   Updated: 2023/10/16 15:38:51 by anlima           ###   ########.fr       */
+/*   Updated: 2023/10/17 12:21:23 by anlima           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,8 +32,8 @@ void	execute_red(t_command *cmd)
 	int		i;
 	char	*path;
 
-	if (cmd->name && (cmd->name[0] == '/' || (ft_strncmp(cmd->name, "./",
-					2) == 0)))
+	if (cmd->name && (cmd->name[0] == '/'
+			|| (ft_strncmp(cmd->name, "./", 2) == 0)))
 		path = ft_strdup(cmd->name);
 	else
 		path = get_path(cmd->name);
@@ -46,7 +46,7 @@ void	execute_red(t_command *cmd)
 	i = -1;
 	while (cmd->out_red[++i])
 		execute_out(cmd->out_red[i], 0);
-	if (!is_builtin(cmd->name))
+	if (cmd->name && !is_builtin(cmd->name))
 		execute_command(cmd, path);
 }
 

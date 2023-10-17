@@ -6,7 +6,7 @@
 /*   By: anlima <anlima@student.42lisboa.com>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/12 17:09:57 by anlima            #+#    #+#             */
-/*   Updated: 2023/10/17 10:46:40 by anlima           ###   ########.fr       */
+/*   Updated: 2023/10/17 14:22:50 by anlima           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,12 +40,7 @@ char	**split_command(char *input)
 		while (input[i] && ((input[i] != ' ' && quote == 0) || quote))
 		{
 			if (input[i] == '"' || input[i] == '\'')
-			{
-				if (quote == 0)
-					quote = input[i];
-				else if (quote == input[i])
-					quote = 0;
-			}
+				change_quote(&quote, input[i]);
 			i++;
 		}
 		subs = ft_substr(input, start, i - start);
@@ -91,12 +86,7 @@ char	*expand_var(char *value)
 				j = i;
 		}
 		if (value[i] == '"' || value[i] == '\'')
-		{
-			if (quote == 0)
-				quote = value[i];
-			else if (quote == value[i])
-				quote = 0;
-		}
+			change_quote(&quote, value[i]);
 		else if (value[i] == '$')
 		{
 			if (i - j > 0)
@@ -109,7 +99,7 @@ char	*expand_var(char *value)
 			j = i;
 			if (ft_strncmp(&value[i], "$?", 2) == 0)
 			{
-				replacement = ft_itoa(term()->exit_status);
+				replacement = ft_itoa(g_exit);
 				j += 2;
 			}
 			else
