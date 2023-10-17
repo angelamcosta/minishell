@@ -6,7 +6,7 @@
 /*   By: anlima <anlima@student.42lisboa.com>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/07 20:48:28 by anlima            #+#    #+#             */
-/*   Updated: 2023/10/16 17:54:59 by anlima           ###   ########.fr       */
+/*   Updated: 2023/10/17 10:08:54 by anlima           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -112,26 +112,32 @@ char					*get_path(char *cmd_name);
 void					set_pipes(int fd_in, int fd_out);
 pid_t					create_fork(t_command *cmd, int fd_in, int fd_out);
 // parser
-int						count_words(char *input);
-char					**split_command(char *input);
-char					*expand_var(char *value);
-char					*extract_varname(char *str);
-int						should_expand(char *input);
-int						read_string(void);
+// command parsing
 void					count_commands(void);
-char					*get_var_name(char *value);
-void					add_tokens_from_command(char *command,
-							int *token_index);
-void					lexer(void);
-void					grammar(void);
-void					tokenize_input(void);
-int						check_quotes(char *str);
-void					add_token(char *input, int *i, int flag);
-void					parser(void);
 void					add_red(char **cmd_list, char *value);
 void					add_argument(t_command *cmd, char *value);
-char					*handle_variables(char *value);
 void					add_command(t_command *cmd, t_token **tokens);
+// parser
+void					lexer(void);
+void					parser(void);
+// string_handling
+char					*expand_var(char *value);
+char					*get_var_name(char *value);
+char					*extract_varname(char *str);
+char					**split_command(char *input);
+char					*handle_variables(char *value);
+// syntax_parsing
+void					grammar(void);
+int						read_string(void);
+int						check_quotes(char *str);
+int						should_expand(char *input);
+// tokenization
+void					tokenize_input(void);
+int						count_words(char *input);
+void					add_token(char *input, int *i, int flag);
+void					set_token_type(t_token *token, char *input, int flag);
+void					add_tokens_from_command(char *command,
+							int *token_index);
 // free memory
 void					clean_mallocs(void);
 void					free_token(t_token *token);

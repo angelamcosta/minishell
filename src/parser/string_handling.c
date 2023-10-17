@@ -6,7 +6,7 @@
 /*   By: anlima <anlima@student.42lisboa.com>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/12 17:09:57 by anlima            #+#    #+#             */
-/*   Updated: 2023/10/16 19:49:44 by anlima           ###   ########.fr       */
+/*   Updated: 2023/10/17 10:46:40 by anlima           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,48 +21,49 @@ char	*handle_variables(char *value);
 char	**split_command(char *input)
 {
 	int		i;
-	int		j;
+	int		start;
 	int		k;
 	int		quote;
 	char	**strs;
 	char	*subs;
 	char	*temp;
 
-	i = -1;
+	i = 0;
 	k = -1;
-	j = 0;
 	quote = 0;
 	strs = (char **)malloc(sizeof(char *) * (count_words(input) + 1));
-	while (++i < (int)ft_strlen(input) && count_words(input))
+	while (input[i])
 	{
 		while (input[i] == ' ' && quote == 0)
-		{
 			i++;
-			if (input[i] != ' ')
-				j = i;
-		}
-		if (input[i] == '"' || input[i] == '\'')
+		start = i;
+		while (input[i] && ((input[i] != ' ' && quote == 0) || quote))
 		{
-			if (quote == 0)
-				quote = input[i];
-			else if (quote == input[i])
-				quote = 0;
+			if (input[i] == '"' || input[i] == '\'')
+			{
+				if (quote == 0)
+					quote = input[i];
+				else if (quote == input[i])
+					quote = 0;
+			}
+			i++;
 		}
-		if ((input[i + 1] == '\0' || input[i + 1] == ' ') && quote == 0)
+		subs = ft_substr(input, start, i - start);
+		if (subs && ft_strlen(subs) > 0)
 		{
-			subs = ft_substr(input, j, i + 1 - j);
 			if (should_expand(subs))
 			{
 				temp = expand_var(subs);
 				if (temp != NULL)
+				{
 					strs[++k] = ft_strdup(temp);
+					free(temp);
+				}
 			}
 			else
 				strs[++k] = ft_strdup(subs);
 		}
-		if ((input[i - 1] == ' ' && quote == 0) || (input[i] == quote && input[i
-				- 1] == ' ' && input[i] != '\0'))
-			j = i;
+		free(subs);
 	}
 	strs[++k] = NULL;
 	return (strs);
@@ -106,12 +107,20 @@ char	*expand_var(char *value)
 					result = ft_substr(value, j, i - j);
 			}
 			j = i;
-			var_name = extract_varname(&value[i]);
-			replacement = handle_variables(var_name);
-			while (value[++j])
+			if (ft_strncmp(&value[i], "$?", 2) == 0)
 			{
-				if (value[j] == ' ' || !ft_isalnum(value[j]))
-					break ;
+				replacement = ft_itoa(term()->exit_status);
+				j += 2;
+			}
+			else
+			{
+				var_name = extract_varname(&value[i]);
+				replacement = handle_variables(var_name);
+				while (value[++j])
+				{
+					if (value[j] == ' ' || !ft_isalnum(value[j]))
+						break ;
+				}
 			}
 			if (result)
 				result = ft_strjoin(result, replacement);
@@ -148,11 +157,10 @@ char	*handle_variables(char *value)
 
 	i = -1;
 	flag = 0;
-	if (ft_strncmp(value, "?", 2) == 0)
-		return (ft_itoa(term()->exit_status));
 	while (term()->env[++i] != NULL && !flag)
 	{
-		if (ft_strncmp(term()->env[i], value, ft_strlen(value)) == 0)
+		if (ft_strncmp(term()->env[i], value, ft_strlen(value)) == 0
+			&& (*(term()->env[i] + ft_strlen(value)) == '='))
 		{
 			flag = 1;
 			break ;
