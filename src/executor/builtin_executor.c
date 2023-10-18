@@ -6,7 +6,7 @@
 /*   By: anlima <anlima@student.42lisboa.com>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/16 15:35:02 by anlima            #+#    #+#             */
-/*   Updated: 2023/10/17 17:47:29 by anlima           ###   ########.fr       */
+/*   Updated: 2023/10/18 16:32:59 by anlima           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -77,7 +77,6 @@ void	handle_commands(int i, int fd_out, int *fd_in, pid_t *child_pids)
 		if (term()->cmd_list[i].name)
 		{
 			execute_red(&term()->cmd_list[i]);
-			execute_builtin(&term()->cmd_list[i]);
 			dup2(fd_out, STDOUT_FILENO);
 			close(fd_out);
 		}

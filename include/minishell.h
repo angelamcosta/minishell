@@ -6,7 +6,7 @@
 /*   By: anlima <anlima@student.42lisboa.com>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/07 20:48:28 by anlima            #+#    #+#             */
-/*   Updated: 2023/10/17 17:42:24 by anlima           ###   ########.fr       */
+/*   Updated: 2023/10/18 17:10:16 by anlima           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,6 +29,7 @@
 # include <stdio.h>
 # include <stdlib.h>
 # include <string.h>
+# include <sys/stat.h>
 # include <sys/types.h>
 # include <sys/wait.h>
 # include <unistd.h>
@@ -37,6 +38,7 @@
 # define LEN 25
 # define PROMPT "\001\e[38;5;206m\002Minishell\001\e[0m\002 ➜ "
 # define NOT_FOUND 127
+# define IS_DIRECTORY 126
 # define ERR_PERMISSION 126
 # define BUFF_SIZE 1024
 

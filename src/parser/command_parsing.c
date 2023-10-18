@@ -6,7 +6,7 @@
 /*   By: anlima <anlima@student.42lisboa.com>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/01 13:48:47 by anlima            #+#    #+#             */
-/*   Updated: 2023/10/17 14:08:56 by anlima           ###   ########.fr       */
+/*   Updated: 2023/10/18 14:56:47 by anlima           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,30 +17,6 @@ char	**ft_split_pipes(char *input);
 void	add_red(char **cmd_list, char *value);
 void	add_argument(t_command *cmd, char *value);
 void	add_command(t_command *cmd, t_token **tokens);
-
-void	count_commands(void)
-{
-	int			i;
-	int			flag;
-	t_command	*cmd_list;
-
-	i = 0;
-	flag = 1;
-	cmd_list = term()->cmd_list;
-	while (flag)
-	{
-		flag = 0;
-		if ((cmd_list[i].name != NULL) || (cmd_list[i].args[0] != NULL)
-			|| (cmd_list[i].in_red[0] != NULL)
-			|| (cmd_list[i].out_red[0] != NULL)
-			|| (cmd_list[i].delimiters[0] != NULL)
-			|| (cmd_list[i].append[0] != NULL))
-			flag = 1;
-		if (flag)
-			++i;
-	}
-	term()->count_cmd = i;
-}
 
 void	add_argument(t_command *cmd, char *value)
 {

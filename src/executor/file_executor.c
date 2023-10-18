@@ -6,7 +6,7 @@
 /*   By: anlima <anlima@student.42lisboa.com>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/31 17:06:45 by anlima            #+#    #+#             */
-/*   Updated: 2023/10/17 12:21:23 by anlima           ###   ########.fr       */
+/*   Updated: 2023/10/18 16:37:08 by anlima           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,6 +48,8 @@ void	execute_red(t_command *cmd)
 		execute_out(cmd->out_red[i], 0);
 	if (cmd->name && !is_builtin(cmd->name))
 		execute_command(cmd, path);
+	else
+		execute_builtin(cmd);
 }
 
 void	execute_out(char *filename, int flag)
@@ -59,7 +61,10 @@ void	execute_out(char *filename, int flag)
 	else
 		out = open(filename, O_WRONLY | O_CREAT | O_TRUNC, 0777);
 	if (out == -1)
+	{
+		perror("open");
 		exit(EXIT_FAILURE);
+	}
 	dup2(out, STDOUT_FILENO);
 	close(out);
 }

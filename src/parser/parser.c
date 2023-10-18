@@ -6,7 +6,7 @@
 /*   By: anlima <anlima@student.42lisboa.com>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/23 14:45:31 by anlima            #+#    #+#             */
-/*   Updated: 2023/10/17 14:22:43 by anlima           ###   ########.fr       */
+/*   Updated: 2023/10/18 14:57:24 by anlima           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,6 +56,5 @@ void	parser(void)
 		else if (term()->tokens[i]->type == RED_OUT)
 			add_red(term()->cmd_list[j].out_red, term()->tokens[++i]->value);
 	}
-	count_commands();
 	executor();
 }

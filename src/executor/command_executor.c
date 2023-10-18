@@ -6,7 +6,7 @@
 /*   By: anlima <anlima@student.42lisboa.com>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/31 15:46:17 by anlima            #+#    #+#             */
-/*   Updated: 2023/10/16 15:38:20 by anlima           ###   ########.fr       */
+/*   Updated: 2023/10/18 17:37:52 by anlima           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,12 +45,24 @@ char	*get_path(char *cmd_name)
 
 void	execute_command(t_command *cmd, char *path)
 {
+	struct stat	path_stat;
+
 	if (!cmd->name)
 		exit(EXIT_SUCCESS);
+	if (access(path, F_OK) == -1)
+	{
+		write(0, "file or directory not found\n", 29);
+		exit(NOT_FOUND);
+	}
+	if (stat(path, &path_stat) == 0 && S_ISDIR(path_stat.st_mode))
+	{
+		write(0, "is a directory\n", 16);
+		exit(IS_DIRECTORY);
+	}
 	if (access(path, X_OK) == -1)
 	{
-		fprintf(stderr, "%s: command not found\n", cmd->name);
-		exit(NOT_FOUND);
+		write(0, "permission denied\n", 19);
+		exit(ERR_PERMISSION);
 	}
 	execve(path, cmd->args, NULL);
 	set_signals();

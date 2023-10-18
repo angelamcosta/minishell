@@ -6,7 +6,7 @@
 /*   By: anlima <anlima@student.42lisboa.com>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/17 13:31:26 by anlima            #+#    #+#             */
-/*   Updated: 2023/10/17 13:44:31 by anlima           ###   ########.fr       */
+/*   Updated: 2023/10/18 16:04:07 by anlima           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,8 +29,9 @@ int	count_pipes(char *input)
 			i++;
 		if (input[i] == '"' || input[i] == '\'')
 			change_quote(&quote, input[i]);
-		if ((input[i] == '|' || input[i] == '\0') && quote == 0)
+		if ((input[i] == '|') && quote == 0)
 			count++;
 	}
+	term()->count_cmd = count + 1;
 	return (count);
 }

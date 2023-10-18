@@ -6,7 +6,7 @@
 /*   By: anlima <anlima@student.42lisboa.com>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/28 15:37:42 by anlima            #+#    #+#             */
-/*   Updated: 2023/10/17 14:22:35 by anlima           ###   ########.fr       */
+/*   Updated: 2023/10/18 16:26:49 by anlima           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,10 +53,7 @@ pid_t	create_fork(t_command *cmd, int fd_in, int fd_out)
 	if (child_pid == 0)
 	{
 		set_pipes(fd_in, fd_out);
-		if (is_builtin(cmd->name))
-			execute_builtin(cmd);
-		else
-			execute_red(cmd);
+		execute_red(cmd);
 		exit(g_exit);
 	}
 	if (fd_out != STDOUT_FILENO)
