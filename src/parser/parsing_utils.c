@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parsing_utils.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: anlima <anlima@student.42lisboa.com>       +#+  +:+       +#+        */
+/*   By: mpedroso <mpedroso@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/17 13:31:26 by anlima            #+#    #+#             */
-/*   Updated: 2023/10/18 16:04:07 by anlima           ###   ########.fr       */
+/*   Updated: 2023/10/19 20:00:58 by mpedroso         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,4 +34,21 @@ int	count_pipes(char *input)
 	}
 	term()->count_cmd = count + 1;
 	return (count);
+}
+
+char	*dup_quoted(char *value)
+{
+	int		len;
+	char	*end;
+	char	*start;
+	char	*result;
+
+	start = ft_strchr(value, '"');
+	if (start == NULL)
+		return (ft_strdup(value));
+	end = ft_strchr(value + 1, '"');
+	len = end - start;
+	result = (char *)malloc(sizeof(char) * (len + 1));
+	ft_strlcpy(result, start + 1, len);
+	return (result);
 }
