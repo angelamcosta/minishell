@@ -6,7 +6,7 @@
 /*   By: anlima <anlima@student.42lisboa.com>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/27 23:15:42 by anlima            #+#    #+#             */
-/*   Updated: 2023/10/19 21:40:32 by anlima           ###   ########.fr       */
+/*   Updated: 2023/10/19 21:43:49 by anlima           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,7 @@ void	add_to_env(char *input, char *subs);
 
 void	execute_env(char **arg, int flag)
 {
-	if (arg[1] != NULL)
+	if (arg[0] != NULL)
 	{
 		g_exit = EXIT_FAILURE;
 		printf("env: too many arguments\n");
