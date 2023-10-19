@@ -3,16 +3,15 @@
 /*                                                        :::      ::::::::   */
 /*   command_parsing.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mpedroso <mpedroso@student.42lisboa.com    +#+  +:+       +#+        */
+/*   By: anlima <anlima@student.42lisboa.com>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/01 13:48:47 by anlima            #+#    #+#             */
-/*   Updated: 2023/10/19 20:00:39 by mpedroso         ###   ########.fr       */
+/*   Updated: 2023/10/19 23:09:51 by anlima           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../include/minishell.h"
 
-void	count_commands(void);
 char	**ft_split_pipes(char *input);
 void	add_red(char **cmd_list, char *value);
 void	add_argument(t_command *cmd, char *value);
@@ -56,23 +55,22 @@ char	**ft_split_pipes(char *input)
 	int		quote;
 	char	**result;
 
+	k = -1;
+	quote = 0;
 	i = count_pipes(input);
 	result = (char **)malloc(sizeof(char *) * (i + 1));
-	k = -1;
 	i = -1;
-	quote = 0;
 	while (++i < (int)ft_strlen(input))
 	{
-		while (input[i] == ' ' && quote == 0)
-			i++;
-		j = i;
-		while (input[i])
+		while (input[++i] == ' ' && quote == 0)
+			;
+		j = i - 1;
+		while (input[++i])
 		{
 			if (input[i] == '|' && quote == 0)
 				break ;
 			if (input[i] == '"' || input[i] == '\'')
 				change_quote(&quote, input[i]);
-			i++;
 		}
 		result[++k] = ft_substr(input, j, i - j);
 	}

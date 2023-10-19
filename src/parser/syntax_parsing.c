@@ -6,7 +6,7 @@
 /*   By: anlima <anlima@student.42lisboa.com>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/25 22:12:43 by mpedroso          #+#    #+#             */
-/*   Updated: 2023/10/19 14:47:16 by anlima           ###   ########.fr       */
+/*   Updated: 2023/10/19 23:01:09 by anlima           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -84,9 +84,8 @@ int	read_string(void)
 				g_exit = EXIT_FAILURE;
 				return (0);
 			}
-			i++;
-			while (term()->command[i] && term()->command[i] == ' ')
-				i++;
+			while (term()->command[++i] && term()->command[i] == ' ')
+				;
 			if (term()->command[i] == '|')
 			{
 				printf("parse error near `%c`\n", term()->command[i]);

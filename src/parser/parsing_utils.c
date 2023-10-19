@@ -3,16 +3,17 @@
 /*                                                        :::      ::::::::   */
 /*   parsing_utils.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mpedroso <mpedroso@student.42lisboa.com    +#+  +:+       +#+        */
+/*   By: anlima <anlima@student.42lisboa.com>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/17 13:31:26 by anlima            #+#    #+#             */
-/*   Updated: 2023/10/19 20:00:58 by mpedroso         ###   ########.fr       */
+/*   Updated: 2023/10/19 22:53:06 by anlima           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../include/minishell.h"
 
-int	count_pipes(char *input);
+int		count_pipes(char *input);
+char	*dup_quoted(char *value);
 
 int	count_pipes(char *input)
 {

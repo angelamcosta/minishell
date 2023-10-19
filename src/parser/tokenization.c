@@ -6,7 +6,7 @@
 /*   By: anlima <anlima@student.42lisboa.com>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/16 15:53:12 by anlima            #+#    #+#             */
-/*   Updated: 2023/10/17 15:30:12 by anlima           ###   ########.fr       */
+/*   Updated: 2023/10/19 22:56:03 by anlima           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,22 +42,13 @@ int	count_words(char *input)
 	int	j;
 	int	quote;
 
-	i = -1;
+	i = 0;
 	j = 0;
 	quote = 0;
-	while (input[++i])
+	while (input[i])
 	{
-		if (i == 0 && input[0] != ' ')
+		if (input[i] != ' ' && (i == 0 || quote == 0))
 			j++;
-		if (input[i] == ' ' && quote == 0)
-		{
-			while (input[i] == ' ' && quote == 0)
-				i++;
-			if (input[i] != '\0')
-				j++;
-			else
-				break ;
-		}
 		if (input[i] == '"' || input[i] == '\'')
 		{
 			if (quote == 0)
@@ -65,6 +56,7 @@ int	count_words(char *input)
 			else if (quote == input[i])
 				quote = 0;
 		}
+		i++;
 	}
 	return (j);
 }
