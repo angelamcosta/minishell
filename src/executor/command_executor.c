@@ -6,7 +6,7 @@
 /*   By: anlima <anlima@student.42lisboa.com>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/31 15:46:17 by anlima            #+#    #+#             */
-/*   Updated: 2023/10/18 17:37:52 by anlima           ###   ########.fr       */
+/*   Updated: 2023/10/19 14:49:58 by anlima           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,7 +51,7 @@ void	execute_command(t_command *cmd, char *path)
 		exit(EXIT_SUCCESS);
 	if (access(path, F_OK) == -1)
 	{
-		write(0, "file or directory not found\n", 29);
+		write(0, "command not found\n", 19);
 		exit(NOT_FOUND);
 	}
 	if (stat(path, &path_stat) == 0 && S_ISDIR(path_stat.st_mode))

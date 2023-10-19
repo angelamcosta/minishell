@@ -6,7 +6,7 @@
 /*   By: anlima <anlima@student.42lisboa.com>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/27 23:13:34 by anlima            #+#    #+#             */
-/*   Updated: 2023/10/17 17:51:10 by anlima           ###   ########.fr       */
+/*   Updated: 2023/10/19 14:51:18 by anlima           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,7 @@ void	execute_cd(char **args)
 		if (term()->home == NULL || chdir(term()->home) != 0)
 		{
 			g_exit = EXIT_FAILURE;
-			perror("cd: No such file or directory\n");
+			write(0, "cd: No such file or directory\n", 31);
 			return ;
 		}
 	}
@@ -31,13 +31,13 @@ void	execute_cd(char **args)
 		if (args[2])
 		{
 			g_exit = EXIT_FAILURE;
-			perror("cd: too many arguments\n");
+			write(0, "cd: too many arguments\n", 24);
 			return ;
 		}
 		else if (chdir(args[1]) != 0)
 		{
 			g_exit = EXIT_FAILURE;
-			perror("cd: No such file or directory\n");
+			write(0, "cd: No such file or directory\n", 31);
 			return ;
 		}
 	}
