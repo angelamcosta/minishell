@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: anlima <anlima@student.42lisboa.com>       +#+  +:+       +#+        */
+/*   By: mpedroso <mpedroso@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/07 20:48:28 by anlima            #+#    #+#             */
-/*   Updated: 2023/10/18 17:10:16 by anlima           ###   ########.fr       */
+/*   Updated: 2023/10/19 20:01:21 by mpedroso         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -127,6 +127,7 @@ void					lexer(void);
 void					parser(void);
 // parsing_utils
 int						count_pipes(char *input);
+char					*dup_quoted(char *value);
 // string_handling
 char					*expand_var(char *value);
 char					*get_var_name(char *value);

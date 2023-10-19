@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   command_parsing.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: anlima <anlima@student.42lisboa.com>       +#+  +:+       +#+        */
+/*   By: mpedroso <mpedroso@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/01 13:48:47 by anlima            #+#    #+#             */
-/*   Updated: 2023/10/18 14:56:47 by anlima           ###   ########.fr       */
+/*   Updated: 2023/10/19 20:00:39 by mpedroso         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,7 +37,7 @@ void	add_red(char **cmd_list, char *value)
 	while (cmd_list[i] != NULL && i < MAX_TOKENS)
 		i++;
 	if (i < MAX_TOKENS)
-		cmd_list[i] = ft_strdup(value);
+		cmd_list[i] = dup_quoted(value);
 }
 
 void	add_command(t_command *cmd, t_token **tokens)
