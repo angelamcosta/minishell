@@ -6,7 +6,7 @@
 /*   By: anlima <anlima@student.42lisboa.com>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/25 22:12:43 by mpedroso          #+#    #+#             */
-/*   Updated: 2023/10/17 15:37:53 by anlima           ###   ########.fr       */
+/*   Updated: 2023/10/19 14:20:54 by anlima           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,21 +27,21 @@ void	grammar(void)
 	tokens = term()->tokens;
 	while (tokens && tokens[++i])
 	{
-		if ((i == 0 && tokens[i]->value[0] == '|') || ((tokens[i + 1])
-				&& tokens[i]->type == PIPE && tokens[i + 1]->type == PIPE))
+		if ((tokens[i]->type == APPEND || tokens[i]->type == HEREDOC
+				|| tokens[i]->type == RED_IN || tokens[i]->type == RED_OUT))
 		{
-			printf("parse error near `%s`\n", tokens[i]->value);
-			g_exit = EXIT_FAILURE;
-			return ;
-		}
-		if (!(tokens[i + 1]) && (tokens[i]->type == APPEND
-				|| tokens[i]->type == HEREDOC 
-				|| tokens[i]->type == RED_IN
-				|| tokens[i]->type == RED_OUT))
-		{
-			printf("syntax error near unexpected token `newline`\n");
-			g_exit = EXIT_FAILURE;
-			return ;
+			if (!tokens[i + 1])
+			{
+				printf("syntax error near unexpected token `newline`\n");
+				g_exit = EXIT_FAILURE;
+				return ;
+			}
+			else if (tokens[i + 1]->type == PIPE || tokens[i + 1]->type == CMD)
+			{
+				printf("syntax error near unexpected token `|`\n");
+				g_exit = EXIT_FAILURE;
+				return ;
+			}
 		}
 	}
 	parser();
@@ -84,6 +84,15 @@ int	read_string(void)
 				g_exit = EXIT_FAILURE;
 				return (0);
 			}
+			while (term()->command[i] && term()->command[i] == ' ')
+				i++;
+			if (term()->command[i] == '|')
+			{
+				printf("parse error near `%c`\n", term()->command[i]);
+				g_exit = EXIT_FAILURE;
+				return (0);
+			}
+			i--;
 		}
 	}
 	return (1);
