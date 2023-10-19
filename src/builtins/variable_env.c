@@ -6,7 +6,7 @@
 /*   By: anlima <anlima@student.42lisboa.com>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/27 23:15:42 by anlima            #+#    #+#             */
-/*   Updated: 2023/10/19 21:43:49 by anlima           ###   ########.fr       */
+/*   Updated: 2023/10/19 21:47:55 by anlima           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,6 +20,8 @@ void	add_to_env(char *input, char *subs);
 
 void	execute_env(char **arg, int flag)
 {
+	int	i;
+
 	if (arg[0] != NULL)
 	{
 		g_exit = EXIT_FAILURE;
@@ -27,7 +29,17 @@ void	execute_env(char **arg, int flag)
 	}
 	else
 	{
-		print_sorted_env(flag);
+		if (flag)
+			print_sorted_env(flag);
+		else
+		{
+			i = -1;
+			while (term()->env && term()->env[++i])
+			{
+				if (ft_strchr(term()->env[i], '='))
+					printf("%s\n", term()->env[i]);
+			}
+		}
 		g_exit = EXIT_SUCCESS;
 	}
 }
