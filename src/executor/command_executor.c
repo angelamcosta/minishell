@@ -6,12 +6,13 @@
 /*   By: anlima <anlima@student.42lisboa.com>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/31 15:46:17 by anlima            #+#    #+#             */
-/*   Updated: 2023/10/19 14:49:58 by anlima           ###   ########.fr       */
+/*   Updated: 2023/10/19 22:27:53 by anlima           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../include/minishell.h"
 
+char	**check_path(void);
 char	*get_path(char *cmd_name);
 void	execute_command(t_command *cmd, char *path);
 
@@ -22,7 +23,9 @@ char	*get_path(char *cmd_name)
 	char	*test_path;
 	char	**paths;
 
-	paths = ft_split(getenv("PATH") + 5, ':');
+	paths = check_path();
+	if (*paths == NULL)
+		return (NULL);
 	i = -1;
 	while (paths[++i])
 	{
@@ -68,4 +71,22 @@ void	execute_command(t_command *cmd, char *path)
 	set_signals();
 	perror("execve");
 	exit(EXIT_FAILURE);
+}
+
+char	**check_path(void)
+{
+	int		i;
+	char	**paths;
+	char	*path_env;
+
+	i = -1;
+	while (term()->env[++i])
+	{
+		if (ft_strncmp(term()->env[i], "PATH=", 5) == 0)
+			path_env = term()->env[i] + 5;
+	}
+	if (!path_env)
+		return (NULL);
+	paths = ft_split(path_env, ':');
+	return (paths);
 }
