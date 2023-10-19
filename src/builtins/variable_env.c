@@ -6,35 +6,28 @@
 /*   By: anlima <anlima@student.42lisboa.com>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/27 23:15:42 by anlima            #+#    #+#             */
-/*   Updated: 2023/10/17 17:55:26 by anlima           ###   ########.fr       */
+/*   Updated: 2023/10/19 21:40:32 by anlima           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../include/minishell.h"
 
-void	execute_env(char **arg);
 void	remove_env(char *input);
 void	execute_unset(char **input);
 void	execute_export(char **input);
+void	execute_env(char **arg, int flag);
 void	add_to_env(char *input, char *subs);
 
-void	execute_env(char **arg)
+void	execute_env(char **arg, int flag)
 {
-	int	i;
-
 	if (arg[1] != NULL)
 	{
 		g_exit = EXIT_FAILURE;
-		printf("%s\n", "env: too many arguments");
+		printf("env: too many arguments\n");
 	}
 	else
 	{
-		i = -1;
-		while (term()->env && term()->env[++i])
-		{
-			if (ft_strchr(term()->env[i], '='))
-				printf("%s\n", term()->env[i]);
-		}
+		print_sorted_env(flag);
 		g_exit = EXIT_SUCCESS;
 	}
 }
@@ -88,6 +81,8 @@ void	execute_export(char **input)
 	int		i;
 	char	*subs;
 
+	if (input[0] == NULL)
+		execute_env(input, 1);
 	i = -1;
 	while (input[++i])
 	{

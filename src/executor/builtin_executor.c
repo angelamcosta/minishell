@@ -6,7 +6,7 @@
 /*   By: anlima <anlima@student.42lisboa.com>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/16 15:35:02 by anlima            #+#    #+#             */
-/*   Updated: 2023/10/18 16:32:59 by anlima           ###   ########.fr       */
+/*   Updated: 2023/10/19 21:31:04 by anlima           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,7 +61,7 @@ void	execute_builtin(t_command *cmd)
 	else if (ft_strncmp(cmd->name, "pwd", 4) == 0)
 		execute_pwd();
 	else if (ft_strncmp(cmd->name, "env", 4) == 0)
-		execute_env(&cmd->args[1]);
+		execute_env(&cmd->args[1], 0);
 	else if (ft_strncmp(cmd->name, "export", 7) == 0)
 		execute_export(&cmd->args[1]);
 	else if (ft_strncmp(cmd->name, "unset", 6) == 0)

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mpedroso <mpedroso@student.42lisboa.com    +#+  +:+       +#+        */
+/*   By: anlima <anlima@student.42lisboa.com>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/07 20:48:28 by anlima            #+#    #+#             */
-/*   Updated: 2023/10/19 20:01:21 by mpedroso         ###   ########.fr       */
+/*   Updated: 2023/10/19 21:40:18 by anlima           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -86,7 +86,9 @@ typedef struct s_term
 // buitins
 int						can_fork(t_command *cmd);
 int						treat_exit_arg(char *str);
+void					print_sorted_env(int flag);
 int						is_valid_varname(char *str);
+void					insertion_sort(char **arr, int n);
 void					handle_heredocs(void);
 void					heredoc(char *delimiter);
 void					execute_clear(void);
@@ -96,10 +98,10 @@ void					execute_echo(char **args);
 void					execute_exit(char **args);
 void					execute_pwd(void);
 void					execute_cd(char **args);
-void					execute_env(char **arg);
 void					remove_env(char *input);
 void					execute_unset(char **input);
 void					execute_export(char **input);
+void					execute_env(char **arg, int flag);
 void					add_to_env(char *input, char *subs);
 // executor
 void					fork_builtin(void);
