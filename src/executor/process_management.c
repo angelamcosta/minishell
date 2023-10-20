@@ -6,59 +6,108 @@
 /*   By: anlima <anlima@student.42lisboa.com>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/28 15:37:42 by anlima            #+#    #+#             */
-/*   Updated: 2023/10/18 16:26:49 by anlima           ###   ########.fr       */
+/*   Updated: 2023/10/20 15:16:18 by anlima           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../include/minishell.h"
 
-void	create_pipe(void);
-void	set_pipes(int fd_in, int fd_out);
-pid_t	create_fork(t_command *cmd, int fd_in, int fd_out);
+void	close_fork(void);
+int		create_pipe(void);
+void	create_fork(void);
+int		set_pipes(t_command *cmd);
+void	close_pipes(t_command *cmd);
 
-void	create_pipe(void)
+int	create_pipe(void)
 {
-	if (pipe(term()->pipe_fd) == -1)
+	int			*fd;
+	t_command	*list;
+
+	list = term()->cmd_list;
+	while (list)
 	{
-		g_exit = EXIT_FAILURE;
-		exit(g_exit);
+		if (list->pipe_output || (list->prev && list->prev->pipe_output))
+		{
+			fd = (int *)malloc(sizeof * fd * 2);
+			if (!fd || pipe(fd) != 0)
+				return (0);
+			list->pipe_fd = fd;
+		}
+		list = list->next;
+	}
+	return (1);
+}
+
+void	create_fork(void)
+{
+	t_command	*list;
+
+	list = term()->cmd_list;
+	while (list)
+	{
+		term()->pid = fork();
+		if (term()->pid == -1)
+		{
+			perror("fork");
+			exit(EXIT_FAILURE);
+		}
+		if (term()->pid == 0)
+			execute_red(&list[0]);
+		list = list->next;
+	}
+	close_fork();
+}
+
+int	set_pipes(t_command *cmd)
+{
+	if (!cmd)
+		return (0);
+	if (cmd->prev && cmd->prev->pipe_output)
+		dup2(cmd->prev->pipe_fd[0], STDIN_FILENO);
+	if (cmd->pipe_output)
+		dup2(cmd->pipe_fd[1], STDOUT_FILENO);
+	close_pipes(cmd);
+	return (1);
+}
+
+void	close_pipes(t_command *cmd)
+{
+	t_command	*list;
+
+	list = term()->cmd_list;
+	while (list)
+	{
+		if (list != cmd && list->pipe_fd)
+		{
+			close(list->pipe_fd[0]);
+			close(list->pipe_fd[1]);
+		}
+		list = list->next;
 	}
 }
 
-void	set_pipes(int fd_in, int fd_out)
+void	close_fds(t_command *cmd)
 {
-	if (fd_in != STDIN_FILENO)
-	{
-		dup2(fd_in, STDIN_FILENO);
-		close(fd_in);
-	}
-	if (fd_out != STDOUT_FILENO)
-	{
-		dup2(fd_out, STDOUT_FILENO);
-		if (fd_out != term()->pipe_fd[1])
-			close(fd_out);
-	}
+	if (cmd->fd_in != -1)
+		close(cmd->fd_in);
+	if (cmd->fd_out != -1)
+		close(cmd->fd_out);
+	close_pipes(cmd);
 }
 
-pid_t	create_fork(t_command *cmd, int fd_in, int fd_out)
+void	close_fork(void)
 {
-	pid_t	child_pid;
+	pid_t	pid;
+	int		status;
 
-	child_pid = fork();
-	if (child_pid == -1)
+	close_fds(&term()->cmd_list[0]);
+	pid = 0;
+	while (pid != -1)
 	{
-		perror("fork");
-		exit(EXIT_FAILURE);
+		pid = waitpid(-1, &status, 0);
+		if (pid == term()->pid)
+			g_exit = status;
 	}
-	if (child_pid == 0)
-	{
-		set_pipes(fd_in, fd_out);
-		execute_red(cmd);
-		exit(g_exit);
-	}
-	if (fd_out != STDOUT_FILENO)
-		close(fd_out);
-	if (fd_in != STDIN_FILENO)
-		close(fd_in);
-	return (child_pid);
+	if (WIFEXITED(status))
+		g_exit = WEXITSTATUS(status);
 }

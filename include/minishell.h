@@ -6,7 +6,7 @@
 /*   By: anlima <anlima@student.42lisboa.com>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/07 20:48:28 by anlima            #+#    #+#             */
-/*   Updated: 2023/10/20 11:57:33 by anlima           ###   ########.fr       */
+/*   Updated: 2023/10/20 15:17:45 by anlima           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,22 +64,30 @@ typedef struct s_token
 
 typedef struct s_command
 {
+	int					fd_in;
+	int					fd_out;
+	int					*pipe_fd;
+	int					pipe_output;
+	int					stdin_backup;
+	int					stdout_backup;
 	char				*name;
 	char				*append[LEN];
 	char				*in_red[LEN];
 	char				*out_red[LEN];
 	char				*delimiters[LEN];
 	char				*args[MAX_TOKENS];
+	struct s_command	*prev;
+	struct s_command	*next;
 }						t_command;
 
 typedef struct s_term
 {
-	int					count_cmd;
-	int					pipe_fd[2];
 	char				*user;
 	char				*home;
 	char				*command;
 	char				**env;
+	int					count_cmd;
+	pid_t				pid;
 	t_token				**tokens;
 	t_command			cmd_list[MAX_TOKENS];
 }						t_term;
@@ -105,27 +113,30 @@ void					execute_export(char **input);
 void					execute_env(char **arg, int flag);
 void					add_to_env(char *input, char *subs);
 // executor
+void					executor(void);
+void					restore_io(t_command *cmd);
+void					redirect_io(t_command *cmd);
+void					execute_builtin(t_command *cmd);
 char					**check_path(void);
 char					*get_path(char *cmd_name);
 void					execute_command(t_command *cmd, char *path);
 void					fork_builtin(void);
 int						check_flag(char *input);
 int						is_builtin(char *cmd_name);
-void					execute_builtin(t_command *cmd);
-void					executor(void);
 void					execute_in(char *filename);
 void					execute_red(t_command *cmd);
 void					execute_out(char *filename, int flag);
-void					create_pipe(void);
-void					set_pipes(int fd_in, int fd_out);
-pid_t					create_fork(t_command *cmd, int fd_in, int fd_out);
+void					close_fork(void);
+int						create_pipe(void);
+void					create_fork(void);
+int						set_pipes(t_command *cmd);
+void					close_pipes(t_command *cmd);
 // parser
 // command parsing
-void					count_commands(void);
 char					**ft_split_pipes(char *input);
 void					add_red(char **cmd_list, char *value);
 void					add_argument(t_command *cmd, char *value);
-void					add_command(t_command *cmd, t_token **tokens);
+void					add_command(t_command *cmd, t_token **tokens, int i);
 // parser
 void					lexer(void);
 void					parser(void);
@@ -149,8 +160,8 @@ void					tokenize_input(void);
 int						count_words(char *input);
 void					add_token(char *input, int *i, int flag);
 void					set_token_type(t_token *token, char *input, int flag);
-void					add_tokens_from_command(char *command,
-							int *token_index);
+void	add_tokens_from_command(char *command,
+								int *token_index);
 // free memory
 void					clean_mallocs(void);
 void					free_token(t_token *token);

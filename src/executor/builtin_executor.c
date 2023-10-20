@@ -6,42 +6,30 @@
 /*   By: anlima <anlima@student.42lisboa.com>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/16 15:35:02 by anlima            #+#    #+#             */
-/*   Updated: 2023/10/19 21:31:04 by anlima           ###   ########.fr       */
+/*   Updated: 2023/10/20 14:50:50 by anlima           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../include/minishell.h"
 
 void	executor(void);
+void	restore_io(t_command *cmd);
+void	redirect_io(t_command *cmd);
 void	execute_builtin(t_command *cmd);
-void	handle_commands(int i, int fd_out, int *fd_in, pid_t *child_pids);
 
 void	executor(void)
 {
-	int		i;
-	int		fd_in;
-	int		fd_out;
-	int		status;
-	pid_t	*child_pids;
-
-	handle_heredocs();
-	fd_in = STDIN_FILENO;
-	fd_out = dup(STDOUT_FILENO);
-	child_pids = malloc(term()->count_cmd * sizeof(pid_t));
-	i = -1;
-	while (++i < term()->count_cmd)
-		handle_commands(i, fd_out, &fd_in, child_pids);
-	i = -1;
-	while (++i < term()->count_cmd)
+	if (!term()->cmd_list->next && is_builtin(term()->cmd_list->name))
 	{
-		if (child_pids[i] > 0)
-		{
-			waitpid(child_pids[i], &status, 0);
-			if (WIFEXITED(status))
-				g_exit = WEXITSTATUS(status);
-		}
+		execute_builtin(&term()->cmd_list[0]);
+		return ;
 	}
-	free(child_pids);
+	if (!term()->cmd_list->pipe_output && !term()->cmd_list->prev)
+	{
+		redirect_io(&term()->cmd_list[0]);
+		restore_io(&term()->cmd_list[0]);
+	}
+	create_fork();
 }
 
 void	execute_builtin(t_command *cmd)
@@ -70,30 +58,36 @@ void	execute_builtin(t_command *cmd)
 		execute_clear();
 }
 
-void	handle_commands(int i, int fd_out, int *fd_in, pid_t *child_pids)
+void	redirect_io(t_command *cmd)
 {
-	if (i == term()->count_cmd - 1 && (!can_fork(&term()->cmd_list[i])))
+	cmd->stdin_backup = dup(STDIN_FILENO);
+	if (cmd->stdin_backup == -1)
+		perror("dup2 stdin backup");
+	cmd->stdout_backup = dup(STDOUT_FILENO);
+	if (cmd->stdout_backup == -1)
+		perror("dup2 stdout backup");
+	if (cmd->fd_in != -1)
+		if (dup2(cmd->fd_in, STDIN_FILENO) == -1)
+			perror("dup2 fd_in");
+	if (cmd->fd_out != -1)
+		if (dup2(cmd->fd_out, STDOUT_FILENO) == -1)
+			perror("dup2 fd_out");
+}
+
+void	restore_io(t_command *cmd)
+{
+	if (cmd->stdin_backup != -1)
 	{
-		if (term()->cmd_list[i].name)
-		{
-			execute_red(&term()->cmd_list[i]);
-			dup2(fd_out, STDOUT_FILENO);
-			close(fd_out);
-		}
+		if (dup2(cmd->stdin_backup, STDIN_FILENO) == -1)
+			perror("dup2 error");
+		close(cmd->stdin_backup);
+		cmd->stdin_backup = -1;
 	}
-	else if (i < term()->count_cmd - 1)
+	if (cmd->stdout_backup != -1)
 	{
-		create_pipe();
-		child_pids[i] = create_fork(&term()->cmd_list[i], *fd_in,
-			term()->pipe_fd[1]);
-		close(term()->pipe_fd[1]);
-		*fd_in = term()->pipe_fd[0];
-	}
-	else
-	{
-		child_pids[i] = create_fork(&term()->cmd_list[i], *fd_in,
-			STDOUT_FILENO);
-		if (*fd_in != STDIN_FILENO)
-			close(*fd_in);
+		if (dup2(cmd->stdout_backup, STDOUT_FILENO) == -1)
+			perror("dup2 error");
+		close(cmd->stdout_backup);
+		cmd->stdout_backup = -1;
 	}
 }
