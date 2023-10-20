@@ -6,7 +6,7 @@
 /*   By: anlima <anlima@student.42lisboa.com>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/27 23:15:42 by anlima            #+#    #+#             */
-/*   Updated: 2023/10/19 21:47:55 by anlima           ###   ########.fr       */
+/*   Updated: 2023/10/20 13:09:45 by anlima           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -100,21 +100,19 @@ void	execute_export(char **input)
 	{
 		if (ft_strncmp(input[i], "export", 6) == 0)
 			continue ;
+		g_exit = EXIT_SUCCESS;
 		subs = ft_strchr(input[i], '=');
 		if (!subs && is_valid_varname(input[i]))
-			add_to_env(input[i], input[i]);
-		else
 		{
-			subs = ft_substr(input[i], 0, subs - input[i]);
-			if (subs && is_valid_varname(subs))
-			{
-				add_to_env(input[i], subs);
-				g_exit = EXIT_SUCCESS;
-			}
-			else
-				g_exit = EXIT_FAILURE;
-			free(subs);
+			add_to_env(input[i], input[i]);
+			break ;
 		}
+		subs = ft_substr(input[i], 0, subs - input[i]);
+		if (subs && is_valid_varname(subs))
+			add_to_env(input[i], subs);
+		else
+			g_exit = EXIT_FAILURE;
+		free(subs);
 	}
 }
 

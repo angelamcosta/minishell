@@ -6,7 +6,7 @@
 /*   By: anlima <anlima@student.42lisboa.com>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/23 14:45:31 by anlima            #+#    #+#             */
-/*   Updated: 2023/10/18 14:57:24 by anlima           ###   ########.fr       */
+/*   Updated: 2023/10/20 13:38:14 by anlima           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,7 +43,7 @@ void	parser(void)
 		{
 			if (i > 0)
 				j++;
-			add_command(&term()->cmd_list[j], &term()->tokens[i]);
+			add_command(&term()->cmd_list[j], &term()->tokens[i], i - 1);
 		}
 		else if (term()->tokens[i]->type == ARG)
 			add_argument(&term()->cmd_list[j], term()->tokens[i]->value);

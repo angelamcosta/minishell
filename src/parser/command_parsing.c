@@ -6,7 +6,7 @@
 /*   By: anlima <anlima@student.42lisboa.com>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/01 13:48:47 by anlima            #+#    #+#             */
-/*   Updated: 2023/10/20 11:56:03 by anlima           ###   ########.fr       */
+/*   Updated: 2023/10/20 13:43:27 by anlima           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,7 @@
 char	**ft_split_pipes(char *input);
 void	add_red(char **cmd_list, char *value);
 void	add_argument(t_command *cmd, char *value);
-void	add_command(t_command *cmd, t_token **tokens);
+void	add_command(t_command *cmd, t_token **tokens, int i);
 
 void	add_argument(t_command *cmd, char *value)
 {
@@ -26,12 +26,12 @@ void	add_argument(t_command *cmd, char *value)
 		i++;
 	if (i < MAX_TOKENS)
 	{
-		if ((ft_strncmp(cmd->name, "echo", 5) == 0)
-			|| (ft_strncmp(cmd->name, "export", 7) == 0)
-			|| (ft_strncmp(cmd->name, "exit", 5) == 0))
-			cmd->args[i] = ft_strdup(value);
-		else
+		if ((cmd->name) && !((ft_strncmp(cmd->name, "echo", 5) == 0)
+				|| (ft_strncmp(cmd->name, "export", 7) == 0)
+				|| (ft_strncmp(cmd->name, "exit", 5) == 0)))
 			cmd->args[i] = dup_quoted(value);
+		else
+			cmd->args[i] = ft_strdup(value);
 	}
 }
 
@@ -46,8 +46,12 @@ void	add_red(char **cmd_list, char *value)
 		cmd_list[i] = dup_quoted(value);
 }
 
-void	add_command(t_command *cmd, t_token **tokens)
+void	add_command(t_command *cmd, t_token **tokens, int i)
 {
+	if (i > 0)
+		cmd->prev = &term()->cmd_list[i - 1];
+	if (i < term()->count_cmd)
+		cmd->prev = &term()->cmd_list[i + 1];
 	cmd->name = ft_strdup((*tokens)->value);
 	cmd->args[0] = ft_strdup((*tokens)->value);
 	cmd->in_red[0] = NULL;
