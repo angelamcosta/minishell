@@ -6,7 +6,7 @@
 /*   By: anlima <anlima@student.42lisboa.com>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/07 20:48:28 by anlima            #+#    #+#             */
-/*   Updated: 2023/10/19 22:29:11 by anlima           ###   ########.fr       */
+/*   Updated: 2023/10/20 11:57:33 by anlima           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,6 +41,7 @@
 # define IS_DIRECTORY 126
 # define ERR_PERMISSION 126
 # define BUFF_SIZE 1024
+# define ERR_SYNTAX 2
 
 extern int				g_exit;
 

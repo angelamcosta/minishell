@@ -6,7 +6,7 @@
 /*   By: anlima <anlima@student.42lisboa.com>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/01 13:48:47 by anlima            #+#    #+#             */
-/*   Updated: 2023/10/19 23:09:51 by anlima           ###   ########.fr       */
+/*   Updated: 2023/10/20 11:56:03 by anlima           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,14 @@ void	add_argument(t_command *cmd, char *value)
 	while (cmd->args[i] != NULL && i < MAX_TOKENS)
 		i++;
 	if (i < MAX_TOKENS)
-		cmd->args[i] = ft_strdup(value);
+	{
+		if ((ft_strncmp(cmd->name, "echo", 5) == 0)
+			|| (ft_strncmp(cmd->name, "export", 7) == 0)
+			|| (ft_strncmp(cmd->name, "exit", 5) == 0))
+			cmd->args[i] = ft_strdup(value);
+		else
+			cmd->args[i] = dup_quoted(value);
+	}
 }
 
 void	add_red(char **cmd_list, char *value)

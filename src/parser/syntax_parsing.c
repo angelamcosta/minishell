@@ -6,7 +6,7 @@
 /*   By: anlima <anlima@student.42lisboa.com>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/25 22:12:43 by mpedroso          #+#    #+#             */
-/*   Updated: 2023/10/19 23:01:09 by anlima           ###   ########.fr       */
+/*   Updated: 2023/10/20 12:03:20 by anlima           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,14 +32,14 @@ void	grammar(void)
 		{
 			if (!tokens[i + 1])
 			{
-				printf("syntax error near unexpected token `newline`\n");
-				g_exit = EXIT_FAILURE;
+				write(0, "syntax error near unexpected token `newline`\n", 46);
+				g_exit = ERR_SYNTAX;
 				return ;
 			}
 			else if (tokens[i + 1]->type == PIPE || tokens[i + 1]->type == CMD)
 			{
-				printf("syntax error near unexpected token `|`\n");
-				g_exit = EXIT_FAILURE;
+				write(0, "syntax error near unexpected token `|`\n", 40);
+				g_exit = ERR_SYNTAX;
 				return ;
 			}
 		}
@@ -80,16 +80,16 @@ int	read_string(void)
 		{
 			if (i == 0 || (i > 0 && term()->command[i - 1] == '|'))
 			{
-				printf("parse error near `%c`\n", term()->command[i]);
-				g_exit = EXIT_FAILURE;
+				write(0, "parse error near `|`\n", 22);
+				g_exit = ERR_SYNTAX;
 				return (0);
 			}
 			while (term()->command[++i] && term()->command[i] == ' ')
 				;
 			if (term()->command[i] == '|')
 			{
-				printf("parse error near `%c`\n", term()->command[i]);
-				g_exit = EXIT_FAILURE;
+				write(0, "parse error near `|`\n", 22);
+				g_exit = ERR_SYNTAX;
 				return (0);
 			}
 			i--;
