@@ -6,49 +6,41 @@
 /*   By: anlima <anlima@student.42lisboa.com>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/16 15:35:02 by anlima            #+#    #+#             */
-/*   Updated: 2023/10/19 21:31:04 by anlima           ###   ########.fr       */
+/*   Updated: 2023/10/22 18:00:42 by anlima           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../include/minishell.h"
 
 void	executor(void);
+void	handle_commands(void);
 void	execute_builtin(t_command *cmd);
-void	handle_commands(int i, int fd_out, int *fd_in, pid_t *child_pids);
 
 void	executor(void)
 {
-	int		i;
-	int		fd_in;
-	int		fd_out;
-	int		status;
-	pid_t	*child_pids;
-
 	handle_heredocs();
-	fd_in = STDIN_FILENO;
-	fd_out = dup(STDOUT_FILENO);
-	child_pids = malloc(term()->count_cmd * sizeof(pid_t));
-	i = -1;
-	while (++i < term()->count_cmd)
-		handle_commands(i, fd_out, &fd_in, child_pids);
-	i = -1;
-	while (++i < term()->count_cmd)
+	term()->stdin_copy = dup(STDIN_FILENO);
+	term()->stdout_copy = dup(STDOUT_FILENO);
+	term()->prev_fd[0] = -1;
+	term()->prev_fd[1] = -1;
+	handle_commands();
+	if (dup2(term()->stdin_copy, STDIN_FILENO) == -1)
 	{
-		if (child_pids[i] > 0)
-		{
-			waitpid(child_pids[i], &status, 0);
-			if (WIFEXITED(status))
-				g_exit = WEXITSTATUS(status);
-		}
+		perror("dup2");
+		exit(EXIT_FAILURE);
 	}
-	free(child_pids);
+	close(term()->stdin_copy);
+	if (dup2(term()->stdout_copy, STDOUT_FILENO) == -1)
+	{
+		perror("dup2");
+		exit(EXIT_FAILURE);
+	}
+	close(term()->stdout_copy);
 }
 
 void	execute_builtin(t_command *cmd)
 {
-	if (ft_strncmp(cmd->name, "$?", 2) == 0)
-		printf("%i\n", g_exit);
-	else if (ft_strncmp(cmd->name, "exit", 5) == 0)
+	if (ft_strncmp(cmd->name, "exit", 5) == 0)
 		execute_exit(&cmd->args[1]);
 	else if (ft_strncmp(cmd->name, "echo", 5) == 0)
 	{
@@ -70,30 +62,48 @@ void	execute_builtin(t_command *cmd)
 		execute_clear();
 }
 
-void	handle_commands(int i, int fd_out, int *fd_in, pid_t *child_pids)
+void	handle_commands(void)
 {
-	if (i == term()->count_cmd - 1 && (!can_fork(&term()->cmd_list[i])))
+	int		i;
+	int		status;
+	pid_t	*child_pids;
+
+	child_pids = malloc(term()->count_cmd * sizeof(pid_t));
+	i = -1;
+	while (++i < term()->count_cmd)
 	{
-		if (term()->cmd_list[i].name)
+		if (i == term()->count_cmd - 1 && !can_fork(&term()->cmd_list[i]))
 		{
+			close(term()->cmd_list[i].fd[1]);
+			dup2(term()->cmd_list[i].fd[0], STDIN_FILENO);
+			if ((i + 1) < term()->count_cmd)
+			{
+				dup2(term()->cmd_list[i].fd[1], STDOUT_FILENO);
+				close(term()->cmd_list[i].fd[1]);
+				close(term()->cmd_list[i].fd[0]);
+			}
+			else
+			{
+				dup2(term()->stdout_copy, STDOUT_FILENO);
+			}
 			execute_red(&term()->cmd_list[i]);
-			dup2(fd_out, STDOUT_FILENO);
-			close(fd_out);
+			execute_builtin(&term()->cmd_list[i]);
+			child_pids[i] = -1;
+		}
+		else
+		{
+			child_pids[i] = create_fork(&term()->cmd_list[i], i);
 		}
 	}
-	else if (i < term()->count_cmd - 1)
+	i = -1;
+	while (++i < term()->count_cmd)
 	{
-		create_pipe();
-		child_pids[i] = create_fork(&term()->cmd_list[i], *fd_in,
-			term()->pipe_fd[1]);
-		close(term()->pipe_fd[1]);
-		*fd_in = term()->pipe_fd[0];
+		if (child_pids[i] != -1)
+		{
+			waitpid(child_pids[i], &status, 0);
+			if (WIFEXITED(status))
+				g_exit = WEXITSTATUS(status);
+		}
 	}
-	else
-	{
-		child_pids[i] = create_fork(&term()->cmd_list[i], *fd_in,
-			STDOUT_FILENO);
-		if (*fd_in != STDIN_FILENO)
-			close(*fd_in);
-	}
+	free(child_pids);
 }

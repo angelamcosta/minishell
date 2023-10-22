@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   command_executor.c                                 :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: anlima <anlima@student.42lisboa.com>       +#+  +:+       +#+        */
+/*   By: mpedroso <mpedroso@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/31 15:46:17 by anlima            #+#    #+#             */
-/*   Updated: 2023/10/19 22:27:53 by anlima           ###   ########.fr       */
+/*   Updated: 2023/10/20 18:32:11 by mpedroso         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,7 +68,6 @@ void	execute_command(t_command *cmd, char *path)
 		exit(ERR_PERMISSION);
 	}
 	execve(path, cmd->args, NULL);
-	set_signals();
 	perror("execve");
 	exit(EXIT_FAILURE);
 }

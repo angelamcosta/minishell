@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parser.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: anlima <anlima@student.42lisboa.com>       +#+  +:+       +#+        */
+/*   By: mpedroso <mpedroso@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/23 14:45:31 by anlima            #+#    #+#             */
-/*   Updated: 2023/10/20 13:38:14 by anlima           ###   ########.fr       */
+/*   Updated: 2023/10/20 18:12:47 by mpedroso         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,7 +43,7 @@ void	parser(void)
 		{
 			if (i > 0)
 				j++;
-			add_command(&term()->cmd_list[j], &term()->tokens[i], i - 1);
+			add_command(&term()->cmd_list[j], &term()->tokens[i]);
 		}
 		else if (term()->tokens[i]->type == ARG)
 			add_argument(&term()->cmd_list[j], term()->tokens[i]->value);

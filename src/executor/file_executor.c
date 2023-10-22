@@ -6,14 +6,14 @@
 /*   By: anlima <anlima@student.42lisboa.com>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/31 17:06:45 by anlima            #+#    #+#             */
-/*   Updated: 2023/10/18 16:37:08 by anlima           ###   ########.fr       */
+/*   Updated: 2023/10/22 17:35:14 by anlima           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../include/minishell.h"
 
 void	execute_in(char *filename);
-void	execute_red(t_command *cmd);
+char	*execute_red(t_command *cmd);
 void	execute_out(char *filename, int flag);
 
 void	execute_in(char *filename)
@@ -27,14 +27,16 @@ void	execute_in(char *filename)
 	close(in);
 }
 
-void	execute_red(t_command *cmd)
+char	*execute_red(t_command *cmd)
 {
 	int		i;
 	char	*path;
 
-	if (cmd->name && (cmd->name[0] == '/'
-			|| (ft_strncmp(cmd->name, "./", 2) == 0)))
+	if (cmd->name && (cmd->name[0] == '/' || (ft_strncmp(cmd->name, "./",
+					2) == 0)))
 		path = ft_strdup(cmd->name);
+	else if (is_builtin(cmd->name))
+		path = NULL;
 	else
 		path = get_path(cmd->name);
 	i = -1;
@@ -46,10 +48,7 @@ void	execute_red(t_command *cmd)
 	i = -1;
 	while (cmd->out_red[++i])
 		execute_out(cmd->out_red[i], 0);
-	if (cmd->name && !is_builtin(cmd->name))
-		execute_command(cmd, path);
-	else
-		execute_builtin(cmd);
+	return (path);
 }
 
 void	execute_out(char *filename, int flag)

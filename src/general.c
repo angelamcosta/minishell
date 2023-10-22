@@ -6,7 +6,7 @@
 /*   By: anlima <anlima@student.42lisboa.com>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/27 21:49:20 by anlima            #+#    #+#             */
-/*   Updated: 2023/09/21 15:35:22 by anlima           ###   ########.fr       */
+/*   Updated: 2023/10/22 17:52:21 by anlima           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,6 +71,7 @@ int	is_env(char *subs)
 
 void	init_program(char **env)
 {
+	term()->exit_flag = 0;
 	set_signals();
 	set_env(env);
 	term()->user = getenv("USER");

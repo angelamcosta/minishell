@@ -6,44 +6,24 @@
 /*   By: anlima <anlima@student.42lisboa.com>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/28 15:37:42 by anlima            #+#    #+#             */
-/*   Updated: 2023/10/18 16:26:49 by anlima           ###   ########.fr       */
+/*   Updated: 2023/10/22 18:01:50 by anlima           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../include/minishell.h"
 
-void	create_pipe(void);
-void	set_pipes(int fd_in, int fd_out);
-pid_t	create_fork(t_command *cmd, int fd_in, int fd_out);
+pid_t	create_fork(t_command *cmd, int i);
 
-void	create_pipe(void)
+pid_t	create_fork(t_command *cmd, int i)
 {
-	if (pipe(term()->pipe_fd) == -1)
-	{
-		g_exit = EXIT_FAILURE;
-		exit(g_exit);
-	}
-}
-
-void	set_pipes(int fd_in, int fd_out)
-{
-	if (fd_in != STDIN_FILENO)
-	{
-		dup2(fd_in, STDIN_FILENO);
-		close(fd_in);
-	}
-	if (fd_out != STDOUT_FILENO)
-	{
-		dup2(fd_out, STDOUT_FILENO);
-		if (fd_out != term()->pipe_fd[1])
-			close(fd_out);
-	}
-}
-
-pid_t	create_fork(t_command *cmd, int fd_in, int fd_out)
-{
+	char	*path;
 	pid_t	child_pid;
 
+	if (pipe(cmd->fd) == -1)
+	{
+		perror("pipe");
+		exit(EXIT_FAILURE);
+	}
 	child_pid = fork();
 	if (child_pid == -1)
 	{
@@ -52,13 +32,36 @@ pid_t	create_fork(t_command *cmd, int fd_in, int fd_out)
 	}
 	if (child_pid == 0)
 	{
-		set_pipes(fd_in, fd_out);
-		execute_red(cmd);
+		if (term()->prev_fd[0] != -1)
+		{
+			dup2(term()->prev_fd[0], STDIN_FILENO);
+			close(term()->prev_fd[0]);
+			close(term()->prev_fd[1]);
+		}
+		else
+			dup2(term()->stdin_copy, STDIN_FILENO);
+		close(cmd->fd[0]);
+		if ((i + 1) < term()->count_cmd)
+			dup2(cmd->fd[1], STDOUT_FILENO);
+		else
+			dup2(term()->stdout_copy, STDOUT_FILENO);
+		path = execute_red(cmd);
+		if (cmd->name && !is_builtin(cmd->name))
+			execute_command(cmd, path);
+		else
+			execute_builtin(cmd);
 		exit(g_exit);
 	}
-	if (fd_out != STDOUT_FILENO)
-		close(fd_out);
-	if (fd_in != STDIN_FILENO)
-		close(fd_in);
+	else
+	{
+		close(cmd->fd[1]);
+		if (term()->prev_fd[0] != -1)
+		{
+			close(term()->prev_fd[0]);
+			close(term()->prev_fd[1]);
+		}
+		term()->prev_fd[0] = cmd->fd[0];
+		term()->prev_fd[1] = cmd->fd[1];
+	}
 	return (child_pid);
 }

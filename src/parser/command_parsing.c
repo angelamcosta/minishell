@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   command_parsing.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: anlima <anlima@student.42lisboa.com>       +#+  +:+       +#+        */
+/*   By: mpedroso <mpedroso@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/01 13:48:47 by anlima            #+#    #+#             */
-/*   Updated: 2023/10/20 13:43:27 by anlima           ###   ########.fr       */
+/*   Updated: 2023/10/20 18:12:23 by mpedroso         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,7 @@
 char	**ft_split_pipes(char *input);
 void	add_red(char **cmd_list, char *value);
 void	add_argument(t_command *cmd, char *value);
-void	add_command(t_command *cmd, t_token **tokens, int i);
+void	add_command(t_command *cmd, t_token **tokens);
 
 void	add_argument(t_command *cmd, char *value)
 {
@@ -46,12 +46,8 @@ void	add_red(char **cmd_list, char *value)
 		cmd_list[i] = dup_quoted(value);
 }
 
-void	add_command(t_command *cmd, t_token **tokens, int i)
+void	add_command(t_command *cmd, t_token **tokens)
 {
-	if (i > 0)
-		cmd->prev = &term()->cmd_list[i - 1];
-	if (i < term()->count_cmd)
-		cmd->prev = &term()->cmd_list[i + 1];
 	cmd->name = ft_strdup((*tokens)->value);
 	cmd->args[0] = ft_strdup((*tokens)->value);
 	cmd->in_red[0] = NULL;

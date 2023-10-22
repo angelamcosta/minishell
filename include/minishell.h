@@ -6,7 +6,7 @@
 /*   By: anlima <anlima@student.42lisboa.com>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/07 20:48:28 by anlima            #+#    #+#             */
-/*   Updated: 2023/10/20 11:57:33 by anlima           ###   ########.fr       */
+/*   Updated: 2023/10/22 17:43:19 by anlima           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,6 +64,7 @@ typedef struct s_token
 
 typedef struct s_command
 {
+	int					fd[2];
 	char				*name;
 	char				*append[LEN];
 	char				*in_red[LEN];
@@ -75,7 +76,10 @@ typedef struct s_command
 typedef struct s_term
 {
 	int					count_cmd;
-	int					pipe_fd[2];
+	int					exit_flag;
+	int					prev_fd[2];
+	int					stdin_copy;
+	int					stdout_copy;
 	char				*user;
 	char				*home;
 	char				*command;
@@ -105,20 +109,19 @@ void					execute_export(char **input);
 void					execute_env(char **arg, int flag);
 void					add_to_env(char *input, char *subs);
 // executor
+void					executor(void);
+void					handle_commands(void);
+void					execute_builtin(t_command *cmd);
 char					**check_path(void);
 char					*get_path(char *cmd_name);
 void					execute_command(t_command *cmd, char *path);
-void					fork_builtin(void);
 int						check_flag(char *input);
 int						is_builtin(char *cmd_name);
-void					execute_builtin(t_command *cmd);
-void					executor(void);
 void					execute_in(char *filename);
-void					execute_red(t_command *cmd);
+char					*execute_red(t_command *cmd);
 void					execute_out(char *filename, int flag);
-void					create_pipe(void);
-void					set_pipes(int fd_in, int fd_out);
-pid_t					create_fork(t_command *cmd, int fd_in, int fd_out);
+void					restore_stdin_stdout(void);
+pid_t					create_fork(t_command *cmd, int i);
 // parser
 // command parsing
 void					count_commands(void);

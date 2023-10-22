@@ -6,7 +6,7 @@
 /*   By: anlima <anlima@student.42lisboa.com>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/07 20:47:34 by anlima            #+#    #+#             */
-/*   Updated: 2023/10/17 18:00:41 by anlima           ###   ########.fr       */
+/*   Updated: 2023/10/22 18:03:12 by anlima           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,6 +29,11 @@ int	main(int argc, char **argv, char **env)
 			continue ;
 		lexer();
 		add_history(term()->command);
+		if (term()->exit_flag)
+		{
+			term()->exit_flag = 0;
+			g_exit = 127;
+		}
 		clean_mallocs();
 		remove(HERETXT);
 	}
@@ -36,4 +41,3 @@ int	main(int argc, char **argv, char **env)
 }
 
 // TODO: - make `cat | cat | ls` work as intended <=
-// TODO: - make try executing a dir throw the same error as bash

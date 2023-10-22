@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   string_handling.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: anlima <anlima@student.42lisboa.com>       +#+  +:+       +#+        */
+/*   By: mpedroso <mpedroso@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/12 17:09:57 by anlima            #+#    #+#             */
-/*   Updated: 2023/10/17 14:22:50 by anlima           ###   ########.fr       */
+/*   Updated: 2023/10/20 21:15:20 by mpedroso         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -77,6 +77,8 @@ char	*expand_var(char *value)
 	j = 0;
 	quote = 0;
 	result = NULL;
+	if (term()->exit_flag == 1)
+		g_exit = 127;
 	while (++i <= (int)ft_strlen(value))
 	{
 		while (value[i] == ' ' && quote == 0)
@@ -99,6 +101,7 @@ char	*expand_var(char *value)
 			j = i;
 			if (ft_strncmp(&value[i], "$?", 2) == 0)
 			{
+				term()->exit_flag = 1;
 				replacement = ft_itoa(g_exit);
 				j += 2;
 			}
