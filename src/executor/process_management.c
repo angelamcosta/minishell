@@ -54,7 +54,6 @@ pid_t	create_fork(t_command *cmd, int i)
 	}
 	else
 	{
-		close(cmd->fd[1]);
 		if (term()->prev_fd[0] != -1)
 		{
 			close(term()->prev_fd[0]);
