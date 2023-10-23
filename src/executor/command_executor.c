@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   command_executor.c                                 :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mpedroso <mpedroso@student.42lisboa.com    +#+  +:+       +#+        */
+/*   By: anlima <anlima@student.42lisboa.com>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/31 15:46:17 by anlima            #+#    #+#             */
-/*   Updated: 2023/10/20 18:32:11 by mpedroso         ###   ########.fr       */
+/*   Updated: 2023/10/23 22:33:13 by anlima           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,7 +68,7 @@ void	execute_command(t_command *cmd, char *path)
 		write(0, "permission denied\n", 19);
 		exit(ERR_PERMISSION);
 	}
-	execve(path, cmd->args, NULL);
+	execve(path, cmd->args, term()->env);
 	perror("execve");
 	exit(EXIT_FAILURE);
 }

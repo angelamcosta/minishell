@@ -6,7 +6,7 @@
 /*   By: anlima <anlima@student.42lisboa.com>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/07 20:47:34 by anlima            #+#    #+#             */
-/*   Updated: 2023/10/22 18:03:12 by anlima           ###   ########.fr       */
+/*   Updated: 2023/10/23 22:48:00 by anlima           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,5 +35,4 @@ int	main(int argc, char **argv, char **env)
 	return (0);
 }
 
-// TODO: - manage to run minishell inside minishell
 // TODO: - ctrl c in child process prints minishell twice, fix it
