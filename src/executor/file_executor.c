@@ -24,6 +24,7 @@ void	execute_in(char *filename)
 	if (in == -1)
 	{
 		g_exit = EXIT_FAILURE;
+		perror("open");
 		exit(EXIT_FAILURE);
 	}
 	dup2(in, STDIN_FILENO);

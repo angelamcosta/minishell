@@ -83,17 +83,13 @@ void	handle_commands(void)
 				close(term()->cmd_list[i].fd[0]);
 			}
 			else
-			{
 				dup2(term()->stdout_copy, STDOUT_FILENO);
-			}
 			execute_red(&term()->cmd_list[i]);
 			execute_builtin(&term()->cmd_list[i]);
 			child_pids[i] = -1;
 		}
 		else
-		{
 			child_pids[i] = create_fork(&term()->cmd_list[i], i);
-		}
 	}
 	i = -1;
 	while (++i < term()->count_cmd)

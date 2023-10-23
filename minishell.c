@@ -34,3 +34,6 @@ int	main(int argc, char **argv, char **env)
 	}
 	return (0);
 }
+
+// TODO: - manage to run minishell inside minishell
+// TODO: - ctrl c in child process prints minishell twice, fix it
