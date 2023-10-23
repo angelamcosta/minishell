@@ -29,6 +29,7 @@ SRC		=	minishell.c \
 			$(SRC_DIR)/$(XCTOR)/builtin_executor.c \
 			$(SRC_DIR)/$(XCTOR)/command_executor.c \
 			$(SRC_DIR)/$(XCTOR)/command_parser.c \
+			$(SRC_DIR)/$(XCTOR)/executor_utils.c \
 			$(SRC_DIR)/$(XCTOR)/file_executor.c \
 			$(SRC_DIR)/$(XCTOR)/process_management.c \
 			$(SRC_DIR)/$(PARSER)/command_parsing.c \

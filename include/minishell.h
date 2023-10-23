@@ -6,7 +6,7 @@
 /*   By: anlima <anlima@student.42lisboa.com>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/07 20:48:28 by anlima            #+#    #+#             */
-/*   Updated: 2023/10/22 17:43:19 by anlima           ###   ########.fr       */
+/*   Updated: 2023/10/23 23:36:02 by anlima           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,6 +71,7 @@ typedef struct s_command
 	char				*out_red[LEN];
 	char				*delimiters[LEN];
 	char				*args[MAX_TOKENS];
+	char				*order[MAX_TOKENS];
 }						t_command;
 
 typedef struct s_term
@@ -116,25 +117,27 @@ char					*get_path(char *cmd_name);
 void					execute_command(t_command *cmd, char *path);
 int						check_flag(char *input);
 int						is_builtin(char *cmd_name);
+int						is_in_red(t_command *cmd, char *str);
+int						is_out_red(t_command *cmd, char *str);
+int						is_append(t_command *cmd, char *str);
 void					execute_in(char *filename);
+void					red_priority(t_command *cmd);
 char					*execute_red(t_command *cmd);
 void					execute_out(char *filename, int flag);
-void					restore_stdin_stdout(void);
 pid_t					create_fork(t_command *cmd, int i);
 // parser
 // command parsing
-void					count_commands(void);
 char					**ft_split_pipes(char *input);
-void					add_red(char **cmd_list, char *value);
+void					add_red(char **cmd_list, char *value, char **order);
 void					add_argument(t_command *cmd, char *value);
 void					add_command(t_command *cmd, t_token **tokens);
 // parser
 void					lexer(void);
 void					parser(void);
 // parsing_utils
-int	find_len(char *value);
-int count_pipes(char *input);
-char *dup_quoted(char *value);
+int						find_len(char *value);
+int						count_pipes(char *input);
+char					*dup_quoted(char *value);
 // string_handling
 char					*expand_var(char *value);
 char					*get_var_name(char *value);
