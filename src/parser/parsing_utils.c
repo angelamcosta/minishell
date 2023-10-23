@@ -6,7 +6,7 @@
 /*   By: anlima <anlima@student.42lisboa.com>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/17 13:31:26 by anlima            #+#    #+#             */
-/*   Updated: 2023/10/19 22:53:06 by anlima           ###   ########.fr       */
+/*   Updated: 2023/10/23 23:46:53 by anlima           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -76,9 +76,9 @@ char	*dup_quoted(char *value)
 
 int	find_len(char *value)
 {
-	char *end;
-	char *start;
-	int total_len;
+	char	*end;
+	char	*start;
+	int		total_len;
 
 	start = value;
 	total_len = 0;
