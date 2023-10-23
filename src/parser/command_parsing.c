@@ -12,41 +12,41 @@
 
 #include "../../include/minishell.h"
 
-char	**ft_split_pipes(char *input);
-void	add_red(char **cmd_list, char *value);
-void	add_argument(t_command *cmd, char *value);
-void	add_command(t_command *cmd, t_token **tokens);
+char **ft_split_pipes(char *input);
+void add_red(char **cmd_list, char *value);
+void add_argument(t_command *cmd, char *value);
+void add_command(t_command *cmd, t_token **tokens);
 
-void	add_argument(t_command *cmd, char *value)
+void add_argument(t_command *cmd, char *value)
 {
-	int	i;
+	int i;
 
 	i = 0;
 	while (cmd->args[i] != NULL && i < MAX_TOKENS)
 		i++;
 	if (i < MAX_TOKENS)
 	{
-		if ((cmd->name) && !((ft_strncmp(cmd->name, "echo", 5) == 0)
-				|| (ft_strncmp(cmd->name, "export", 7) == 0)
-				|| (ft_strncmp(cmd->name, "exit", 5) == 0)))
+		if ((cmd->name) && !((ft_strncmp(cmd->name, "echo", 5) == 0) || (ft_strncmp(cmd->name, "export", 7) == 0) || (ft_strncmp(cmd->name, "exit", 5) == 0)))
 			cmd->args[i] = dup_quoted(value);
 		else
 			cmd->args[i] = ft_strdup(value);
 	}
+	// printf("DEBUG: add_arg => %s\n", cmd->args[i]);
 }
 
-void	add_red(char **cmd_list, char *value)
+void add_red(char **cmd_list, char *value)
 {
-	int	i;
+	int i;
 
 	i = 0;
 	while (cmd_list[i] != NULL && i < MAX_TOKENS)
 		i++;
 	if (i < MAX_TOKENS)
 		cmd_list[i] = dup_quoted(value);
+	// printf("DEBUG: add_arg => %s\n", cmd_list[i]);
 }
 
-void	add_command(t_command *cmd, t_token **tokens)
+void add_command(t_command *cmd, t_token **tokens)
 {
 	cmd->name = ft_strdup((*tokens)->value);
 	cmd->args[0] = ft_strdup((*tokens)->value);
@@ -54,13 +54,13 @@ void	add_command(t_command *cmd, t_token **tokens)
 	cmd->out_red[0] = NULL;
 }
 
-char	**ft_split_pipes(char *input)
+char **ft_split_pipes(char *input)
 {
-	int		i;
-	int		j;
-	int		k;
-	int		quote;
-	char	**result;
+	int i;
+	int j;
+	int k;
+	int quote;
+	char **result;
 
 	k = -1;
 	quote = 0;
@@ -75,7 +75,7 @@ char	**ft_split_pipes(char *input)
 		while (input[++i])
 		{
 			if (input[i] == '|' && quote == 0)
-				break ;
+				break;
 			if (input[i] == '"' || input[i] == '\'')
 				change_quote(&quote, input[i]);
 		}

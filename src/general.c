@@ -71,7 +71,6 @@ int	is_env(char *subs)
 
 void	init_program(char **env)
 {
-	term()->exit_flag = 0;
 	set_signals();
 	set_env(env);
 	term()->user = getenv("USER");

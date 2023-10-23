@@ -12,6 +12,7 @@
 
 #include "../../include/minishell.h"
 
+int		find_len(char *value);
 int		count_pipes(char *input);
 char	*dup_quoted(char *value);
 
@@ -39,17 +40,63 @@ int	count_pipes(char *input)
 
 char	*dup_quoted(char *value)
 {
-	int		len;
-	char	*end;
 	char	*start;
+	char	*end;
 	char	*result;
+	char	*dest;
+	int		total_len;
 
-	start = ft_strchr(value, '"');
-	if (start == NULL)
+	total_len = find_len(value);
+	if (total_len == (int)ft_strlen(value))
 		return (ft_strdup(value));
-	end = ft_strchr(value + 1, '"');
-	len = end - start;
-	result = (char *)malloc(sizeof(char) * (len + 1));
-	ft_strlcpy(result, start + 1, len);
+	result = (char *)malloc(total_len + 1);
+	start = value;
+	dest = result;
+	while (*start)
+	{
+		if (*start == '"')
+		{
+			end = ft_strchr(start + 1, '"');
+			if (!end)
+				break ;
+			ft_strlcpy(dest, start + 1, end - start + 1);
+			dest += (end - start - 1);
+			start = end + 1;
+		}
+		else
+		{
+			*dest = *start;
+			dest++;
+			start++;
+		}
+	}
+	*dest = '\0';
 	return (result);
+}
+
+int	find_len(char *value)
+{
+	char *end;
+	char *start;
+	int total_len;
+
+	start = value;
+	total_len = 0;
+	while (*start)
+	{
+		if (*start == '"')
+		{
+			end = ft_strchr(start + 1, '"');
+			if (!end)
+				break ;
+			total_len += (end - start - 1);
+			start = end + 1;
+		}
+		else
+		{
+			total_len++;
+			start++;
+		}
+	}
+	return (total_len);
 }

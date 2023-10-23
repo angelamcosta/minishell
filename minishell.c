@@ -29,15 +29,8 @@ int	main(int argc, char **argv, char **env)
 			continue ;
 		lexer();
 		add_history(term()->command);
-		if (term()->exit_flag)
-		{
-			term()->exit_flag = 0;
-			g_exit = 127;
-		}
 		clean_mallocs();
 		remove(HERETXT);
 	}
 	return (0);
 }
-
-// TODO: - make `cat | cat | ls` work as intended <=

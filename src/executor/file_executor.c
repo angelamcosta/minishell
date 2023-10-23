@@ -22,7 +22,10 @@ void	execute_in(char *filename)
 
 	in = open(filename, O_RDONLY);
 	if (in == -1)
+	{
+		g_exit = EXIT_FAILURE;
 		exit(EXIT_FAILURE);
+	}
 	dup2(in, STDIN_FILENO);
 	close(in);
 }
@@ -61,6 +64,7 @@ void	execute_out(char *filename, int flag)
 		out = open(filename, O_WRONLY | O_CREAT | O_TRUNC, 0777);
 	if (out == -1)
 	{
+		g_exit = EXIT_FAILURE;
 		perror("open");
 		exit(EXIT_FAILURE);
 	}

@@ -54,7 +54,8 @@ void	execute_command(t_command *cmd, char *path)
 		exit(EXIT_SUCCESS);
 	if (access(path, F_OK) == -1)
 	{
-		write(0, "command not found\n", 19);
+		print_str(ft_itoa(g_exit));
+		write(0, ": command not found\n", 21);
 		exit(NOT_FOUND);
 	}
 	if (stat(path, &path_stat) == 0 && S_ISDIR(path_stat.st_mode))

@@ -77,8 +77,6 @@ char	*expand_var(char *value)
 	j = 0;
 	quote = 0;
 	result = NULL;
-	if (term()->exit_flag == 1)
-		g_exit = 127;
 	while (++i <= (int)ft_strlen(value))
 	{
 		while (value[i] == ' ' && quote == 0)
@@ -101,7 +99,6 @@ char	*expand_var(char *value)
 			j = i;
 			if (ft_strncmp(&value[i], "$?", 2) == 0)
 			{
-				term()->exit_flag = 1;
 				replacement = ft_itoa(g_exit);
 				j += 2;
 			}

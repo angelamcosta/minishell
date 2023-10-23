@@ -76,7 +76,6 @@ typedef struct s_command
 typedef struct s_term
 {
 	int					count_cmd;
-	int					exit_flag;
 	int					prev_fd[2];
 	int					stdin_copy;
 	int					stdout_copy;
@@ -133,8 +132,9 @@ void					add_command(t_command *cmd, t_token **tokens);
 void					lexer(void);
 void					parser(void);
 // parsing_utils
-int						count_pipes(char *input);
-char					*dup_quoted(char *value);
+int	find_len(char *value);
+int count_pipes(char *input);
+char *dup_quoted(char *value);
 // string_handling
 char					*expand_var(char *value);
 char					*get_var_name(char *value);
