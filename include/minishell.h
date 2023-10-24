@@ -6,7 +6,7 @@
 /*   By: anlima <anlima@student.42lisboa.com>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/07 20:48:28 by anlima            #+#    #+#             */
-/*   Updated: 2023/10/23 23:36:02 by anlima           ###   ########.fr       */
+/*   Updated: 2023/10/24 15:42:12 by anlima           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -128,16 +128,27 @@ pid_t					create_fork(t_command *cmd, int i);
 // parser
 // command parsing
 char					**ft_split_pipes(char *input);
-void					add_red(char **cmd_list, char *value, char **order);
 void					add_argument(t_command *cmd, char *value);
 void					add_command(t_command *cmd, t_token **tokens);
+void					trim_whitespaces(char *input, int *i, int quote);
+void					add_red(char **cmd_list, char *value, char **order);
+// expansion_aux
+void					modify_result(char **result, char *replacement);
+void					get_result(char **result, char *value, int i, int *j);
+void					treat_expasion(int i, int *j, char **result,
+							char *value);
 // parser
 void					lexer(void);
 void					parser(void);
+void					aux_parser(int *i, int j);
 // parsing_utils
+int						str_err(void);
 int						find_len(char *value);
 int						count_pipes(char *input);
 char					*dup_quoted(char *value);
+// string_aux
+char					*aux_split(char *input, int i);
+void					should_add(char *input, int i, char **strs, int *k);
 // string_handling
 char					*expand_var(char *value);
 char					*get_var_name(char *value);

@@ -72,26 +72,23 @@ int	should_expand(char *input)
 int	read_string(void)
 {
 	int	i;
+	int	quote;
 
 	i = -1;
+	quote = 0;
 	while (term()->command[++i])
 	{
-		if (term()->command[i] == '|')
+		if (term()->command[i] == '"' || term()->command[i] == '\'')
+			change_quote(&quote, term()->command[i]);
+		else if (term()->command[i] == '|' && quote == 0)
 		{
-			if (i == 0 || (i > 0 && term()->command[i - 1] == '|'))
-			{
-				write(0, "parse error near `|`\n", 22);
-				g_exit = ERR_SYNTAX;
-				return (0);
-			}
+			if ((i == 0 || (i > 0 && term()->command[i - 1] == '|'))
+				|| term()->command[i + 1] == '\0')
+				return (str_err());
 			while (term()->command[++i] && term()->command[i] == ' ')
 				;
 			if (term()->command[i] == '|')
-			{
-				write(0, "parse error near `|`\n", 22);
-				g_exit = ERR_SYNTAX;
-				return (0);
-			}
+				return (str_err());
 			i--;
 		}
 	}

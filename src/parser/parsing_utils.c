@@ -12,9 +12,11 @@
 
 #include "../../include/minishell.h"
 
+int		str_err(void);
 int		find_len(char *value);
 int		count_pipes(char *input);
 char	*dup_quoted(char *value);
+void	aux_dup_quoted(char **start, char **dest);
 
 int	count_pipes(char *input)
 {
@@ -40,10 +42,9 @@ int	count_pipes(char *input)
 
 char	*dup_quoted(char *value)
 {
-	char	*start;
-	char	*end;
-	char	*result;
 	char	*dest;
+	char	*start;
+	char	*result;
 	int		total_len;
 
 	total_len = find_len(value);
@@ -53,23 +54,7 @@ char	*dup_quoted(char *value)
 	start = value;
 	dest = result;
 	while (*start)
-	{
-		if (*start == '"')
-		{
-			end = ft_strchr(start + 1, '"');
-			if (!end)
-				break ;
-			ft_strlcpy(dest, start + 1, end - start + 1);
-			dest += (end - start - 1);
-			start = end + 1;
-		}
-		else
-		{
-			*dest = *start;
-			dest++;
-			start++;
-		}
-	}
+		aux_dup_quoted(&start, &dest);
 	*dest = '\0';
 	return (result);
 }
@@ -99,4 +84,33 @@ int	find_len(char *value)
 		}
 	}
 	return (total_len);
+}
+
+int	str_err(void)
+{
+	write(0, "parse error near `|`\n", 22);
+	g_exit = ERR_SYNTAX;
+	return (0);
+}
+
+void	aux_dup_quoted(char **start, char **dest)
+{
+	char	*end;
+
+	end = NULL;
+	if (*start[0] == '"')
+	{
+		end = ft_strchr(*start + 1, '"');
+		if (!end)
+			return ;
+		ft_strlcpy(*dest, *start + 1, end - *start + 1);
+		(*dest) += (end - *start - 1);
+		(*start) = end + 1;
+	}
+	else
+	{
+		*dest = *start;
+		(*dest)++;
+		(*start)++;
+	}
 }

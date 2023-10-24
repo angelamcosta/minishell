@@ -14,6 +14,7 @@
 
 void	lexer(void);
 void	parser(void);
+void	aux_parser(int *i, int j);
 
 void	lexer(void)
 {
@@ -47,18 +48,24 @@ void	parser(void)
 		}
 		else if (term()->tokens[i]->type == ARG)
 			add_argument(&term()->cmd_list[j], term()->tokens[i]->value);
-		else if (term()->tokens[i]->type == HEREDOC)
-			add_red(term()->cmd_list[j].delimiters, term()->tokens[++i]->value,
-				term()->cmd_list[j].order);
-		else if (term()->tokens[i]->type == RED_IN)
-			add_red(term()->cmd_list[j].in_red, term()->tokens[++i]->value,
-				term()->cmd_list[j].order);
-		else if (term()->tokens[i]->type == APPEND)
-			add_red(term()->cmd_list[j].append, term()->tokens[++i]->value,
-				term()->cmd_list[j].order);
-		else if (term()->tokens[i]->type == RED_OUT)
-			add_red(term()->cmd_list[j].out_red, term()->tokens[++i]->value,
-				term()->cmd_list[j].order);
+		else
+			aux_parser(&i, j);
 	}
 	executor();
+}
+
+void	aux_parser(int *i, int j)
+{
+	if (term()->tokens[*i]->type == HEREDOC)
+		add_red(term()->cmd_list[j].delimiters, term()->tokens[++(*i)]->value,
+			term()->cmd_list[j].order);
+	else if (term()->tokens[*i]->type == RED_IN)
+		add_red(term()->cmd_list[j].in_red, term()->tokens[++(*i)]->value,
+			term()->cmd_list[j].order);
+	else if (term()->tokens[*i]->type == APPEND)
+		add_red(term()->cmd_list[j].append, term()->tokens[++(*i)]->value,
+			term()->cmd_list[j].order);
+	else if (term()->tokens[*i]->type == RED_OUT)
+		add_red(term()->cmd_list[j].out_red, term()->tokens[++(*i)]->value,
+			term()->cmd_list[j].order);
 }

@@ -15,6 +15,7 @@
 char	**ft_split_pipes(char *input);
 void	add_argument(t_command *cmd, char *value);
 void	add_command(t_command *cmd, t_token **tokens);
+void	trim_whitespaces(char *input, int *i, int quote);
 void	add_red(char **cmd_list, char *value, char **order);
 
 void	add_argument(t_command *cmd, char *value)
@@ -67,15 +68,13 @@ char	**ft_split_pipes(char *input)
 	int		quote;
 	char	**result;
 
+	i = -1;
 	k = -1;
 	quote = 0;
-	i = count_pipes(input);
-	result = (char **)malloc(sizeof(char *) * (i + 1));
-	i = -1;
+	result = (char **)malloc(sizeof(char *) * (count_pipes(input) + 1));
 	while (++i < (int)ft_strlen(input))
 	{
-		while (input[++i] == ' ' && quote == 0)
-			;
+		trim_whitespaces(input, &i, quote);
 		j = i - 1;
 		while (input[++i])
 		{
@@ -88,4 +87,10 @@ char	**ft_split_pipes(char *input)
 	}
 	result[++k] = NULL;
 	return (result);
+}
+
+void	trim_whitespaces(char *input, int *i, int quote)
+{
+	while (input[++(*i)] == ' ' && quote == 0)
+		;
 }

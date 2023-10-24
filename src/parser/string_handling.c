@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   string_handling.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mpedroso <mpedroso@student.42lisboa.com    +#+  +:+       +#+        */
+/*   By: anlima <anlima@student.42lisboa.com>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/12 17:09:57 by anlima            #+#    #+#             */
-/*   Updated: 2023/10/20 21:15:20 by mpedroso         ###   ########.fr       */
+/*   Updated: 2023/10/24 15:42:07 by anlima           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,12 +21,10 @@ char	*handle_variables(char *value);
 char	**split_command(char *input)
 {
 	int		i;
-	int		start;
 	int		k;
+	int		start;
 	int		quote;
 	char	**strs;
-	char	*subs;
-	char	*temp;
 
 	i = 0;
 	k = -1;
@@ -43,22 +41,7 @@ char	**split_command(char *input)
 				change_quote(&quote, input[i]);
 			i++;
 		}
-		subs = ft_substr(input, start, i - start);
-		if (subs && ft_strlen(subs) > 0)
-		{
-			if (should_expand(subs))
-			{
-				temp = expand_var(subs);
-				if (temp != NULL)
-				{
-					strs[++k] = ft_strdup(temp);
-					free(temp);
-				}
-			}
-			else
-				strs[++k] = ft_strdup(subs);
-		}
-		free(subs);
+		should_add(&input[start], i - start, strs, &k);
 	}
 	strs[++k] = NULL;
 	return (strs);
@@ -69,8 +52,6 @@ char	*expand_var(char *value)
 	int		i;
 	int		j;
 	int		quote;
-	char	*var_name;
-	char	*replacement;
 	char	*result;
 
 	i = -1;
@@ -88,35 +69,7 @@ char	*expand_var(char *value)
 		if (value[i] == '"' || value[i] == '\'')
 			change_quote(&quote, value[i]);
 		else if (value[i] == '$')
-		{
-			if (i - j > 0)
-			{
-				if (result)
-					result = ft_strjoin(result, ft_substr(value, j, i - j));
-				else
-					result = ft_substr(value, j, i - j);
-			}
-			j = i;
-			if (ft_strncmp(&value[i], "$?", 2) == 0)
-			{
-				replacement = ft_itoa(g_exit);
-				j += 2;
-			}
-			else
-			{
-				var_name = extract_varname(&value[i]);
-				replacement = handle_variables(var_name);
-				while (value[++j])
-				{
-					if (value[j] == ' ' || !ft_isalnum(value[j]))
-						break ;
-				}
-			}
-			if (result)
-				result = ft_strjoin(result, replacement);
-			else
-				result = replacement;
-		}
+			treat_expasion(i, &j, &result, value);
 		else if (value[i] == '\0' && j != i)
 			result = ft_strjoin(result, ft_substr(value, j, i - j));
 	}

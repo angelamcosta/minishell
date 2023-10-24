@@ -80,7 +80,6 @@ void	add_token(char *input, int *i, int flag)
 	else
 		token->value = ft_substr(input, 0, ft_strlen(input));
 	term()->tokens[(*i)] = token;
-	// printf("DEBUG: value => %s\ttype => %i\n", token->value, token->type);
 	if (j > 0)
 	{
 		(*i)++;
