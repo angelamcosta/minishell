@@ -6,7 +6,7 @@
 /*   By: anlima <anlima@student.42lisboa.com>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/16 15:53:12 by anlima            #+#    #+#             */
-/*   Updated: 2023/10/19 22:56:03 by anlima           ###   ########.fr       */
+/*   Updated: 2023/10/24 16:28:40 by anlima           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,8 +31,11 @@ void	tokenize_input(void)
 	while (input && input[i] && i < MAX_TOKENS)
 	{
 		add_tokens_from_command(input[i], &token_index);
+		free(input[i]);
 		i++;
 	}
+	if (input)
+		free(input);
 	term()->tokens[token_index] = NULL;
 }
 
@@ -47,7 +50,7 @@ int	count_words(char *input)
 	quote = 0;
 	while (input[i])
 	{
-		if (input[i] != ' ' && (i == 0 || quote == 0))
+		if (input[i] != ' ' && (i == 0 || (quote == 0 && input[i - 1] == ' ')))
 			j++;
 		if (input[i] == '"' || input[i] == '\'')
 		{
