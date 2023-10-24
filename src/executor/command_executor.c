@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   command_executor.c                                 :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: anlima <anlima@student.42lisboa.com>       +#+  +:+       +#+        */
+/*   By: mpedroso <mpedroso@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/31 15:46:17 by anlima            #+#    #+#             */
-/*   Updated: 2023/10/23 22:33:13 by anlima           ###   ########.fr       */
+/*   Updated: 2023/10/24 15:31:10 by mpedroso         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,7 @@
 
 char	**check_path(void);
 char	*get_path(char *cmd_name);
+void	free_paths(char **paths, int i);
 void	execute_command(t_command *cmd, char *path);
 
 char	*get_path(char *cmd_name)
@@ -38,9 +39,7 @@ char	*get_path(char *cmd_name)
 		path = NULL;
 	}
 	i = -1;
-	while (paths[++i])
-		free(paths[i]);
-	free(paths);
+	free_paths(paths, i);
 	if (!path)
 		return (NULL);
 	return (path);
@@ -89,4 +88,11 @@ char	**check_path(void)
 		return (NULL);
 	paths = ft_split(path_env, ':');
 	return (paths);
+}
+
+void	free_paths(char **paths, int i)
+{
+	while (paths[++i])
+		free(paths[i]);
+	free(paths);
 }
