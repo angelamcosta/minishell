@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   process_management.c                               :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: anlima <anlima@student.42lisboa.com>       +#+  +:+       +#+        */
+/*   By: mpedroso <mpedroso@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/28 15:37:42 by anlima            #+#    #+#             */
-/*   Updated: 2023/10/22 18:01:50 by anlima           ###   ########.fr       */
+/*   Updated: 2023/10/24 14:52:29 by mpedroso         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,6 +19,7 @@ pid_t	create_fork(t_command *cmd, int i)
 	char	*path;
 	pid_t	child_pid;
 
+	signal(SIGINT, SIG_IGN);
 	if (pipe(cmd->fd) == -1)
 	{
 		perror("pipe");
@@ -32,6 +33,7 @@ pid_t	create_fork(t_command *cmd, int i)
 	}
 	if (child_pid == 0)
 	{
+		signals_child();
 		if (term()->prev_fd[0] != -1)
 		{
 			dup2(term()->prev_fd[0], STDIN_FILENO);

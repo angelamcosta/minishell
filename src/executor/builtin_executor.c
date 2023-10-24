@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   builtin_executor.c                                 :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: anlima <anlima@student.42lisboa.com>       +#+  +:+       +#+        */
+/*   By: mpedroso <mpedroso@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/16 15:35:02 by anlima            #+#    #+#             */
-/*   Updated: 2023/10/22 18:00:42 by anlima           ###   ########.fr       */
+/*   Updated: 2023/10/24 14:52:38 by mpedroso         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -101,5 +101,6 @@ void	handle_commands(void)
 				g_exit = WEXITSTATUS(status);
 		}
 	}
+	set_signals();
 	free(child_pids);
 }
