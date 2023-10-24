@@ -6,7 +6,7 @@
 /*   By: anlima <anlima@student.42lisboa.com>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/07 20:48:28 by anlima            #+#    #+#             */
-/*   Updated: 2023/10/24 15:42:12 by anlima           ###   ########.fr       */
+/*   Updated: 2023/10/24 19:24:40 by anlima           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -170,6 +170,7 @@ void					add_tokens_from_command(char *command,
 							int *token_index);
 // free memory
 void					clean_mallocs(void);
+void					free_reds(t_command *cmd);
 void					free_token(t_token *token);
 void					free_command(t_command *cmd);
 void					free_term(t_term *term);

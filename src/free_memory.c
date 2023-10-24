@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   free_memory.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mpedroso <mpedroso@student.42lisboa.com    +#+  +:+       +#+        */
+/*   By: anlima <anlima@student.42lisboa.com>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/28 15:52:58 by anlima            #+#    #+#             */
-/*   Updated: 2023/10/24 16:08:39 by mpedroso         ###   ########.fr       */
+/*   Updated: 2023/10/24 19:24:34 by anlima           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,6 +53,12 @@ void	free_command(t_command *cmd)
 	{
 		free(cmd->delimiters[i]);
 		cmd->delimiters[i] = NULL;
+	}
+	i = -1;
+	while (++i < LEN && cmd->order[i])
+	{
+		free(cmd->order[i]);
+		cmd->order[i] = NULL;
 	}
 }
 

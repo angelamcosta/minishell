@@ -6,7 +6,7 @@
 /*   By: anlima <anlima@student.42lisboa.com>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/16 15:53:12 by anlima            #+#    #+#             */
-/*   Updated: 2023/10/24 16:28:40 by anlima           ###   ########.fr       */
+/*   Updated: 2023/10/24 19:24:43 by anlima           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -105,6 +105,14 @@ void	add_tokens_from_command(char *command, int *token_index)
 			add_token(temp[j], token_index, 0);
 		(*token_index)++;
 	}
+	j = -1;
+	while (temp && temp[++j])
+	{
+		free(temp[j]);
+		temp[j] = NULL;
+	}
+	if (temp)
+		free(temp);
 }
 
 void	set_token_type(t_token *token, char *input, int flag)

@@ -6,7 +6,7 @@
 /*   By: anlima <anlima@student.42lisboa.com>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/17 13:31:26 by anlima            #+#    #+#             */
-/*   Updated: 2023/10/23 23:46:53 by anlima           ###   ########.fr       */
+/*   Updated: 2023/10/24 18:58:51 by anlima           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,6 +35,8 @@ int	count_pipes(char *input)
 			change_quote(&quote, input[i]);
 		if ((input[i] == '|') && quote == 0)
 			count++;
+		if (input[i] == '\0')
+			break ;
 	}
 	term()->count_cmd = count + 1;
 	return (count);
@@ -50,7 +52,7 @@ char	*dup_quoted(char *value)
 	total_len = find_len(value);
 	if (total_len == (int)ft_strlen(value))
 		return (ft_strdup(value));
-	result = (char *)malloc(total_len + 1);
+	result = (char *)malloc(total_len + 2);
 	start = value;
 	dest = result;
 	while (*start)

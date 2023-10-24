@@ -6,7 +6,7 @@
 /*   By: anlima <anlima@student.42lisboa.com>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/01 13:48:47 by anlima            #+#    #+#             */
-/*   Updated: 2023/10/23 23:28:09 by anlima           ###   ########.fr       */
+/*   Updated: 2023/10/24 17:11:36 by anlima           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,7 +71,7 @@ char	**ft_split_pipes(char *input)
 	i = -1;
 	k = -1;
 	quote = 0;
-	result = (char **)malloc(sizeof(char *) * (count_pipes(input) + 1));
+	result = (char **)malloc(sizeof(char *) * (count_pipes(input) + 2));
 	while (++i < (int)ft_strlen(input))
 	{
 		trim_whitespaces(input, &i, quote);

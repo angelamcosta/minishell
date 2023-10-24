@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   builtin_executor.c                                 :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mpedroso <mpedroso@student.42lisboa.com    +#+  +:+       +#+        */
+/*   By: anlima <anlima@student.42lisboa.com>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/16 15:35:02 by anlima            #+#    #+#             */
-/*   Updated: 2023/10/24 15:16:51 by mpedroso         ###   ########.fr       */
+/*   Updated: 2023/10/24 17:09:24 by anlima           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,9 +67,8 @@ void	execute_builtin(t_command *cmd)
 void	handle_commands(void)
 {
 	int		i;
-	pid_t	*child_pids;
+	pid_t	child_pids[MAX_TOKENS];
 
-	child_pids = malloc(term()->count_cmd * sizeof(pid_t));
 	i = -1;
 	while (++i < term()->count_cmd)
 	{
@@ -88,7 +87,6 @@ void	handle_commands(void)
 			wait_childs(child_pids, i);
 	}
 	set_signals();
-	free(child_pids);
 }
 
 void	treat_lastcmd(int i)
