@@ -3,18 +3,20 @@
 /*                                                        :::      ::::::::   */
 /*   builtin_executor.c                                 :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: anlima <anlima@student.42lisboa.com>       +#+  +:+       +#+        */
+/*   By: mpedroso <mpedroso@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/16 15:35:02 by anlima            #+#    #+#             */
-/*   Updated: 2023/10/22 18:00:42 by anlima           ###   ########.fr       */
+/*   Updated: 2023/10/24 15:16:51 by mpedroso         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../include/minishell.h"
 
 void	executor(void);
+void	treat_lastcmd(int i);
 void	handle_commands(void);
 void	execute_builtin(t_command *cmd);
+void	wait_childs(pid_t *child_pids, int i);
 
 void	executor(void)
 {
@@ -65,7 +67,6 @@ void	execute_builtin(t_command *cmd)
 void	handle_commands(void)
 {
 	int		i;
-	int		status;
 	pid_t	*child_pids;
 
 	child_pids = malloc(term()->count_cmd * sizeof(pid_t));
@@ -74,18 +75,7 @@ void	handle_commands(void)
 	{
 		if (i == term()->count_cmd - 1 && !can_fork(&term()->cmd_list[i]))
 		{
-			close(term()->cmd_list[i].fd[1]);
-			dup2(term()->cmd_list[i].fd[0], STDIN_FILENO);
-			if ((i + 1) < term()->count_cmd)
-			{
-				dup2(term()->cmd_list[i].fd[1], STDOUT_FILENO);
-				close(term()->cmd_list[i].fd[1]);
-				close(term()->cmd_list[i].fd[0]);
-			}
-			else
-				dup2(term()->stdout_copy, STDOUT_FILENO);
-			execute_red(&term()->cmd_list[i]);
-			execute_builtin(&term()->cmd_list[i]);
+			treat_lastcmd(i);
 			child_pids[i] = -1;
 		}
 		else
@@ -95,11 +85,33 @@ void	handle_commands(void)
 	while (++i < term()->count_cmd)
 	{
 		if (child_pids[i] != -1)
-		{
-			waitpid(child_pids[i], &status, 0);
-			if (WIFEXITED(status))
-				g_exit = WEXITSTATUS(status);
-		}
+			wait_childs(child_pids, i);
 	}
+	set_signals();
 	free(child_pids);
+}
+
+void	treat_lastcmd(int i)
+{
+	close(term()->cmd_list[i].fd[1]);
+	dup2(term()->cmd_list[i].fd[0], STDIN_FILENO);
+	if ((i + 1) < term()->count_cmd)
+	{
+		dup2(term()->cmd_list[i].fd[1], STDOUT_FILENO);
+		close(term()->cmd_list[i].fd[1]);
+		close(term()->cmd_list[i].fd[0]);
+	}
+	else
+		dup2(term()->stdout_copy, STDOUT_FILENO);
+	execute_red(&term()->cmd_list[i]);
+	execute_builtin(&term()->cmd_list[i]);
+}
+
+void	wait_childs(pid_t *child_pids, int i)
+{
+	int	status;
+
+	waitpid(child_pids[i], &status, 0);
+	if (WIFEXITED(status))
+		g_exit = WEXITSTATUS(status);
 }
