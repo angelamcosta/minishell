@@ -6,13 +6,14 @@
 /*   By: mpedroso <mpedroso@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/28 15:52:58 by anlima            #+#    #+#             */
-/*   Updated: 2023/10/13 14:30:39 by mpedroso         ###   ########.fr       */
+/*   Updated: 2023/10/24 16:08:39 by mpedroso         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../include/minishell.h"
 
 void	clean_mallocs(void);
+void	free_reds(t_command *cmd);
 void	free_token(t_token *token);
 void	free_command(t_command *cmd);
 void	free_term(t_term *term);
@@ -48,28 +49,10 @@ void	free_command(t_command *cmd)
 		cmd->args[i] = NULL;
 	}
 	i = -1;
-	while (++i < LEN && cmd->in_red[i])
-	{
-		free(cmd->in_red[i]);
-		cmd->in_red[i] = NULL;
-	}
-	i = -1;
-	while (++i < LEN && cmd->out_red[i])
-	{
-		free(cmd->out_red[i]);
-		cmd->out_red[i] = NULL;
-	}
-	i = -1;
 	while (++i < LEN && cmd->delimiters[i])
 	{
 		free(cmd->delimiters[i]);
 		cmd->delimiters[i] = NULL;
-	}
-	i = -1;
-	while (++i < LEN && cmd->append[i])
-	{
-		free(cmd->append[i]);
-		cmd->append[i] = NULL;
 	}
 }
 
@@ -95,5 +78,32 @@ void	free_term(t_term *term)
 	}
 	i = -1;
 	while (++i < MAX_TOKENS)
+	{
 		free_command(&term->cmd_list[i]);
+		free_reds(&term->cmd_list[i]);
+	}
+}
+
+void	free_reds(t_command *cmd)
+{
+	int	i;
+
+	i = -1;
+	while (++i < LEN && cmd->in_red[i])
+	{
+		free(cmd->in_red[i]);
+		cmd->in_red[i] = NULL;
+	}
+	i = -1;
+	while (++i < LEN && cmd->out_red[i])
+	{
+		free(cmd->out_red[i]);
+		cmd->out_red[i] = NULL;
+	}
+	i = -1;
+	while (++i < LEN && cmd->append[i])
+	{
+		free(cmd->append[i]);
+		cmd->append[i] = NULL;
+	}
 }
