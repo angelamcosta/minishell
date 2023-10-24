@@ -6,7 +6,7 @@
 /*   By: mpedroso <mpedroso@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/31 15:46:17 by anlima            #+#    #+#             */
-/*   Updated: 2023/10/24 15:31:10 by mpedroso         ###   ########.fr       */
+/*   Updated: 2023/10/24 23:20:40 by mpedroso         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,7 +33,7 @@ char	*get_path(char *cmd_name)
 		test_path = ft_strjoin(paths[i], "/");
 		path = ft_strjoin(test_path, cmd_name);
 		free(test_path);
-		if (access(path, F_OK) == 0)
+		if (path && access(path, F_OK) == 0)
 			break ;
 		free(path);
 		path = NULL;
@@ -50,10 +50,10 @@ void	execute_command(t_command *cmd, char *path)
 	struct stat	path_stat;
 
 	if (!cmd->name)
-		exit(EXIT_SUCCESS);
+		return ;
 	if (access(path, F_OK) == -1)
 	{
-		print_str(ft_itoa(g_exit));
+		print_str(cmd->name);
 		write(0, ": command not found\n", 21);
 		exit(NOT_FOUND);
 	}

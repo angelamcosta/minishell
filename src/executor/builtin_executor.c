@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   builtin_executor.c                                 :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: anlima <anlima@student.42lisboa.com>       +#+  +:+       +#+        */
+/*   By: mpedroso <mpedroso@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/16 15:35:02 by anlima            #+#    #+#             */
-/*   Updated: 2023/10/24 17:09:24 by anlima           ###   ########.fr       */
+/*   Updated: 2023/10/24 22:41:17 by mpedroso         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,25 +42,25 @@ void	executor(void)
 
 void	execute_builtin(t_command *cmd)
 {
-	if (ft_strncmp(cmd->name, "exit", 5) == 0)
+	if (ft_strncmp(cmd->name, "exit", 4) == 0)
 		execute_exit(&cmd->args[1]);
-	else if (ft_strncmp(cmd->name, "echo", 5) == 0)
+	else if (ft_strncmp(cmd->name, "echo", 4) == 0)
 	{
 		execute_echo(&cmd->args[1]);
 		if (check_flag(cmd->args[1]) && cmd->args[2])
 			write(1, "\e[38;5;0;48;5;255m%\e[0m\n", 24);
 	}
-	else if (ft_strncmp(cmd->name, "cd", 3) == 0)
+	else if (ft_strncmp(cmd->name, "cd", 2) == 0)
 		execute_cd(cmd->args);
-	else if (ft_strncmp(cmd->name, "pwd", 4) == 0)
+	else if (ft_strncmp(cmd->name, "pwd", 3) == 0)
 		execute_pwd();
-	else if (ft_strncmp(cmd->name, "env", 4) == 0)
+	else if (ft_strncmp(cmd->name, "env", 3) == 0)
 		execute_env(&cmd->args[1], 0);
-	else if (ft_strncmp(cmd->name, "export", 7) == 0)
+	else if (ft_strncmp(cmd->name, "export", 6) == 0)
 		execute_export(&cmd->args[1]);
-	else if (ft_strncmp(cmd->name, "unset", 6) == 0)
+	else if (ft_strncmp(cmd->name, "unset", 5) == 0)
 		execute_unset(&cmd->args[1]);
-	else if (ft_strncmp(cmd->name, "clear", 6) == 0)
+	else if (ft_strncmp(cmd->name, "clear", 5) == 0)
 		execute_clear();
 }
 
