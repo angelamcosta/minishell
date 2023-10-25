@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   free_memory.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: anlima <anlima@student.42lisboa.com>       +#+  +:+       +#+        */
+/*   By: mpedroso <mpedroso@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/28 15:52:58 by anlima            #+#    #+#             */
-/*   Updated: 2023/10/24 19:24:34 by anlima           ###   ########.fr       */
+/*   Updated: 2023/10/25 12:01:40 by mpedroso         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -83,7 +83,7 @@ void	free_term(t_term *term)
 		term->tokens = NULL;
 	}
 	i = -1;
-	while (++i < MAX_TOKENS)
+	while (++i < term->count_cmd)
 	{
 		free_command(&term->cmd_list[i]);
 		free_reds(&term->cmd_list[i]);

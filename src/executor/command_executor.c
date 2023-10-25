@@ -6,7 +6,7 @@
 /*   By: mpedroso <mpedroso@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/31 15:46:17 by anlima            #+#    #+#             */
-/*   Updated: 2023/10/24 23:20:40 by mpedroso         ###   ########.fr       */
+/*   Updated: 2023/10/25 12:19:58 by mpedroso         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,7 +54,7 @@ void	execute_command(t_command *cmd, char *path)
 	if (access(path, F_OK) == -1)
 	{
 		print_str(cmd->name);
-		write(0, ": command not found\n", 21);
+		print_str(": command not found\n");
 		exit(NOT_FOUND);
 	}
 	if (stat(path, &path_stat) == 0 && S_ISDIR(path_stat.st_mode))
