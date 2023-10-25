@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   io_control.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: anlima <anlima@student.42lisboa.com>       +#+  +:+       +#+        */
+/*   By: mpedroso <mpedroso@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/27 23:16:11 by anlima            #+#    #+#             */
-/*   Updated: 2023/10/19 21:54:17 by anlima           ###   ########.fr       */
+/*   Updated: 2023/10/25 12:41:41 by mpedroso         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,10 +21,17 @@ void	execute_exit(char **args);
 void	execute_exit(char **args)
 {
 	add_history(term()->command);
+	print_str("exit\n");
 	if (args[1] && args[1] != NULL)
+	{
+		write(0, "exit: too many arguments\n", 26);
 		g_exit = EXIT_FAILURE;
+	}
 	else if (args[0] && !is_numeric(args[0]))
+	{
+		write(0, "exit: numeric argument required\n", 33);
 		g_exit = 2;
+	}
 	else if (args[0] && is_numeric(args[0]))
 	{
 		g_exit = treat_exit_arg(args[0]);
@@ -32,7 +39,6 @@ void	execute_exit(char **args)
 			g_exit = (g_exit + 256);
 		g_exit = g_exit % 256;
 	}
-	print_str("exit\n");
 	clean_mallocs();
 	free_env();
 	exit(g_exit);

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   expansion_aux.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: anlima <anlima@student.42lisboa.com>       +#+  +:+       +#+        */
+/*   By: mpedroso <mpedroso@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/24 15:21:57 by anlima            #+#    #+#             */
-/*   Updated: 2023/10/24 15:46:58 by anlima           ###   ########.fr       */
+/*   Updated: 2023/10/25 12:29:22 by mpedroso         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,7 +67,7 @@ void	modify_result(char **result, char *replacement)
 	char	*temp;
 
 	temp = NULL;
-	if (*result)
+	if (*result && replacement)
 	{
 		temp = ft_strdup(*result);
 		free(*result);
