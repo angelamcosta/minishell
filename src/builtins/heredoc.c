@@ -6,7 +6,7 @@
 /*   By: mpedroso <mpedroso@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/02 13:58:32 by anlima            #+#    #+#             */
-/*   Updated: 2023/10/25 14:36:27 by mpedroso         ###   ########.fr       */
+/*   Updated: 2023/10/25 15:08:31 by mpedroso         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,7 +36,6 @@ void	heredoc(char *delimiter)
 		write(fd, line, ft_strlen(line));
 		free(line);
 	}
-	signals_child();
 }
 
 void	handle_heredocs(void)
@@ -51,4 +50,5 @@ void	handle_heredocs(void)
 		while (term()->cmd_list[i].delimiters[++j])
 			heredoc(term()->cmd_list[i].delimiters[j]);
 	}
+	set_signals();
 }

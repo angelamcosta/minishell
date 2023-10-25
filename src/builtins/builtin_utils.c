@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   builtin_utils.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: anlima <anlima@student.42lisboa.com>       +#+  +:+       +#+        */
+/*   By: mpedroso <mpedroso@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/15 13:52:47 by anlima            #+#    #+#             */
-/*   Updated: 2023/10/19 21:39:31 by anlima           ###   ########.fr       */
+/*   Updated: 2023/10/25 15:12:28 by mpedroso         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,7 +27,7 @@ int	is_valid_varname(char *str)
 		return (0);
 	while (str[++i])
 	{
-		if (!ft_isalpha(str[i]))
+		if (!ft_isalpha(str[i]) && str[i] != '_')
 			return (0);
 	}
 	return (1);
