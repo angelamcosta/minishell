@@ -2,7 +2,7 @@
 
 <div align=center>
   
-  ![badge](https://raw.githubusercontent.com/angelamcosta/angelamcosta/main/42_badges/minishelln.png)
+  ![badge](https://raw.githubusercontent.com/angelamcosta/angelamcosta/main/42_badges/minishelle.png)
 
   <table>
   <tr>
