@@ -17,8 +17,7 @@ VAL		=	--leak-check=full \
 			--track-origins=yes \
 			--verbose \
 			--log-file=valgrind_log.txt \
-			--suppressions=readline.supp \
-			--track-fds=yes
+			--suppressions=readline.supp
 
 SRC		=	minishell.c \
 			$(SRC_DIR)/$(B_INS)/builtin_utils.c \
