@@ -2,7 +2,7 @@
 
 <div align=center>
   
-  ![badge](https://raw.githubusercontent.com/angelamcosta/angelamcosta/main/42_badges/minishelle.png)
+  ![badge](https://raw.githubusercontent.com/angelamcosta/angelamcosta/main/42_badges/minishellm.png)
 
   <table>
   <tr>
@@ -74,3 +74,7 @@ To launch the shell, run the following command:
 ```
 
 Once the shell is running, you can enter commands and utilize the supported features.
+
+## 📝 Documentation
+
+- [Writing Your Own Shell](https://www.cs.purdue.edu/homes/grr/SystemsProgrammingBook/Book/Chapter5-WritingYourOwnShell.pdf)
